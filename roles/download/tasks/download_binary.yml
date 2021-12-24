@@ -8,7 +8,7 @@
 
 - include_tasks: download_file.yml
   vars:
-    no_checksum: checksum_suffix is defined and checksum_algo is defined
+    no_checksum: "{{ checksum_suffix is undefined or checksum_algo is undefined }}"
     download_checksum: "{{ None if no_checksum else checksum_algo ~ ':' ~ donwload_url ~ checksum_suffix }}"
     download_archive_file: "{{ binary_file }}"
     download_dest: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }}"
