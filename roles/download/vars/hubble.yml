@@ -1,0 +1,10 @@
+github_project: cilium/hubble
+github_version: "{{ hubble_version | default('latest') }}"
+github_file: hubble-linux-{{ arch }}.tar.gz
+binary_file: hubble
+checksum_suffix: '.sha256sum'
+checksum_algo: 'sha256'
+completion_command: completion {{  ansible_user_shell | basename }}
+download_unarchive: true
+
+download_mode: download_gh
