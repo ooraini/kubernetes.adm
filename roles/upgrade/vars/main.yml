@@ -1,0 +1,3 @@
+control_plane_versions: "{{ hostvars['localhost'].control_plane_versions }}"
+k8s_nodes: "{{ hostvars['localhost'].k8s_nodes }}"
+not_ready_nodes: "{{ hostvars['localhost'].not_ready_nodes }}"

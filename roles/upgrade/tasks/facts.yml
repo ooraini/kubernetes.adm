@@ -1,0 +1,30 @@
+- assert:
+    that: (ansible_play_batch | length == 1) and is_control_plane
+    fail_msg: Facts phase MUST be run with exactly one control plane host.
+    quiet: true
+
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+    host: https://{{ item }}:{{ cluster_apiserver_port }}
+    validate_certs: false
+  register: _cluster_info
+  loop: "{{ groups[control_plane_hostgroup] }}"
+
+- name: Get Nodes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: node
+  register: _nodes
+
+- vars:
+    query: "resources[*].{key: metadata.name, value: {kubeletVersion: status.nodeInfo.kubeletVersion, unschedulable: spec.unschedulable || `false`, status: status.conditions[?type=='Ready'].status | [0]}}"
+    _control_plane_versions: "{{ _cluster_info | json_query('results[*].{key: item, value: version.server.kubernetes.gitVersion}') | items2dict }}"
+    _k8s_nodes: "{{ _nodes | json_query(query) | items2dict }}"
+    _not_ready_nodes: "{{ _nodes | json_query(query) | json_query('[?value.status!=`True`].{key: key, value: value.status}') | items2dict }}"
+
+  delegate_to: localhost
+  delegate_facts: true
+  set_fact:
+    control_plane_versions: "{{ _control_plane_versions }}"
+    k8s_nodes: "{{ _k8s_nodes }}"
+    not_ready_nodes: "{{ _not_ready_nodes }}"

@@ -1,0 +1,22 @@
+# Contract: Ensure python3, openssl and the kubernetes.core dependencies:
+# kubernetes PyYAML jsonpath jsonpatch
+
+- name: Ensure python36 and openssl are present
+  yum: 
+    name: 
+     - python36
+     - openssl
+     - python3-pyyaml
+     - python3-jsonpatch
+    state: present
+  become: true
+
+- name: Ensure kubernetes, PyYAML and jsonpath pip packages are present
+  pip:
+    name:
+      - kubernetes
+      # - PyYAML
+      # - jsonpath
+      # - jsonpatch
+    state: present
+    extra_args: --user

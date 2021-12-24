@@ -1,0 +1,39 @@
+# Input variables:
+# control_plane_hostgroup: A group that contains the control plane nodes
+# workers_hostgroup: A group that contains the worker nodes
+# cluster_hostgroup: A group that contains all the cluster nodes
+# init_node_hostgroup: A group that contains the first control plane node (1 host)
+
+# Ensure proper hostnames and /etc/hosts file (or DNS).
+# Ensure no firewalld is running (or is properly configured).
+
+- name: Prepare nodes for Kubernetes
+  hosts: "{{ cluster_hostgroup }}"
+  roles: [ kubernetes.adm.prepare ]
+
+
+- name: Setup Load balancer for Kubernetes API server
+  hosts: "{{ control_plane_hostgroup }}"
+  roles: [kubernetes.adm.lb]
+    
+
+- name: Init first control plane node
+  hosts: "{{ init_node_hostgroup }}"
+  roles: [kubernetes.adm.init]
+
+
+- hosts: "{{ init_node_hostgroup }}"
+  roles: [kubernetes.adm.pre_join]
+
+
+- name: Join the rest of the control plane nodes
+  hosts: "{{ control_plane_hostgroup }},!{{ init_node_hostgroup }}"
+  serial: 1
+  roles: [kubernetes.adm.join]
+
+
+- name: Join worker nodes
+  hosts: "{{ workers_hostgroup }}"
+  roles: [kubernetes.adm.join]
+  strategy: free
+

@@ -1,0 +1,25 @@
+- assert:
+    quiet: true
+    that:
+      - join_token is defined
+      - join_cert_key is defined
+      - join_ca_cart_hash is defined
+    fail_msg: No token or cert key. Did you run the pre_join role?
+
+- name: Ensure kubeadm.conf using {{ kubeadm_config_template }} template
+  template:
+    src: "{{ kubeadm_config_template }}"
+    dest: "{{ kubeadm_config_path }}/kubeadm.conf"
+    backup: true
+
+  become: true
+
+- name: kubeadm join
+  command: kubeadm join --config {{ kubeadm_config_path }}/kubeadm.conf
+  become: true
+  register: kubeadm_out
+
+- debug: msg={{ kubeadm_out.stdout_lines | join('\n') }}
+
+- set_fact:
+    k8s_new_joiner: true

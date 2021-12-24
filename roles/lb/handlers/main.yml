@@ -1,0 +1,7 @@
+- name: reload keepalived
+  systemd: name=keepalived.service state=reloaded
+  become: true
+
+- name: reload haproxy
+  systemd: name=haproxy.service state=reloaded
+  become: true

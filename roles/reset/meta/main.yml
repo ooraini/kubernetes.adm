@@ -1,0 +1,10 @@
+  
+argument_specs:
+  main:
+    short_description: Remove node from cluster
+    description:
+      - Remove the node from the cluster.
+      - It's recommended to set the C(joined_control_plane_node) variable.
+      - When not set, the node will not be removed from the API server.
+      - In other words, running C(kubectl get nodes) will show the removed node with I(Unknown) status.
+      

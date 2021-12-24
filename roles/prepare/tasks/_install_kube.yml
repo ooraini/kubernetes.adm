@@ -1,0 +1,18 @@
+# Contract: Install kubeadm, kubelet, kubectl and tc. The packages MUST NOT be upgraded or 
+# modified in any way if there is an existing installtion. (Hint: Use 'kubelet_version is none')
+
+- name: Enusre 'tc' command is presnet
+  yum: name=iproute-tc state=present
+  become: true
+
+- name: Ensure kubeadm, kubelet and kubectl packages are present
+  yum:
+    name:
+      - kubelet-{{ kubernetes_version }}-0
+      - kubeadm-{{ kubernetes_version }}-0
+      - kubectl-{{ kubernetes_version }}-0
+    state: present
+    disable_excludes: kubernetes
+
+  become: true
+  when: current_kubelet_version is none

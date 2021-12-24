@@ -1,0 +1,49 @@
+- assert:
+    that: ansible_play_hosts | length == 1 and is_control_plane
+    fail_msg: pre_join SHOULD run on a single control plane host
+    quiet: true
+
+- name: Get cluster nodes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: node
+  register: _nodes
+  delegate_to: "{{ joined_control_plane_node }}"
+
+- vars:
+    query: "resources[*].{key: metadata.name, value: {kubeletVersion: status.nodeInfo.kubeletVersion, unschedulable: spec.unschedulable || `false`, status: status.conditions[?type=='Ready'].status | [0]}}"
+  delegate_to: localhost
+  delegate_facts: true
+  set_fact:
+    k8s_nodes: "{{ _nodes | json_query(query) | items2dict }}"
+
+- name: Generate token
+  command: kubeadm token generate
+  register: token_out
+  changed_when: false
+
+- name: Generate certificate key
+  command: kubeadm certs certificate-key
+  register: certkey_out
+  changed_when: false
+
+- name: Get CA cert hash
+  shell: set -o pipefail ; openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: certhash_out
+  changed_when: false
+
+- set_fact:
+    join_token: "{{ token_out.stdout_lines[0] }}"
+    join_cert_key: "{{ certkey_out.stdout_lines[0] }}"
+    join_ca_cart_hash: "{{ certhash_out.stdout_lines[0] }}"
+
+  delegate_to: localhost
+  delegate_facts: true
+    
+- name: Create token
+  command: kubeadm token create  --ttl 1h0m0s {{ hostvars['localhost']['join_token'] }}
+  become: true
+
+- name: Upload certs with generated certificate key
+  command: kubeadm init phase upload-certs --skip-certificate-key-print --upload-certs --certificate-key={{ hostvars['localhost']['join_cert_key'] }} 
+  become: true

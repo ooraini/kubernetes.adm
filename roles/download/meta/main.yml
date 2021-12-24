@@ -1,0 +1,75 @@
+argument_specs:
+  download_file:
+    short_description: Download file
+    description:
+      - Download file from the URL C(donwload_url).
+      - When C(download_unarchive) is true, the downloaded file will be unarchived.
+    options:
+      donwload_url:
+        type: str
+        required: true
+        description: The file URL
+      download_unarchive:
+        type: bool
+        default: false
+        description: Whether the downloaded file will be unarchived.
+      download_archive_file:
+        type: str
+        description:
+          - The file inside the archive that will be copied to C(download_dest).
+          - Required when C(download_unarchive).
+      download_dest:
+        type: str
+        required: true
+        description: The download destination.
+      file_mode:
+        type: str
+        default: '0700'
+        description: The file mode.
+      download_checksum:
+        type: str
+        description: The file checksum.
+
+  download_gh:
+    short_description: Download a binary file from Github
+    description:
+      - Download a file from the release page in a Github project.
+      - Using the same URL structure used by Github, the C(github_base_url) can point to a private location.
+    options:
+      download_unarchive:
+        type: bool
+        default: false
+        description: Refer to C(download_file) entry
+      github_base_url:
+        type: str
+        default: "https://github.com"
+        description: The base download URL.
+      github_project:
+        type: str
+        required: true
+        description: The orginization/project names.
+      github_version:
+        type: str
+        required: true
+        description: The release version.   
+      github_file:
+        type: str
+        required: true
+        description: The file to download.
+      binary_file:
+        type: str
+        required: true
+        description:
+          - The final name for the binary file.
+          - When C(download_unarchive) is true, the value should be the path to the binary inside the archive.
+      checksum_suffix:
+        type: str
+        description: The checksum file suffix.
+      checksum_algo:
+        type: str
+        description: The checksum algorithm.
+      completion_command:
+        type: str
+        description: 
+          - The shell completion command.
+          - The expression {{ ansible_user_shell | basename }} can be used to determine the user shell.

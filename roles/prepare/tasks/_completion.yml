@@ -1,0 +1,27 @@
+- name: Enusre bash-completion
+  yum: name=bash-completion state=present
+  become: true
+
+- name: Load kubectl completion script
+  command: kubectl completion bash 
+  changed_when: false
+  register: kubectl_completion
+
+- name: Ensure kubectl completion in /etc/bash_completion.d
+  copy:
+    content: "{{ kubectl_completion.stdout_lines | join('\n') }}"
+    dest: /etc/bash_completion.d/kubectl
+  
+  become: true
+
+- name: Ensure alias k for kubectl
+  lineinfile:
+    line: alias k=kubectl
+    path: "{{ ansible_user_dir }}/.bashrc"
+  when: aliask
+
+- name: Ensure completion for k
+  lineinfile:
+    line: complete -F __start_kubectl k
+    path: "{{ ansible_user_dir }}/.bashrc"
+  when: aliask

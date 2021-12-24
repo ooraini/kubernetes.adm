@@ -1,0 +1,9 @@
+github_project: jetstack/cert-manager
+github_version: "{{ cmctl_version | default('latest') }}"
+github_file: cmctl-linux-amd64.tar.gz
+binary_file: cmctl
+completion_command: completion {{  ansible_user_shell | basename }}
+download_unarchive: true
+
+download_mode: download_gh
+

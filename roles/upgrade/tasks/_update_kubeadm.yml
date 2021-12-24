@@ -1,0 +1,7 @@
+- name: Ensure kubeadm at {{ kubernetes_version }}
+  yum:
+    name: kubeadm-{{ kubernetes_version }}-0
+    state: present
+    disable_excludes: kubernetes
+
+  become: true

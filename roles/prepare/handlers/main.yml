@@ -1,0 +1,24 @@
+---
+# handlers file for prepare
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: true
+  listen:
+    - /etc/fstab
+
+- name: restart systemd-modules-load.service
+  systemd:
+    name: systemd-modules-load.service
+    state: restarted
+
+  become: true
+  listen:
+    - systemd-modules-load.service
+
+- name: reload NetworkManager
+  systemd:
+    name: NetworkManager
+    state: reloaded
+
+  become: true

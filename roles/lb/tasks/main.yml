@@ -1,0 +1,77 @@
+- assert:
+    that: keepalived_master in hostvars
+    fail_msg: The master server {{ keepalived_master }} is NOT an inventory host
+    quiet: true
+
+- name: Ensure keepalived and haproxy are installed
+  yum: 
+    name:
+      - keepalived
+      - haproxy
+    state: present
+
+  become: true
+
+- name: Ensure keepalived_script user
+  user:
+    name: keepalived_script
+    create_home: false
+    system: true
+    state: present
+
+  become: true
+
+- name: Tempalte keepalived.conf
+  template:
+    src: "{{ keepalived_conf_template }}"
+    dest: "{{ keepalived_conf_path }}/keepalived.conf"
+
+  become: true
+  notify: reload keepalived
+
+- name: Ensure /usr/libexec/keepalived
+  file:
+    path: /usr/libexec/keepalived
+    state: directory
+
+  become: true
+
+- name: Tempalte check_apiserver.sh
+  vars:
+  template:
+    src: "{{ check_apiserver_script_template }}"
+    dest: "{{ keepalived_conf_path }}/check_apiserver.sh"
+    owner: keepalived_script
+    mode: '0744'
+
+  become: true
+  notify: reload keepalived
+
+- name: Tempalte haproxy.cfg
+  template:
+    src: "{{ haproxy_cfg_template }}"
+    dest: "{{ haproxy_conf_path }}/haproxy.cfg"
+
+  become: true
+  notify: reload haproxy
+
+- name: Ensure keepalived and haproxy are enabled and started
+  systemd:
+    name: "{{ item }}.service"
+    enabled: true
+    state: started
+
+  loop:
+    - keepalived
+    - haproxy
+  become: true
+
+- name: Allow haproxy to connect to apiserver (SELinux)
+  community.general.seport:
+    ports: "{{ cluster_apiserver_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+  become: true
+  when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'

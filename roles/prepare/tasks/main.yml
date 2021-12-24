@@ -1,0 +1,40 @@
+---
+- include_tasks: "{{ info_tasks }}"
+
+- include_tasks: "{{ swap_tasks }}"
+
+- include_tasks: "{{ cni_tasks }}"
+
+- include_tasks: "{{ yum_repositories_tasks }}"
+
+- include_tasks: "{{ cri_tasks }}"
+
+- include_tasks: "{{ install_kube_tasks }}"
+
+- name: Ensure patches directory
+  file:
+    path: "{{ kubeadm_patches_directory }}"
+    state: directory
+
+  become: true
+
+- name: Ensure kernel parameters are relaoded
+  command: sysctl -p
+  become: true
+
+- name: Ensure kubelet.service is enabled
+  systemd:
+    name: kubelet.service
+    enabled: true
+    daemon_reload: true
+
+  become: true
+
+# Ansible kubernetes.core requirments
+- when: is_control_plane
+  block:
+    - name: Ensure control plane packages
+      include_tasks: "{{ cp_packages_tasks }}"
+
+    - name: Ensure bash completion
+      include_tasks: "{{ completion_tasks }}"

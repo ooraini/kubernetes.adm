@@ -1,0 +1,2 @@
+kubeadm_config_template: _init_{{ kubeadm_apiversion }}.yml
+kubeadm_skip_phases: []

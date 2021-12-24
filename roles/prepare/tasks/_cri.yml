@@ -1,0 +1,75 @@
+- name: Ensure required CRI-O kernel module are loaded
+  copy:
+    dest: /etc/modules-load.d/crio.conf
+    content: |
+      # Ansible managed
+      overlay
+      br_netfilter
+
+  become: yes
+  register: modules_load_d
+
+- name: Restart systemd-modules-load.service to reload kernel modules
+  systemd: name=systemd-modules-load.service state=restarted
+  become: true
+  when: modules_load_d.changed
+
+- name: Ensure CRI-O kernel configurations
+  ansible.posix.sysctl:
+    sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+
+  become: true
+  with_dict:
+    net.bridge.bridge-nf-call-iptables: 1
+    net.bridge.bridge-nf-call-ip6tables: 1
+    net.ipv4.ip_forward: 1
+  
+- name: Reset container-tools
+  command: yum module reset container-tools -y
+  become: yes
+  when: current_crio_version is none
+
+- name: Switch to container-tools:rhel8
+  yum:
+    name: '@container-tools:rhel8/common'
+    state: present
+  become: true
+  when: current_crio_version is none
+
+- name: Ensure container-tools:rhel8 module stream is enabled
+  yum:
+    name: '@container-tools:rhel8/common'
+    state: present
+
+  become: yes
+  when: current_crio_version is none
+
+- name: Ensure cri-o package is present
+  yum:
+    name: cri-o
+    state: present
+    disable_excludes: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
+
+  become: true
+
+- name: Ensure example CNI configuration files are absent
+  file:
+    path: /etc/cni/net.d/{{ item }}
+    state: absent
+
+  become: true
+  loop:
+    - 100-crio-bridge.conf
+    - 200-loopback.conf
+
+- name: Ensure cri-o is started and enabled
+  systemd:
+    name: crio.service
+    state: started
+    enabled: true
+    daemon_reload: true
+    
+  become: true

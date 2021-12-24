@@ -1,0 +1,23 @@
+dependencies:
+  - role: kubernetes.adm.common
+
+argument_specs:
+  main:
+    short_description: Joins a Kubernetes cluster
+    description:
+      - Joins a node to a Kubernetes cluster using 'kubeadm join'
+      - Uses C(joined_control_plane_node) as a delegete
+      - Passes The template file referenced by C(kubeadm_config_template) to C(kubeadm --config)
+      - The node is joined as a control plane node if C(is_control_plane) is true
+    options:
+      kubeadm_config_template:
+        type: str
+        default:  _join_{{ kubeadm_apiversion }}.yml
+        description: The YAML template file that contains the C(JoinConfiguration).
+
+      kubeadm_reset:
+        type: bool
+        default: false
+        description:
+          - Run 'kubeadm reset' before joining the cluster.
+          - Only allowed for non control plane nodes.

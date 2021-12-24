@@ -1,0 +1,2 @@
+update_kubeadm_tasks: _update_kubeadm.yml
+update_kube_tasks: _update_kube.yml

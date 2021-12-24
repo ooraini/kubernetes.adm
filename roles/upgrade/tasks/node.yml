@@ -1,0 +1,8 @@
+- include_tasks: "{{ update_kubeadm_tasks }}"
+  
+- name: kubeadm upgrade node
+  command: kubeadm upgrade node
+  become: true
+  register: kubeadm_out
+
+- debug: msg={{ kubeadm_out.stdout_lines | join('\n') }}

@@ -1,0 +1,18 @@
+---
+# defaults file for prepare
+info_tasks: _info.yml
+
+swap_tasks: _swap.yml
+
+cni_tasks: _cni.yml
+
+install_kube_tasks: _install_kube.yml
+
+yum_repositories_tasks: _yum.yml
+
+cri_tasks: _cri.yml
+
+cp_packages_tasks: _cp_packages.yml
+
+completion_tasks: _completion.yml
+aliask: true

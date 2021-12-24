@@ -1,0 +1,39 @@
+# prepare system for CNI installtion. Based on kubeadm and cri-o docs.
+
+- name: Ensure br_netfilter module is loaded
+  copy:
+    dest: /etc/modules-load.d/k8s.conf
+    content: |
+      # Ansible managed
+      br_netfilter
+
+  become: true
+  register: modules_load_d
+
+- name: Restart systemd-modules-load.service to reload kernel modules
+  systemd: name=systemd-modules-load.service state=restarted
+  become: true
+  when: modules_load_d.changed
+
+- name: Ensure bridge-nf-call-iptables
+  ansible.posix.sysctl:
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+
+  become: true
+  with_dict:
+    net.bridge.bridge-nf-call-iptables: 1
+    net.bridge.bridge-nf-call-ip6tables: 1
+
+- name: Ensure NetworkManager doesn't interfere with Calico's interfaces 
+  copy:
+    dest: /etc/NetworkManager/conf.d/calico.conf
+    content: |
+      [keyfile]
+      unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:wireguard.cali
+
+  become: true
+  ignore_errors: true
+  notify: reload NetworkManager

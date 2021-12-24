@@ -1,0 +1,27 @@
+dependencies:
+  - role: kubernetes.adm.common
+
+argument_specs:
+  main:
+    short_description: Setup a load balancer for the API server using keepalived and haproxy.
+    description:
+      - Based on L(Software load balancing,https://github.com/kubernetes/kubeadm/blob/main/docs/ha-considerations.md#options-for-software-load-balancing).
+      - Keepalived requires that all nodes are in the same subnet(broadcast domain).
+      - When using a domain name as a cluster endpoint(C(control_plane_endpoint)), it must resolve to I(keepalived_vip).
+    options:
+      keepalived_master:
+        type: str
+        required: true
+        description: The server with the MASTER state in C(keepalived.conf). Must be an inventory host.
+      
+      keepalived_interface:
+        type: str
+        required: true
+        description: The network interface used by keepalived VRRP protocol. For exmaple eth0.
+
+      keepalived_vip:
+        type: str
+        required: True
+        description:
+          - The keepalived VIP. The cluster endpoint C(control_plane_endpoint) resolves to the VIP.
+          - When using an IP as the cluster endpoint, it should B(equal) the VIP.

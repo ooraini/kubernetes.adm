@@ -1,0 +1,50 @@
+- name: Ensure node is drained
+  kubernetes.core.k8s_drain:
+    name: "{{ inventory_hostname }}"
+    state: drain
+    delete_options:
+      force: true
+      ignore_daemonsets: true
+
+  delegate_to: "{{ joined_control_plane_node }}"
+  ignore_errors: true
+  when: joined_control_plane_node is defined
+
+- name: kubeadm reset
+  command: kubeadm reset -f
+  become: true
+  register: kubeadm_out
+
+- debug: msg={{ kubeadm_out.stdout_lines | join('\n') }}
+
+- name: Remove node object from Kubernetes
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Node
+    name: "{{ inventory_hostname }}"
+    state: absent
+
+  delegate_to: "{{ joined_control_plane_node }}"
+  ignore_errors: true
+  when: joined_control_plane_node is defined
+
+- name: Enusre /etc/cni/net.d is empty
+  command: find /etc/cni/net.d -type f -delete
+  become: true
+
+- name: Clean iptables
+  shell: iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+  become: true
+  ignore_errors: true
+
+- name: Clean IPVS
+  command: ipvsadm --clear
+  become: true
+  ignore_errors: true
+
+- name: Ensure .kube/config is absent
+  file:
+    path: "{{ ansible_user_dir }}/.kube/config"
+    state: absent
+
+- include_tasks: "{{ remove_packages_tasks }}"

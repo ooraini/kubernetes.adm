@@ -1,0 +1,21 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: JoinConfiguration
+
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: {{ control_plane_endpoint }}
+    token: {{ join_token }}
+    caCertHashes:
+      - "sha256:{{ join_ca_cart_hash }}"
+
+nodeRegistration:
+  name: {{ inventory_hostname }}
+  taints: {{ 'null' if is_control_plane else [] }}
+
+{% if is_control_plane %}
+controlPlane:
+  certificateKey: {{ join_cert_key }}
+{% endif %}
+
+patches:
+  directory: {{ kubeadm_patches_directory }}

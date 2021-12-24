@@ -1,0 +1,24 @@
+# -- Required -- #
+
+# kubernetes_version: "1.22.4"
+# kubeadm_apiversion: v1beta3
+kubeadm_config_path: /etc/kubernetes
+kubeadm_patches_directory: /etc/kubernetes/patches
+
+
+cluster_name: kubernetes
+# cluster_pod_cidr: 172.16.0.0/16
+# cluster_service_cidr: 172.17.0.0/16
+cluster_dns_domain: cluster.local
+cluster_apiserver_port: '6443'
+
+# control_plane_endpoint: cluster:8443
+# control_plane_hostgroup: control_plane
+
+joined_control_plane_node: "{{ groups[control_plane_hostgroup] | first }}"
+
+# -- Derived -- #
+
+is_control_plane: "{{ inventory_hostname in groups[control_plane_hostgroup] }}"
+crio_version: "{{ kubernetes_version.split('.')[0:2] | join('.') }}"
+crio_os: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"

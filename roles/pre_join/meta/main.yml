@@ -1,0 +1,12 @@
+dependencies:
+  - role: kubernetes.adm.common
+  
+argument_specs:
+  main:
+    short_description: Generate token and certificate key for joining nodes
+    description:
+      - Generates a bootstrap token and a certificate key.
+      - The certificate key encrypts the root CA before uploading it to the API server.
+      - After running this role, the required variables for the join role will be available.
+      - "The output variables are avaliable on C(localhost) facts and they are: C(join_token), C(join_cert_key), C(join_ca_cart_hash) and C(k8s_nodes)."
+      

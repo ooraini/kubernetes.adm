@@ -1,0 +1,11 @@
+- name: Ensure Kubernetes packages are absent
+  yum:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: absent
+    disable_excludes: kubernetes
+
+  become: true
+  ignore_errors: true

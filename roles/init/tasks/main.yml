@@ -1,0 +1,30 @@
+- assert:
+    that: ansible_play_hosts | length == 1 and is_control_plane
+    fail_msg: init SHOULD run on a single control plane host
+    quiet: true
+
+- name: Check if node is initialized
+  find:
+    use_regex: true
+    patterns: '(?!kubeadm\.conf).*$'
+    paths:
+      - /etc/kubernetes/
+
+  become: true
+  register: etc_kubernetes_out
+
+- include_tasks: init.yml
+  when: etc_kubernetes_out.matched == 0
+
+- name: Ensure .kube directory
+  file: path={{ ansible_user_dir }}/.kube state=directory
+  
+- name: Ensure admin.conf is in the user's home directory
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_user_dir }}/.kube/config"
+    remote_src: true
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0600'
+  become: true

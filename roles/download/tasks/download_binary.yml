@@ -1,0 +1,28 @@
+
+- name: Ensure .local/bin
+  file:
+    path: "{{ ansible_user_dir }}/.local/bin/"
+    state: directory
+    mode: '0700'
+    recurse: true
+
+- include_tasks: download_file.yml
+  vars:
+    no_checksum: checksum_suffix is defined and checksum_algo is defined
+    download_checksum: "{{ None if no_checksum else checksum_algo ~ ':' ~ donwload_url ~ checksum_suffix }}"
+    download_archive_file: "{{ binary_file }}"
+    download_dest: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }}"
+
+- name: Load completion script
+  command: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }} {{ completion_command }}"
+  changed_when: false
+  register: completion_cmd_out
+  when: completion_command is defined
+
+- name: Ensure completion script in ~/.bash_completion
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.bash_completion"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_file }}"
+    create: true
+    block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
+  when: completion_command is defined

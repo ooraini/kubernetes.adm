@@ -1,0 +1,34 @@
+- name: Ensure Kubic libcontainers repository
+  yum_repository:
+    name: devel_kubic_libcontainers_stable
+    description: devel_kubic_libcontainers_stable
+    baseurl: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/'
+    gpgcheck: true
+    gpgkey: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/repodata/repomd.xml.key'
+    enabled: true
+    
+  become: true
+
+- name: Ensure Kubic libcontainers repository
+  yum_repository:
+    name: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
+    description: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
+    baseurl: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ crio_os }}/'
+    gpgcheck: true
+    gpgkey: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ crio_os }}/repodata/repomd.xml.key'
+    enabled: true
+    exclude: cri-o
+
+  become: true
+
+- name: Ensure Kubernetes repository
+  yum_repository:
+    name: kubernetes
+    description: kubernetes
+    baseurl: 'https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch'
+    gpgcheck: true
+    gpgkey: 'https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg'
+    exclude: kubelet kubeadm kubectl
+    enabled: true
+
+  become: true

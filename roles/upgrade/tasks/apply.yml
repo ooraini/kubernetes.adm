@@ -1,0 +1,24 @@
+- assert:
+    that: (not_ready_nodes | length) == 0
+    fail_msg: Some nodes are not ready! {{ not_ready_nodes.keys() | join(', ') }}.
+    quiet: true
+
+- assert:
+    that: ansible_play_hosts | length == 1 and is_control_plane
+    fail_msg: Apply phase can only be run against a single control plane host 
+    quiet: true
+
+- include_tasks: "{{ update_kubeadm_tasks }}"
+
+- name: kubeadm upgrade apply 
+  command: kubeadm upgrade apply v{{ kubernetes_version }} --yes
+  become: true
+  register: kubeadm_out
+
+- debug: msg={{ kubeadm_out.stdout_lines | join('\n') }}
+
+- name: Update facts
+  set_fact:
+    control_plane_versions: "{{ control_plane_versions | combine({ inventory_hostname: 'v' + kubernetes_version }) }}"
+  delegate_to: localhost
+  delegate_facts: true

@@ -1,0 +1,7 @@
+kubeadm_config_template: _join_{{ kubeadm_apiversion }}.yml
+kubeadm_reset: false
+
+join_token: "{{ hostvars['localhost'].join_token }}"
+join_cert_key: "{{ hostvars['localhost'].join_cert_key }}"
+join_ca_cart_hash: "{{ hostvars['localhost'].join_ca_cart_hash }}"
+k8s_nodes: "{{ hostvars['localhost'].k8s_nodes }}"

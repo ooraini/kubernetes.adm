@@ -1,0 +1,19 @@
+dependencies:
+  - role: kubernetes.adm.common
+  
+argument_specs:
+  main:
+    short_description: Initializes a Kubernetes cluster
+    description:
+      - Initializes the first control plane node using 'kubeadm init'.
+      - The role will use I(kubeadm_config_template) variable as template file and pass it to kubeadm
+    options:
+      kubeadm_config_template:
+        type: str
+        default:  _init_{{ kubeadm_apiversion }}.yml
+        description: The YAML template file that contains the InitConfiguration and ClusterConfiguration.
+      
+      kubeadm_skip_phases:
+        type: str
+        default: []
+        description: kubeadm phases to skip. For example ['addon/kube-proxy'].

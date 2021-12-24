@@ -1,0 +1,77 @@
+argument_specs:
+  main:
+    short_description: Common variables and tasks shared between roles
+    description: []
+    options:
+      kubernetes_version:
+        type: str
+        required: true
+        description: The Kubernetes version to install/upgrade
+
+      kubeadm_apiversion:
+        type: str
+        required: true
+        description: The kubeadm configuration API version. For example 'v1beta3'
+
+      kubeadm_config_path:
+        type: str
+        default: /etc/kubernetes
+        description: Where to store the kubeadm config file
+
+      kubeadm_patches_directory:
+        type: str
+        default: /etc/kubernetes/patches
+        description: Control plane patches path
+
+      cluster_name:
+        type: str
+        description: The cluster name
+        default: kubernetes
+
+      cluster_pod_cidr:
+        type: str
+        required: true
+        description: The Pod network CIDR
+
+      cluster_service_cidr:
+        type: str
+        required: true
+        description: The service network CIDR
+
+      cluster_dns_domain:
+        type: str
+        description: The cluster domain name
+        default: cluster.local
+
+      cluster_apiserver_port:
+        type: str
+        description: The api-server port (non-load-balanced)
+        default: '6443'
+
+      control_plane_endpoint:
+        type: str
+        required: true
+        description: The control plane endpoing in the format 'LOAD_BALANCER_DNS:LOAD_BALANCER_PORT'. Consult the Kubernetes documentation for more information
+
+      control_plane_hostgroup:
+        type: str
+        required: true
+        description: Inventory group name with all the control plane nodes.
+      
+      joined_control_plane_node:
+        type: str
+        default: 'First node in control_plane_hostgroup'
+        description:
+          - Some tasks require a control plane node to delegate to.
+          - For example, joining a second control plane node.
+          - An existing control plane node to perform the join. In such case, we use 'joined_control_plane_node' as the existing node.
+
+      crio_version:
+        type: str
+        default: Kubernetes MAJOR.MINOR from kubernetes_version
+        description: The CRI-O version to install/upgrade
+
+      crio_os:
+        type: str
+        default: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"
+        description: Used in setting up the CRI-O YUM repository. On CentOS 8 it would be 'CentOS_8'.

@@ -1,0 +1,22 @@
+
+- name: Ensure kubelet and kubectl at {{ kubernetes_version }}
+  yum:
+    name: 
+      - kubectl-{{ kubernetes_version }}-0
+      - kubelet-{{ kubernetes_version }}-0
+    state: present
+    disable_excludes: kubernetes
+
+  become: true
+  register: _kubelet_update
+
+
+- name: Ensure kubelet.service is restared
+  systemd:
+    name: kubelet.service
+    enabled: true
+    state: restarted
+    daemon_reload: true
+
+  become: true
+  when: _kubelet_update.changed

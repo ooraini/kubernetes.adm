@@ -1,0 +1,26 @@
+- assert:
+    that: ('v' + kubernetes_version) in control_plane_versions.values()
+    fail_msg: No control plane node with {{ kubernetes_version }}. Did you run the apply phase?
+    quiet: true
+
+- when:  ('v' + kubernetes_version) is version(k8s_nodes[inventory_hostname].kubeletVersion, '>')
+  block:
+    - name: Ensure node is drained
+      kubernetes.core.k8s_drain:
+        name: "{{ inventory_hostname }}"
+        state: drain
+        delete_options:
+          ignore_daemonsets: true
+      delegate_to: "{{ joined_control_plane_node }}"
+
+    - include_tasks: "{{ pre_kubelet_upgrade_hook }}"
+      when: pre_kubelet_upgrade_hook is defined and (not pre_kubelet_upgrade_hook is none) and (pre_kubelet_upgrade_hook | trim != '')
+
+    - include_tasks: "{{ update_kube_tasks }}"
+
+
+- name: Ensure node is schedulable
+  kubernetes.core.k8s_drain:
+    name: "{{ inventory_hostname }}"
+    state: uncordon
+  delegate_to: "{{ joined_control_plane_node }}"

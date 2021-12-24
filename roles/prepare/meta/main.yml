@@ -1,0 +1,56 @@
+dependencies:
+  - role: kubernetes.adm.common
+
+argument_specs:
+  main:
+    short_description: Prepare node for Kubernetes installtion
+    description: 
+      - Ensure that the node has the desired swap state, kernel modules and kernel parameters.
+      - Configure the required repositories for the container runtime and Kubernetes.
+      - Install the container runtime.
+      - Install Kubernetes packages
+      - Install C(kubernetes.core) and its requirements on control plane nodes.
+
+    options:
+      swap_state:
+        type: str
+        default: disabled
+        choices: [enabled, disabled]
+        description: | 
+          Whether to disable swap(C(disabled)), or(C(enabled)) attempt to undo a previous execution of I(swap_state=disabled).
+          Will not createa new swap partion or file.
+
+      swap_tasks:
+        type: str
+        default: _swap.yml
+        description: Tasks file for swap memory.
+
+      cni_tasks:
+        type: str
+        default: _cni.yml
+        description: Tasks file for preparing the OS for CNI.
+
+      yum_repositories_tasks:
+        type: str
+        default: _yum.yml
+        description: Tasks file for setting up the required repositories for container runtime, Kubernetes and other dependencies.
+
+      cri_tasks:
+        type: str
+        default: _cri.yml
+        description: Tasks file for preparing and installing a container runtime.
+
+      cp_packages_tasks:
+        type: str
+        default: _cp_packages.yml
+        description: Tasks file for installing additional control plane packages.
+
+      completion_tasks:
+        type: str
+        default: _completion.yml
+        description: Tasks file for install shell completion.
+      
+      aliask:
+        type: bool
+        default: true
+        description: Alias k to kubectl with completion in C(~/.bashrc)
