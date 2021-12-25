@@ -17,7 +17,9 @@
 - name: Setup Load balancer for Kubernetes API server
   hosts: "{{ control_plane_hostgroup }}"
   any_errors_fatal: true
-  roles: [kubernetes.adm.lb]
+  roles:
+    - role: kubernetes.adm.lb
+      when: (no_lb | default(true)) == false
     
 
 - name: Init first control plane node
