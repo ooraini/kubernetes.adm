@@ -30,4 +30,7 @@ argument_specs:
 
       pre_kubelet_upgrade_hook:
         type: str
-        description: A tasks file to execute before upgrading the kubelet.
+        default: _upgrade_crio.yml
+        description: 
+          - A tasks file to execute before upgrading the kubelet.
+          - The default tasks file will upgrade CRI-O.

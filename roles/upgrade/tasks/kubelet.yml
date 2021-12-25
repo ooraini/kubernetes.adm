@@ -14,7 +14,7 @@
       delegate_to: "{{ joined_control_plane_node }}"
 
     - include_tasks: "{{ pre_kubelet_upgrade_hook }}"
-      when: pre_kubelet_upgrade_hook is defined and (not pre_kubelet_upgrade_hook is none) and (pre_kubelet_upgrade_hook | trim != '')
+      when: (not pre_kubelet_upgrade_hook is none) and pre_kubelet_upgrade_hook | trim != ''
 
     - include_tasks: "{{ update_kube_tasks }}"
 

@@ -1,2 +1,3 @@
 update_kubeadm_tasks: _update_kubeadm.yml
 update_kube_tasks: _update_kube.yml
+pre_kubelet_upgrade_hook: _upgrade_crio.yml
