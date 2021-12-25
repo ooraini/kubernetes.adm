@@ -15,4 +15,6 @@ cri_tasks: _cri.yml
 cp_packages_tasks: _cp_packages.yml
 
 completion_tasks: _completion.yml
+
+prepare_upgrade: false
 aliask: true

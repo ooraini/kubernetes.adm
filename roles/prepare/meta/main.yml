@@ -54,3 +54,11 @@ argument_specs:
         type: bool
         default: true
         description: Alias k to kubectl with completion in C(~/.bashrc)
+      
+      prepare_upgrade:
+        type: bool
+        default: false
+        description:
+          - Only relevent if there is an existing installtion of CR or Kubernetes packages.
+          - When true, the CR and Kubernetes will upgraded/downgraded to {{ kubernetes_version }}.
+          - Should only by used when initializing a new cluster.

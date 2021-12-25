@@ -1,5 +1,16 @@
 # Contract: Install kubeadm, kubelet, kubectl and tc. The packages MUST NOT be upgraded or 
-# modified in any way if there is an existing installtion. (Hint: Use 'kubelet_version is none')
+# modified in any way if there is an existing installtion. (Hint: Use kubelet_version == '')
+
+- assert:
+    that: current_kubelet_version == kubernetes_version
+    quiet: true
+    fail_msg: >-
+      A different version of the kubelet is installed {{ current_kubelet_version }}.
+      Kubernetes version {{ kubernetes_version }}.
+      You can set prepare_upgrade to upgrade/downgrade to {{ kubernetes_version }}.
+      Such action is dangerous and should only by used when initializing a new cluster.
+  when: not prepare_upgrade
+    
 
 - name: Enusre 'tc' command is presnet
   yum: name=iproute-tc state=present
@@ -11,8 +22,10 @@
       - kubelet-{{ kubernetes_version }}-0
       - kubeadm-{{ kubernetes_version }}-0
       - kubectl-{{ kubernetes_version }}-0
+
+    allow_downgrade: "{{ prepare_upgrade }}"
     state: present
     disable_excludes: kubernetes
 
   become: true
-  when: current_kubelet_version is none
+  when: current_kubelet_version == '' or prepare_upgrade

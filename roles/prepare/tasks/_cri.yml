@@ -1,3 +1,13 @@
+- assert:
+    that: current_crio_version == crio_version
+    quiet: true
+    fail_msg: >-
+      A different version of CRI-O is installed {{ current_crio_version }}.
+      CRI-O version {{ crio_version }}.
+      You can set prepare_upgrade to upgrade/downgrade to {{ crio_version }}.
+      Such action is dangerous and should only by used when initializing a new cluster.
+  when: not prepare_upgrade
+
 - name: Ensure required CRI-O kernel module are loaded
   copy:
     dest: /etc/modules-load.d/crio.conf
@@ -30,14 +40,14 @@
 - name: Reset container-tools
   command: yum module reset container-tools -y
   become: yes
-  when: current_crio_version is none
+  when: current_crio_version == '' or prepare_upgrade
 
 - name: Switch to container-tools:rhel8
   yum:
     name: '@container-tools:rhel8/common'
     state: present
   become: true
-  when: current_crio_version is none
+  when: current_crio_version == '' or prepare_upgrade
 
 - name: Ensure container-tools:rhel8 module stream is enabled
   yum:
@@ -45,12 +55,13 @@
     state: present
 
   become: yes
-  when: current_crio_version is none
+  when: current_crio_version == '' or prepare_upgrade
 
-- name: Ensure cri-o package is present
+- name: Ensure cri-o package is latest
   yum:
-    name: cri-o
-    state: present
+    name: cri-o-{{ crio_version }}*
+    state: latest
+    allow_downgrade: "{{ prepare_upgrade }}"
     disable_excludes: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
 
   become: true
