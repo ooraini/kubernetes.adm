@@ -2,7 +2,8 @@
 # control_plane_hostgroup: A group that contains the control plane nodes
 # workers_hostgroup: A group that contains the worker nodes
 # cluster_hostgroup: A group that contains all the cluster nodes
-# init_node_hostgroup: A group that contains the first control plane node (1 host)
+# init_node_hostgroup: A group that contains the first control plane node (1 host).
+# NOTE: init_node_hostgroup can be any control plane node and can be changed later.
 
 # Ensure proper hostnames and /etc/hosts file (or DNS).
 # Ensure no firewalld is running (or is properly configured).

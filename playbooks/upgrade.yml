@@ -1,0 +1,31 @@
+# Input variables:
+# control_plane_hostgroup: A group that contains the control plane nodes
+# workers_hostgroup: A group that contains the worker nodes
+# cluster_hostgroup: A group that contains all the cluster nodes
+# init_node_hostgroup: A group that contains the first control plane node (1 host).
+# NOTE: init_node_hostgroup can be any control plane node and can be changed later.
+
+- hosts: "{{ init_node_hostgroup }}"
+  any_errors_fatal: true
+  roles: [{ role: kubernetes.adm.upgrade, phase: facts }]
+
+- hosts: "{{ init_node_hostgroup }}"
+  any_errors_fatal: true
+  roles: [{ role: kubernetes.adm.upgrade, phase: apply }]
+
+- hosts: "{{ control_plane_hostgroup }},!{{ init_node_hostgroup }}"
+  serial: 1
+  any_errors_fatal: true
+  roles: [{ role: kubernetes.adm.upgrade, phase: node }]
+
+- hosts: "{{ control_plane_hostgroup }}"
+  serial: 1
+  any_errors_fatal: true
+  roles: [{ role: kubernetes.adm.upgrade, phase: kubelet }]
+
+- hosts: "{{ workers_hostgroup }}"
+  serial: 10%
+  max_fail_percentage: 20
+  roles: 
+    - { role: kubernetes.adm.upgrade, phase: node }
+    - { role: kubernetes.adm.upgrade, phase: kubelet }
