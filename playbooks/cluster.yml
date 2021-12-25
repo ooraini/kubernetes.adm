@@ -10,25 +10,30 @@
 
 - name: Prepare nodes for Kubernetes
   hosts: "{{ cluster_hostgroup }}"
+  any_errors_fatal: true
   roles: [ kubernetes.adm.prepare ]
 
 
 - name: Setup Load balancer for Kubernetes API server
   hosts: "{{ control_plane_hostgroup }}"
+  any_errors_fatal: true
   roles: [kubernetes.adm.lb]
     
 
 - name: Init first control plane node
   hosts: "{{ init_node_hostgroup }}"
+  any_errors_fatal: true
   roles: [kubernetes.adm.init]
 
 
 - hosts: "{{ init_node_hostgroup }}"
+  any_errors_fatal: true
   roles: [kubernetes.adm.pre_join]
 
 
 - name: Join the rest of the control plane nodes
   hosts: "{{ control_plane_hostgroup }},!{{ init_node_hostgroup }}"
+  any_errors_fatal: true
   serial: 1
   roles: [kubernetes.adm.join]
 
