@@ -4,7 +4,6 @@ kind: InitConfiguration
 # We don't need bootstrap-token, but if we skip we get into https://github.com/kubernetes-sigs/kubespray/issues/4117
 skipPhases: {{ ['upload-certs'] + kubeadm_skip_phases }}
 nodeRegistration:
-  name: {{ inventory_hostname }}
   taints: null
 patches:
   directory: {{ kubeadm_patches_directory }}

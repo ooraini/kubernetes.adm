@@ -9,7 +9,6 @@ discovery:
       - "sha256:{{ join_ca_cart_hash }}"
 
 nodeRegistration:
-  name: {{ inventory_hostname }}
   taints: {{ 'null' if is_control_plane else [] }}
 
 {% if is_control_plane %}
