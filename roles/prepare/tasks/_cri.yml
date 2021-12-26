@@ -1,5 +1,5 @@
 - assert:
-    that: current_crio_version == crio_version
+    that: current_crio_version.startswith(crio_version)
     quiet: true
     fail_msg: >-
       A different version of CRI-O is installed {{ current_crio_version }}.
