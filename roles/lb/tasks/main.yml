@@ -22,6 +22,7 @@
   template:
     src: "{{ keepalived_conf_template }}"
     dest: "{{ keepalived_conf_path }}/keepalived.conf"
+    validate: keepalived -tf %s
 
   become: true
   notify: reload keepalived
@@ -33,6 +34,7 @@
     dest: "{{ keepalived_conf_path }}/check_apiserver.sh"
     owner: keepalived_script
     mode: '0744'
+    validate: bash -n %s
 
   become: true
   notify: reload keepalived
@@ -41,7 +43,7 @@
   template:
     src: "{{ haproxy_cfg_template }}"
     dest: "{{ haproxy_conf_path }}/haproxy.cfg"
-    validate: keepalived -tf %s
+    validate: haproxy -cf %s
 
   become: true
   notify: reload haproxy
