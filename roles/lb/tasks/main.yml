@@ -6,7 +6,7 @@
 - name: Ensure keepalived and haproxy are installed
   yum: 
     name: ['keepalived', 'haproxy']
-    
+
   become: true
 
 - name: Ensure keepalived_script user
@@ -41,6 +41,7 @@
   template:
     src: "{{ haproxy_cfg_template }}"
     dest: "{{ haproxy_conf_path }}/haproxy.cfg"
+    validate: keepalived -tf %s
 
   become: true
   notify: reload haproxy
