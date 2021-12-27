@@ -18,7 +18,7 @@
   hosts: "{{ control_plane_hostgroup }}"
   any_errors_fatal: true
   roles:
-    - role: kubernetes.adm.lb
+    - role: kubernetes.adm.api_server_lb
       when: (no_lb | default(false)) == false
     
 

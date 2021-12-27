@@ -1,6 +1,5 @@
 keepalived_router_id: 51
 keepalived_priority: 100
-keepalived_auth_pass: 1111
 keepalived_conf_path: /etc/keepalived
 keepalived_conf_template: _keepalived.conf
 keepalived_scripts_path: /usr/libexec/keepalived

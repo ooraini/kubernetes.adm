@@ -1,0 +1,1 @@
+keepalived_check_script_template: _check_apiserver.sh

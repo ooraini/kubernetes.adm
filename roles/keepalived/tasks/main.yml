@@ -1,0 +1,48 @@
+- assert:
+    that: 
+      - keepalived_master in hostvars
+      - keepalived_master in keepalived_peers.keys()
+    fail_msg: The master server {{ keepalived_master }} is NOT an inventory host or in keepalived_peers
+    quiet: true
+
+- name: Ensure keepalived is installed
+  yum: name=keepalived
+  become: true
+
+- name: Ensure keepalived_script user
+  user:
+    name: keepalived_script
+    create_home: false
+    system: true
+    state: present
+
+  become: true
+
+- name: Tempalte keepalived.conf
+  template:
+    src: "{{ keepalived_conf_template }}"
+    dest: "{{ keepalived_conf_path }}/keepalived.conf"
+    validate: keepalived -f %s -t
+
+  become: true
+  notify: reload keepalived
+
+- name: Tempalte check script
+  vars:
+  template:
+    src: "{{ keepalived_check_script_template }}"
+    dest: "{{ keepalived_scripts_path }}/check"
+    owner: keepalived_script
+    mode: '0700'
+    validate: "{{ keepalived_check_script_validate }}"
+
+  become: true
+  notify: reload keepalived
+
+- name: Ensure keepalived is enabled and started
+  systemd:
+    name: "keepalived.service"
+    enabled: true
+    state: started
+
+  become: true
