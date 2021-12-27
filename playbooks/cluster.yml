@@ -19,7 +19,7 @@
   any_errors_fatal: true
   roles:
     - role: kubernetes.adm.lb
-      when: (no_lb | default(true)) == false
+      when: (no_lb | default(false)) == false
     
 
 - name: Init first control plane node
