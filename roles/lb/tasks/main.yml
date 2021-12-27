@@ -31,9 +31,9 @@
   vars:
   template:
     src: "{{ check_apiserver_script_template }}"
-    dest: "{{ keepalived_conf_path }}/check_apiserver.sh"
+    dest: "{{ keepalived_scripts_path }}/check_apiserver.sh"
     owner: keepalived_script
-    mode: '0744'
+    mode: '0700'
     validate: bash -n %s
 
   become: true
