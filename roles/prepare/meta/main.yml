@@ -37,7 +37,7 @@ argument_specs:
 
       cri_tasks:
         type: str
-        default: _cri.yml
+        default: _crio.yml
         description: Tasks file for preparing and installing a container runtime.
 
       cp_packages_tasks:

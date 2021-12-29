@@ -10,7 +10,7 @@ install_kube_tasks: _install_kube.yml
 
 yum_repositories_tasks: _yum.yml
 
-cri_tasks: _cri.yml
+cri_tasks: _crio.yml
 
 cp_packages_tasks: _cp_packages.yml
 
