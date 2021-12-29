@@ -6,3 +6,4 @@ checksum_algo: 'sha256'
 completion_command: completion {{  ansible_user_shell | basename }}
 
 download_mode: download_binary
+arch_map: "{{ go_arch_map }}"

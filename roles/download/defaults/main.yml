@@ -2,8 +2,14 @@ download_unarchive: false
 file_mode: '0700'
 github_base_url: https://github.com
 
-arch_map:
+go_arch_map:
   x86_64: amd64
   arm64: arm64
 
+rust_arch_map:
+  x86_64: x86_64
+  arm64: aarch64
+
 arch: "{{ arch_map[ansible_architecture] }}"
+
+arch_map: "{{ go_arch_map }}"

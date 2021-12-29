@@ -4,3 +4,4 @@ github_file: calicoctl-linux-{{ arch }}
 binary_file: calicoctl
 
 download_mode: download_gh
+arch_map: "{{ go_arch_map }}"

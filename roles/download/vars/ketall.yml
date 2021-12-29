@@ -2,9 +2,10 @@
 github_project: corneliusweig/ketall
 github_version: "{{ ketall_version | default('latest') }}"
 github_file: ketall-{{ arch }}-linux.tar.gz
-download_file_in_archive: ketall-amd64-linux
+binary_in_archive: ketall-amd64-linux
 binary_file: ketall
 completion_command: completion {{  ansible_user_shell | basename }}
 download_unarchive: true
 
 download_mode: download_gh
+arch_map: "{{ go_arch_map }}"
