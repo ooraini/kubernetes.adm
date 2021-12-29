@@ -60,7 +60,7 @@
 - name: Ensure cri-o package is latest
   yum:
     name: cri-o-{{ crio_version }}*
-    state: latest
+    state: "{{ prepare_upgrade | ternary('latest', 'present') }}"
     allow_downgrade: "{{ prepare_upgrade }}"
     disable_excludes: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
 
