@@ -13,7 +13,7 @@ argument_specs:
         type: bool
         default: false
         description: Whether the downloaded file will be unarchived.
-      download_archive_file:
+      download_file_in_archive:
         type: str
         description:
           - The file inside the archive that will be copied to C(download_dest).
@@ -29,6 +29,51 @@ argument_specs:
       download_checksum:
         type: str
         description: The file checksum.
+
+
+  download_binary:
+    short_description: Download Binary File
+    description:
+      - Download a file from the release page in a Github project.
+      - Using the same URL structure used by Github, the C(github_base_url) can point to a private location.
+    options:
+      donwload_url:
+        type: str
+        required: true
+        description: The file URL
+      download_unarchive:
+        type: bool
+        default: false
+        description: Whether the downloaded file will be unarchived.
+      download_file_in_archive:
+        type: str
+        description:
+          - The file inside the archive that will be copied to C(download_dest).
+          - When not set C(binary_file) will be used.
+      file_mode:
+        type: str
+        default: '0700'
+        description: The file mode.
+
+      binary_file:
+        type: str
+        required: true
+        description:
+          - The final name for the binary file.
+          - When C(download_file_in_archive) is unset, the value will be treated as the path to the binary inside the archive.
+          - And the last segment of the path will be used a the final name for the binary.
+      checksum_suffix:
+        type: str
+        description: The checksum file suffix.
+      checksum_algo:
+        type: str
+        description: The checksum algorithm.
+      completion_command:
+        type: str
+        description: 
+          - The shell completion command.
+          - The expression {{ ansible_user_shell | basename }} can be used to determine the user shell.
+
 
   download_gh:
     short_description: Download a binary file from Github

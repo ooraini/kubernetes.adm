@@ -21,7 +21,7 @@
 
 - name: Ensure file in archive at dest
   copy:
-    src: "{{ ansible_user_dir }}/.cache/{{ download_archive_file }}"
+    src: "{{ ansible_user_dir }}/.cache/{{ download_file_in_archive }}"
     dest: "{{ download_dest }}"
     mode: "{{ file_mode }}"
     remote_src: true
