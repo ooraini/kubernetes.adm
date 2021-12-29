@@ -45,7 +45,7 @@ argument_specs:
         type: bool
         default: false
         description: Whether the downloaded file will be unarchived.
-      download_file_in_archive:
+      binary_in_archive:
         type: str
         description:
           - The file inside the archive that will be copied to C(download_dest).
@@ -60,7 +60,7 @@ argument_specs:
         required: true
         description:
           - The final name for the binary file.
-          - When C(download_file_in_archive) is unset, the value will be treated as the path to the binary inside the archive.
+          - When C(binary_in_archive) is unset, the value will be treated as the path to the binary inside the archive.
           - And the last segment of the path will be used a the final name for the binary.
       checksum_suffix:
         type: str

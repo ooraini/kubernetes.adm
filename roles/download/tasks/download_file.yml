@@ -1,27 +1,28 @@
-- name: Ensure .cache
-  file:
-    path: "{{ ansible_user_dir }}/.cache/"
-    state: directory
-    mode: '0700'
+- name: Ensure .cache/download
+  file: path={{ ansible_user_dir }}/.cache/download/ state=directory
+
+- name: Ensure .cache/download_archives
+  file: path={{ ansible_user_dir }}/.cache/download_archives state=directory
+
 
 - name: Enusre file
   get_url:
     url: "{{ donwload_url }}"
     checksum: "{{ download_checksum | default(omit) }}"
-    dest: "{{ ansible_user_dir ~ '/.cache' if download_unarchive else download_dest }}"
+    dest: "{{ ansible_user_dir ~ '/.cache/download_archives/' if download_unarchive else download_dest }}"
     mode: "{{ file_mode }}"
 
 - name: Unarchive file
   unarchive:
-    src: "{{ ansible_user_dir }}/.cache/{{ donwload_url | basename }}"
-    dest: "{{ ansible_user_dir }}/.cache/"
+    src: "{{ ansible_user_dir }}/.cache/download_archives/{{ donwload_url | basename }}"
+    dest: "{{ ansible_user_dir }}/.cache/download/"
     mode: '0700'
     remote_src: true
   when: download_unarchive
 
 - name: Ensure file in archive at dest
   copy:
-    src: "{{ ansible_user_dir }}/.cache/{{ download_file_in_archive }}"
+    src: "{{ ansible_user_dir }}/.cache/download/{{ download_file_in_archive }}"
     dest: "{{ download_dest }}"
     mode: "{{ file_mode }}"
     remote_src: true

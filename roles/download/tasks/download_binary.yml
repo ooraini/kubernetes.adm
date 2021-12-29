@@ -6,14 +6,12 @@
     mode: '0700'
     recurse: true
 
-- set_fact: download_file_in_archive={{ binary_file }}
-  when: download_file_in_archive is undefined or download_file_in_archive is none
-
 - include_tasks: download_file.yml
   vars:
     no_checksum: "{{ checksum_suffix is undefined or checksum_algo is undefined }}"
     download_checksum: "{{ None if no_checksum else checksum_algo ~ ':' ~ donwload_url ~ checksum_suffix }}"
     download_dest: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }}"
+    download_file_in_archive: "{{ binary_in_archive if binary_in_archive is defined else binary_file }}"
 
 - name: Load completion script
   command: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }} {{ completion_command }}"
