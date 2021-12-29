@@ -25,3 +25,27 @@
     line: complete -F __start_kubectl k
     path: "{{ ansible_user_dir }}/.bashrc"
   when: aliask
+
+- name: Ensure alias kubens
+  lineinfile:
+    line: alias kubens='kubectl config set-context --current --namespace '
+    path: "{{ ansible_user_dir }}/.bashrc"
+  when: kubens_alias
+
+- name: Ensure completion for kubens
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.bash_completion"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK kubens"
+    create: true
+    block: |
+      # bash completion for 'kubens'
+      _kubens_completions()
+      {
+        if [ "${#COMP_WORDS[@]}" != "2" ]; then
+          return
+        fi
+        COMPREPLY=($(compgen -W "$(kubectl get ns -o custom-columns='NAME:.metadata.name' --no-headers)" -- "${COMP_WORDS[1]}"))
+      }
+
+      complete -F _kubens_completions kubens
+  when: kubens_alias

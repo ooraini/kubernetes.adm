@@ -18,3 +18,4 @@ completion_tasks: _completion.yml
 
 prepare_upgrade: false
 aliask: true
+kubens_alias: true
