@@ -16,9 +16,9 @@ argument_specs:
         type: str
         default: disabled
         choices: [enabled, disabled]
-        description: | 
-          Whether to disable swap(C(disabled)), or(C(enabled)) attempt to undo a previous execution of I(swap_state=disabled).
-          Will not createa new swap partion or file.
+        description: 
+          - Whether to disable or enable swap. 
+          - Attempts to undo a previous execution of I(swap_state=disabled) will not create a new swap partition or file.
 
       swap_tasks:
         type: str
