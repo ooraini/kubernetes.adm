@@ -1,7 +1,7 @@
 
 github_project: corneliusweig/ketall
-github_version: "{{ ketall_version | default('latest') }}"
-github_file: ketall-{{ arch }}-linux.tar.gz
+release_version: "{{ ketall_version | default('latest') }}"
+release_file: ketall-{{ arch }}-linux.tar.gz
 binary_in_archive: ketall-amd64-linux
 binary_file: ketall
 completion_command: completion {{  ansible_user_shell | basename }}

@@ -1,6 +1,6 @@
 github_project: vmware-tanzu/sonobuoy
-github_version: "{{ sonobuoy_version }}"
-github_file: sonobuoy_{{ sonobuoy_version[1:] }}_linux_{{ arch }}.tar.gz
+release_version: "{{ sonobuoy_version }}"
+release_file: sonobuoy_{{ sonobuoy_version[1:] }}_linux_{{ arch }}.tar.gz
 binary_file: sonobuoy
 # checksum_algo: 'sha256'
 # checksum_file: sonobuoy_{{ sonobuoy_version[1:] }}_checksums.txt

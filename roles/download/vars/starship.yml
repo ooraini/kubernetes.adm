@@ -1,6 +1,6 @@
 github_project: starship/starship
-github_version: "{{ starship_version | default('latest') }}"
-github_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz 
+release_version: "{{ starship_version | default('latest') }}"
+release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz 
 binary_file: starship
 download_unarchive: true
 

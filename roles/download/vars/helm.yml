@@ -1,7 +1,7 @@
 donwload_url: https://get.helm.sh/helm-v{{ helm_version }}-linux-{{ arch }}.tar.gz
 download_unarchive: true
 binary_file: linux-{{ arch }}/helm
-checksum_suffix: '.sha256sum'
+download_checksum_suffx: '.sha256sum'
 checksum_algo: 'sha256'
 completion_command: completion {{  ansible_user_shell | basename }}
 

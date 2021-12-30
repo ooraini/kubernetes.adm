@@ -1,6 +1,6 @@
 github_project: jmespath/jp
-github_version: "{{ jp_version | default('latest') }}"
-github_file: "jp-linux-{{ arch }}"
+release_version: "{{ jp_version | default('latest') }}"
+release_file: "jp-linux-{{ arch }}"
 binary_file: jp
 download_mode: download_gh
 arch_map: "{{ go_arch_map }}"

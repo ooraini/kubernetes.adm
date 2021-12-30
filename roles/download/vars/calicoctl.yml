@@ -1,6 +1,6 @@
 github_project: projectcalico/calicoctl
-github_version: "{{ calicoctl_version | default('latest') }}"
-github_file: calicoctl-linux-{{ arch }}
+release_version: "{{ calicoctl_version | default('latest') }}"
+release_file: calicoctl-linux-{{ arch }}
 binary_file: calicoctl
 
 download_mode: download_gh

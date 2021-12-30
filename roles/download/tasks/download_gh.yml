@@ -1,6 +1,6 @@
-- name: Download {{ github_file }} [{{ github_version }}] from {{ github_project }}
+- name: Download {{ release_file }} [{{ release_version }}] from {{ github_project }}
   include_tasks: download_binary.yml
   vars:
     donwload_url: >- 
-      {{ github_base_url ~ '/' ~ github_project ~ '/releases/latest/download/' ~ github_file if github_version == 'latest'
-        else github_base_url ~ '/' ~ github_project ~ '/releases/download/' ~ github_version ~ '/' ~ github_file }}
+      {{ github_base_url ~ '/' ~ github_project ~ '/releases/latest/download/' ~ release_file if release_version == 'latest'
+        else github_base_url ~ '/' ~ github_project ~ '/releases/download/' ~ release_version ~ '/' ~ release_file }}
