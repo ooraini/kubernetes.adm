@@ -1,8 +1,7 @@
 github_project: starship/starship
 release_version: "{{ starship_version | default('latest') }}"
-release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz 
-binary_file: starship
-download_unarchive: true
-
+release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz
+download_file_in_archive: starship
+binary_name: starship
 download_mode: download_gh
 arch_map: "{{ rust_arch_map }}"

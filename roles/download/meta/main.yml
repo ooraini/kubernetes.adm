@@ -5,14 +5,24 @@ argument_specs:
       - Download file from the URL C(donwload_url).
       - When C(download_unarchive) is true, the downloaded file will be unarchived.
     options:
+      download_base_url:
+        type: str
+        description: 
+          - The base download URL.
+          - Useful when syncing files to an offline destination.
       donwload_url:
         type: str
         required: true
-        description: The file URL
+        description: 
+          - The file URL.
+          - Should always be defined with C(download_base_url) in mind.
+          - For example {{ download_base_url | default('https://somewhere/my/folder') }}/file.tar.gz
       download_unarchive:
         type: bool
-        default: false
-        description: Whether the downloaded file will be unarchived.
+        default: "{{ download_file_in_archive is defined }}"
+        description: 
+          - Whether the downloaded file will be unarchived.
+          - By default, true when C(download_file_in_archive) is defined
       download_file_in_archive:
         type: str
         description:
@@ -26,37 +36,49 @@ argument_specs:
         type: str
         default: '0700'
         description: The file mode.
-      download_checksum:
+      checksum_file:
         type: str
         description: 
-          - The digest string or a URL to a file containg the digest.
-          - Mutually exclusive with C(download_checksum_suffx).
+          - The URL to a file containg the digest.
+          - Mutually exclusive with C(checksum_file_suffix).
           - See C(get_url) module for more info.
-      download_checksum_suffx:
+      checksum_file_suffix:
         type: str
         description: 
           - The suffix that will be appended to C(donwload_url) to construct the checksum URL.
-          - Mutually exclusive with C(download_checksum).
-      download_checksum_algo:
+          - Mutually exclusive with C(checksum_file).
+      checksum_algo:
         type: str
         description: The hash algorithm.
+      disable_checksum:
+        type: bool
+        default: false
+        dscription:  Disable checksum verification.
+      download_checksum_file:
+        type: bool
+        default: false
+        description: When true, the checksum file will be downloaded along side the downloaded file.
 
   download_binary:
     short_description: Download Binary File
     description: []
     options:
-      binary_in_archive:
+      binary_path:
         type: str
-        description:
-          - The file inside the archive that will be copied to C(download_dest).
-          - When not set C(binary_file) will be used.
-      binary_file:
+        default: "{{ ansible_user_dir }}/.local/bin"
+        description: The directory to store binary files.
+      binary_name:
         type: str
         required: true
+        description: The final name for the binary file.
+      download_only:
+        type: bool
+        default: false
         description:
-          - The final name for the binary file.
-          - When C(binary_in_archive) is unset, the value will be treated as the path to the binary inside the archive.
-          - And the last segment of the path will be used a the final name for the binary.
+          - When true no unarchiving is done, and the file is downloaded to C(download_only_path).
+      download_only_path:
+        type: str
+        description: The path to store files when C(download_only) is true
       completion_command:
         type: str
         description: 
@@ -69,6 +91,7 @@ argument_specs:
     description:
       - Download a file from the release page in a Github project.
       - Using the same URL structure used by Github, the C(github_base_url) can point to a private location.
+      - All checksum related variables in C(download_file) are available.
     options:
       github_base_url:
         type: str
@@ -86,3 +109,23 @@ argument_specs:
         type: str
         required: true
         description: The file to download.
+      download_only:
+        type: bool
+        default: false
+        description:
+          - When true no unarchiving is done, and the file is downloaded to C(download_only_path).
+      download_only_path:
+        type: str
+        description: The path to store files when C(download_only) is true
+      download_only_flat:
+        type: bool
+        default: false
+        description: 
+          - When false, store files under {{ download_only_path ~ '/' ~ github_project ~ '/releases/download/' ~ release_version }}
+          - Mimics the Github URL for the file.
+          - When true, store files under C(download_only_path)
+      completion_command:
+        type: str
+        description: 
+          - The shell completion command.
+          - The expression {{ ansible_user_shell | basename }} can be used to determine the user shell.

@@ -1,11 +1,9 @@
 github_project: vmware-tanzu/sonobuoy
 release_version: "{{ sonobuoy_version }}"
 release_file: sonobuoy_{{ sonobuoy_version[1:] }}_linux_{{ arch }}.tar.gz
-binary_file: sonobuoy
+binary_name: sonobuoy
 # checksum_algo: 'sha256'
 # checksum_file: sonobuoy_{{ sonobuoy_version[1:] }}_checksums.txt
 # completion_command: completion {{  ansible_user_shell | basename }}
-download_unarchive: true
-
 download_mode: download_gh
 arch_map: "{{ go_arch_map }}"

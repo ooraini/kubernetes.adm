@@ -1,11 +1,10 @@
 github_project: cilium/cilium-cli 
 release_version: "{{ cilium_cli_version | default('latest') }}"
 release_file: cilium-linux-{{ arch }}.tar.gz
-binary_file: cilium
-download_checksum_suffx: '.sha256sum'
+download_file_in_archive: cilium
+binary_name: cilium
+checksum_file_suffix: '.sha256sum'
 checksum_algo: 'sha256'
 completion_command: completion {{  ansible_user_shell | basename }}
-download_unarchive: true
-
 download_mode: download_gh
 arch_map: "{{ go_arch_map }}"

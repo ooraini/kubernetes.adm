@@ -1,26 +1,25 @@
 
-- name: Ensure .local/bin
-  file:
-    path: "{{ ansible_user_dir }}/.local/bin/"
-    state: directory
-    mode: '0700'
-    recurse: true
+- include_tasks: download_file.yml
+  vars:
+    download_unarchive: false
+    download_dest: "{{ download_only_path }}"
+  when: download_only
 
 - include_tasks: download_file.yml
   vars:
-    download_dest: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }}"
-    download_file_in_archive: "{{ binary_in_archive if binary_in_archive is defined else binary_file }}"
+    download_dest: "{{ binary_path }}/{{ binary_name }}"
+  when: not download_only
 
 - name: Load completion script
-  command: "{{ ansible_user_dir}}/.local/bin/{{ binary_file | basename }} {{ completion_command }}"
+  command: "{{ binary_path }}/{{ binary_name }} {{ completion_command }}"
   changed_when: false
   register: completion_cmd_out
-  when: completion_command is defined
+  when: completion_command is defined and not download_only
 
 - name: Ensure completion script in ~/.bash_completion
   blockinfile:
     path: "{{ ansible_user_dir }}/.bash_completion"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_file }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_name }}"
     create: true
     block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
-  when: completion_command is defined
+  when: completion_command is defined and not download_only
