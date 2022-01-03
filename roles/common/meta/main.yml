@@ -1,6 +1,6 @@
 argument_specs:
   main:
-    short_description: Common variables and tasks shared between roles
+    short_description: Common Variables
     description: []
     options:
       kubernetes_version:
@@ -63,8 +63,8 @@ argument_specs:
         default: 'First node in control_plane_hostgroup'
         description:
           - Some tasks require a control plane node to delegate to.
-          - For example, joining a second control plane node.
-          - An existing control plane node to perform the join. In such case, we use 'joined_control_plane_node' as the existing node.
+          - For example, joining a second control plane node, an existing control plane is nedded to perform the join.
+          - In such case, we use 'joined_control_plane_node' as the existing node.
 
       crio_version:
         type: str

@@ -16,13 +16,12 @@ argument_specs:
         description: 
           - The file URL.
           - Should always be defined with C(download_base_url) in mind.
-          - For example {{ download_base_url | default('https://somewhere/my/folder') }}/file.tar.gz
+          - For example {{ download_base_url | default('https://abc.com/my/folder') }}/file.tar.gz
       download_unarchive:
         type: bool
-        default: "{{ download_file_in_archive is defined }}"
         description: 
           - Whether the downloaded file will be unarchived.
-          - By default, true when C(download_file_in_archive) is defined
+          - True when C(download_file_in_archive) is defined
       download_file_in_archive:
         type: str
         description:
@@ -49,11 +48,11 @@ argument_specs:
           - Mutually exclusive with C(checksum_file).
       checksum_algo:
         type: str
-        description: The hash algorithm.
+        description: The checksum algorithm.
       disable_checksum:
         type: bool
         default: false
-        dscription:  Disable checksum verification.
+        description:  Disable checksum verification.
       download_checksum_file:
         type: bool
         default: false
@@ -83,7 +82,7 @@ argument_specs:
         type: str
         description: 
           - The shell completion command.
-          - The expression {{ ansible_user_shell | basename }} can be used to determine the user shell.
+          - The expression {{ ansible_user_shell | basename }} can be used to determine the user's shell.
 
 
   download_gh:

@@ -33,12 +33,12 @@ argument_specs:
       yum_repositories_tasks:
         type: str
         default: _yum.yml
-        description: Tasks file for setting up the required repositories for container runtime, Kubernetes and other dependencies.
+        description: Tasks file for setting up the required repositories for the container runtime, Kubernetes and other dependencies.
 
       cri_tasks:
         type: str
         default: _crio.yml
-        description: Tasks file for preparing and installing a container runtime.
+        description: Tasks file for preparing and installing the container runtime.
 
       cp_packages_tasks:
         type: str
@@ -48,12 +48,12 @@ argument_specs:
       completion_tasks:
         type: str
         default: _completion.yml
-        description: Tasks file for install shell completion.
+        description: Tasks file for installing shell completion.
       
       aliask:
         type: bool
         default: true
-        description: Alias k to kubectl with completion in C(~/.bashrc)
+        description: Alias k to kubectl with completion in C(~/.bashrc).
       
       kubens_alias:
         type: bool
@@ -64,6 +64,6 @@ argument_specs:
         type: bool
         default: false
         description:
-          - Only relevent if there is an existing installtion of CR or Kubernetes packages.
-          - When true, the CR and Kubernetes will upgraded/downgraded to {{ kubernetes_version }}.
+          - Only relevent if there is an existing installtion of the CR or Kubernetes packages.
+          - When true, the CR and Kubernetes will upgraded/downgraded to C({{ kubernetes_version }}).
           - Should only by used when initializing a new cluster.

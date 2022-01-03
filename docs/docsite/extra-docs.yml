@@ -1,4 +1,6 @@
 sections:
   - title: General
     toctree:
+      - introduction
       - requirments
+      - collection_usage

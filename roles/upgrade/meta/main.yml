@@ -22,10 +22,10 @@ argument_specs:
           - kubelet
         description:
           - Determines the kubeadm command/phase to run. 
-          - "1) facts: Collect facts about the cluster. Must be run first."
-          - "2) apply: Run 'kubeadm uprade apply' on one of the control plane nodes."
-          - "3) node: Run 'kubeadm uprade node'."
-          - "4) kubelet: Drain the node and upgrades the Kubelet."
+          - "1) C(facts): Collect facts about the cluster. Must be run first."
+          - "2) C(apply): Run 'kubeadm uprade apply'."
+          - "3) C(node): Run 'kubeadm uprade node'."
+          - "4) C(kubelet): Drain the node and upgrades the Kubelet."
           - Consult the kubeadm documentation for more information.
 
       pre_kubelet_upgrade_hook:

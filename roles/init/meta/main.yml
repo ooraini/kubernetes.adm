@@ -6,7 +6,7 @@ argument_specs:
     short_description: Initializes a Kubernetes cluster
     description:
       - Initializes the first control plane node using 'kubeadm init'.
-      - The role will use I(kubeadm_config_template) variable as template file and pass it to kubeadm
+      - The role uses C(kubeadm_config_template) as template file for C(kubeadm --config).
     options:
       kubeadm_config_template:
         type: str
