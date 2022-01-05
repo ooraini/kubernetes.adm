@@ -2,7 +2,7 @@
     github_path: >-
       {{ github_project ~ '/releases/latest/download' if release_version == 'latest'
           else github_project ~ '/releases/download/' ~ release_version ~ '/' }}
-    donwload_url: "{{ github_base_url ~ '/' ~ github_path ~ '/' ~ release_file }}"
+    download_url: "{{ github_base_url ~ '/' ~ github_path ~ '/' ~ release_file }}"
   block:
     - name: Enusre path when download_only  
       file: 

@@ -5,7 +5,7 @@
   file: path={{ ansible_user_dir }}/.cache/download_archives state=directory
 
 - vars:
-    _download_checksum: "{{ donwload_url ~ checksum_file_suffix if checksum_file_suffix is defined else (checksum_file|default(None)) }}"
+    _download_checksum: "{{ download_url ~ checksum_file_suffix if checksum_file_suffix is defined else (checksum_file|default(None)) }}"
     checksum_available: "{{ _download_checksum is not none and checksum_algo is defined }}"
   block:
     - name: Ensure checksum
@@ -16,14 +16,14 @@
 
     - name: Enusre file
       get_url:
-        url: "{{ donwload_url }}"
+        url: "{{ download_url }}"
         checksum: "{{ omit if not (checksum_available or disable_checksum) else checksum_algo ~ ':' ~  _download_checksum }}"
         dest: "{{ ansible_user_dir ~ '/.cache/download_archives/' if download_unarchive else download_dest }}"
         mode: "{{ file_mode }}"
 
 - name: Unarchive file
   unarchive:
-    src: "{{ ansible_user_dir }}/.cache/download_archives/{{ donwload_url | basename }}"
+    src: "{{ ansible_user_dir }}/.cache/download_archives/{{ download_url | basename }}"
     dest: "{{ ansible_user_dir }}/.cache/download/"
     mode: '0700'
     remote_src: true
