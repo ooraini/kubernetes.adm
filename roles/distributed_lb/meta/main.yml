@@ -1,0 +1,11 @@
+dependencies:
+  - role: kubernetes.adm.common
+
+argument_specs:
+  main:
+    short_description: Setup a Distributed Load Balancer For The API Server using HAProxy.
+    description:
+      - Every client will have its own load balancer on the same node.
+      - HAPorxy listens on 127.0.0.1.
+      - The C(control_plane_endpoint) should resolve to 127.0.0.1
+      - Connecting to the API server from outside the cluster nodes is not possible.

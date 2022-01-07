@@ -1,0 +1,3 @@
+haproxy_cfg_template: _haproxy.cfg
+apiserver_lb_port: "{{ control_plane_endpoint.split(':')[1] }}"
+haproxy_conf_path: /etc/haproxy

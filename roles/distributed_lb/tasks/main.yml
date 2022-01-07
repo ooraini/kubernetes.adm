@@ -1,0 +1,30 @@
+- name: Ensure haproxy is installed
+  yum: name=haproxy
+  become: true
+
+- name: Tempalte haproxy.cfg
+  template:
+    src: "{{ haproxy_cfg_template }}"
+    dest: "{{ haproxy_conf_path }}/haproxy.cfg"
+    validate: haproxy -f %s -c
+
+  become: true
+  notify: reload haproxy
+
+- name: Allow haproxy to connect to apiserver (SELinux)
+  community.general.seport:
+    ports: "{{ cluster_apiserver_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+  become: true
+  when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'
+
+- name: Ensure haproxy is enabled and started
+  systemd:
+    name: "haproxy.service"
+    enabled: true
+    state: started
+
+  become: true
