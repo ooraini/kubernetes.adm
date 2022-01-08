@@ -18,7 +18,8 @@ installs CRI-O. To plug in an alternative CR, set the value of ``cri_tasks`` to 
 
 Kubeadm
 -------
-The collection is *just* a wrapper around ``kubeadm``. It's not an abstraction on top of it. Therefore, it's necessary to understand ``kubeadm`` to be able to use the collection.
+The collection is *just* a wrapper around ``kubeadm``. It's not an abstraction on top of it. Therefore, it's
+necessary to understand ``kubeadm`` to be able to use the collection.
 
 
 
@@ -34,9 +35,9 @@ The collection includes the following roles:
 - upgrade: Upgrade Kubernetes control plane and workers.
 - keepalived: Setup a HA floating IP using ``keepalived``.
 - api_server_lb: Setup a load balancer for the API server using HAProxy and keepalived for HA cluster.
-- donwload: Donwload arbitrray files, mostly for installing CLIs from Github releases.
+- download: Download arbitrary files, mostly for installing CLIs from Github releases.
 
-Bootstraping a Cluster
+Bootstrapping a Cluster
 ----------------------
 
 To create a cluster using ``kubeadm`` you run the following commands:
@@ -89,8 +90,8 @@ For the collection, in addition to the ``init`` and ``join`` roles, you will nee
 Playbook explanation:
 
 - Run the prepare role on all nodes. Stop on any failure.
-- Run the api_server_lb role on the control plane nodes to setup a highly avalible load balancer. Stop on any failure.
-- Run the init role on the fisrt control plane node. Stop on any failure.
+- Run the api_server_lb role on the control plane nodes to setup a highly available load balancer. Stop on any failure.
+- Run the init role on the first control plane node. Stop on any failure.
 - Run the pre_join role to set the required facts to join new nodes later. Stop on any failure.
 - Run the join role on the reset of the control plane nodes. One by one. Stop on any failure.
 - Run the join role on the worker nodes.
