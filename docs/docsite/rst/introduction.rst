@@ -38,7 +38,7 @@ The collection includes the following roles:
 - download: Download arbitrary files, mostly for installing CLIs from Github releases.
 
 Bootstrapping a Cluster
-----------------------
+-----------------------
 
 To create a cluster using ``kubeadm`` you run the following commands:
 
