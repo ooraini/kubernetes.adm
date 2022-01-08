@@ -7,9 +7,9 @@ This document demonstrate one way to structure your Ansible project around the c
 Common Role
 -----------
 
-The common role contains the cluster wide paramters. Those variables are used for a *single* cluster.
+The common role contains the cluster wide parameters. Those variables are used for a *single* cluster.
 
-Care must be taken when maintaing multiple clusters in the same inventory.
+Care must be taken when maintaining multiple clusters in the same inventory.
 
 Inventory Structure
 -------------------
@@ -40,11 +40,12 @@ Use group vars in the ``prod_cluster`` group to specifiy all the common paramate
 The ``control_plane_hostgroup`` should reference the control plane group ``prod_control_plane``.
 
 
-Cluster Bootstraping Playbook
------------------------------
-Review all the requiremnets in ``requiremnets``.
+Cluster Bootstrapping Playbook
+------------------------------
 
-Node Requiremnets
+Review all the requirements in :ref:`ansible_collections.kubernetes.adm.docsite.requirements`.
+
+Node Requirements
 ^^^^^^^^^^^^^^^^^
 The ``prepare`` role ensures that the nodes have all ther Kubernetes and kubeadm requiremnets statisfied.
 Except the following:
@@ -57,7 +58,7 @@ For RHEL 8 based distro the following works:
 
 .. code-block:: yaml+jinja
 
-  - name: Enusre hostname and /etc/hosts for nodes and no firewall
+  - name: Ensure hostname and /etc/hosts for nodes and no firewall
     gather_facts: false
     hosts: all
     become: yes

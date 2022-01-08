@@ -26,8 +26,8 @@ Roles
 -----
 The collection includes the following roles:
 
-- common: Contains common paramaters for the cluster.
-- prepare: Prepare the node for Kubernetes inslltation.
+- common: Contains common parameters for the cluster.
+- prepare: Prepare the node for Kubernetes installation.
 - init: Initializes a new cluster using ``kubeadm init``
 - pre_join: Generate a bootstrap token and uploads the encrypted certificates.
 - join: Join a new node to an existing cluster.
