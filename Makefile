@@ -19,6 +19,8 @@ build_modules:
 html_complete: build_modules html
 	#
 
+open:
+	xdg-open build/html/index.html
 
 github:
 	@make html_complete
