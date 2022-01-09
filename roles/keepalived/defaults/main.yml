@@ -1,4 +1,4 @@
-keepalived_router_id: 51
+# keepalived_router_id: 51
 keepalived_priority: 100
 keepalived_conf_path: /etc/keepalived
 keepalived_conf_template: _keepalived.conf

@@ -2,6 +2,7 @@ haproxy_cfg_template: _haproxy.cfg
 apiserver_lb_port: "{{ control_plane_endpoint.split(':')[1] }}"
 haproxy_conf_path: /etc/haproxy
 
+keepalived_router_id: 185
 # keepalived_interface: ens6
 # keepalived_vip: 192.168.1.200
 # keepalived_master: node1

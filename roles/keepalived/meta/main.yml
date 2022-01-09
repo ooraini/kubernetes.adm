@@ -21,6 +21,14 @@ argument_specs:
         description:
           - The keepalived VIP
 
+      keepalived_router_id:
+        type: int
+        required: true
+        description:
+        - The VRRP instance router id.
+        - Should be unique among different instances of VRRP.
+        - See man:keepalived.conf(5) for more info.
+
       keepalived_check_script_template:
         type: str
         required: true
