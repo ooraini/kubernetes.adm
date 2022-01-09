@@ -2,7 +2,7 @@
   when: kubeadm_reset and not is_control_plane
 
 - include_tasks: join.yml
-  when: k8s_nodes[inventory_hostname] is undefined
+  when: k8s_nodes[node_hostname] is undefined
 
 - when: is_control_plane
   block:

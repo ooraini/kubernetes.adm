@@ -15,6 +15,7 @@ cluster_apiserver_port: '6443'
 # control_plane_endpoint: cluster:8443
 # control_plane_hostgroup: control_plane
 
+node_hostname: "{{ inventory_hostname }}"
 joined_control_plane_node: "{{ groups[control_plane_hostgroup] | first }}"
 
 # -- Derived -- #

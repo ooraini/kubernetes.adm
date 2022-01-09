@@ -57,7 +57,16 @@ argument_specs:
         type: str
         required: true
         description: Inventory group name with all the control plane nodes.
-      
+
+      node_hostname:
+        type: str
+        default: inventory_hostname
+        description:
+          - To allow for a shorter inventory names, C(node_hostname) can be used to transform the short inventory name to a FQDN.
+          - Typically, it will be defined in terms of C(inventory_hostname).
+          - For example, I({{ node_hostname }}.example.com).
+          - It's REQUIRED that the C(hostname) command outputs the same value as C(node_hostname) and that DNS resolves it to the host's IP.
+
       joined_control_plane_node:
         type: str
         default: 'First node in control_plane_hostgroup'
