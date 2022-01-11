@@ -6,21 +6,12 @@
 # NOTE: init_node_hostgroup can be any control plane node and can be changed later.
 
 # Ensure proper hostnames and /etc/hosts file (or DNS).
-# Ensure no firewalld is running (or is properly configured).
+# Ensure no host firewall is running (or is properly configured).
 
 - name: Prepare nodes for Kubernetes
   hosts: "{{ cluster_hostgroup }}"
   any_errors_fatal: true
   roles: [ kubernetes.adm.prepare ]
-
-
-- name: Setup Load balancer for Kubernetes API server
-  hosts: "{{ control_plane_hostgroup }}"
-  any_errors_fatal: true
-  roles:
-    - role: kubernetes.adm.api_server_lb
-      when: (no_lb | default(false)) == false
-    
 
 - name: Init first control plane node
   hosts: "{{ init_node_hostgroup }}"
