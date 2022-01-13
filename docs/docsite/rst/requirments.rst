@@ -33,4 +33,4 @@ dependencies:
     jsonpatch
     kubernetes
 
-By default, they will be installed on all the control plane nodes.
+By default, they will be installed on all the control plane nodes by the ``prepare`` role.

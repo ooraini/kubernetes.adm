@@ -98,4 +98,3 @@ To create a cluster you can import the ``cluster`` playbook from the collection:
       workers_hostgroup: prod_workers
       cluster_hostgroup: prod_cluster
       init_node_hostgroup: prod_init_node
-      no_lb: true

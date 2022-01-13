@@ -159,27 +159,23 @@ Playbook
             enabled: false
 
         # To avoid any problem with the CNI disable the mgmt interface. Optional
-        - shell: |
-            nmcli connection modify 'Wired connection 1' autoconnect false
-            nmcli device disconnect eth0
-            nmcli connection modify 'System eth1' ipv4.route-metrics 99
-            nmcli connection modify 'System eth1' ipv4.gateway 192.168.33.1
-            nmcli connection modify 'System eth1' ipv4.dns 8.8.8.8,8.8.4.4
-            nmcli connection up 'System eth1'
+        - shell:
+            creates: /tmp/mgmt.done
+            cmd: |
+              nmcli connection modify '{{ MGMT_CON }}' autoconnect false
+              nmcli device disconnect '{{ MGMT_IF }}'
+              nmcli connection modify '{{ MAIN_CON }}' ipv4.route-metric 99
+              nmcli connection modify '{{ MAIN_CON }}' ipv4.gateway '{{ GW }}'
+              nmcli connection modify '{{ MAIN_CON }}' ipv4.dns '{{ DNS }}'
+              nmcli connection up '{{ MAIN_CON }}'
+              touch /tmp/mgmt.done
           become: true
-          ignore_errors: true
-
-        - shell: cat /proc/cmdline
-          register: kernel_boot
-          changed_when: false
-
-        # Optional
-        - name: Ensure cgroupv2
-          become: true
-          when: '"systemd.unified_cgroup_hierarchy=1" not in kernel_boot.stdout'
-          block:
-            - shell: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=1"
-            - reboot:
+          vars:
+            MGMT_CON: 'Wired connection 1'
+            MGMT_IF: 'eth0'
+            MAIN_CON: 'System eth1'
+            GW: '192.168.33.1'
+            DNS: '192.168.33.1'
 
     - hosts: k8s_cluster
       roles: [ kubernetes.adm.distributed_lb ]
@@ -190,7 +186,6 @@ Playbook
         workers_hostgroup: k8s_workers
         cluster_hostgroup: k8s_cluster
         init_node_hostgroup: k8s_init_node
-        no_lb: true
 
 
     - name: Ensure CNI
@@ -212,19 +207,6 @@ Playbook
             release_namespace: kube-system
             chart_version: "{{ cilium_version }}"
             values:
-              hostPort:
-                enabled: true
-              hostServices:
-                enabled: true
-              containerRuntime:
-                integration: crio
-              hostFirewall:
-                enabled: false
-              hubble:
-                relay:
-                  enabled: true
-                ui:
-                  enabled: true
               ipam:
                 mode: "kubernetes"
               cgroup:
@@ -234,18 +216,6 @@ Playbook
               kubeProxyReplacement: "strict"
               k8sServiceHost: "{{ control_plane_endpoint.split(':')[0] }}"
               k8sServicePort: "{{ control_plane_endpoint.split(':')[1] }}"
-
-        - name: Patch SELinux context for Hubble relay
-          kubernetes.core.k8s_json_patch:
-            kind: Deployment
-            namespace: kube-system
-            name: hubble-relay
-            patch:
-              - op: replace
-                path: /spec/template/spec/securityContext
-                value:
-                  seLinuxOptions:
-                    type: spc_t
 
 
     - name: CRI-O CNI Fix https://github.com/cri-o/cri-o/issues/4276

@@ -59,10 +59,7 @@ For the collection, in addition to the ``init`` and ``join`` roles, you will nee
     - name: Setup Load balancer for Kubernetes API server
       hosts: "{{ control_plane_hostgroup }}"
       any_errors_fatal: true
-      roles:
-        - role: kubernetes.adm.api_server_lb
-          when: (no_lb | default(false)) == false
-        
+      roles: [kubernetes.adm.api_server_lb]
 
     - name: Init first control plane node
       hosts: "{{ init_node_hostgroup }}"
