@@ -8,7 +8,7 @@ cni_tasks: _cni.yml
 
 install_kube_tasks: _install_kube.yml
 
-yum_repositories_tasks: _yum.yml
+repositories_tasks: _yum.yml
 
 cri_tasks: _crio.yml
 

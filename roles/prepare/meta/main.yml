@@ -30,7 +30,7 @@ argument_specs:
         default: _cni.yml
         description: Tasks file for preparing the OS for CNI.
 
-      yum_repositories_tasks:
+      repositories_tasks:
         type: str
         default: _yum.yml
         description: Tasks file for setting up the required repositories for the container runtime, Kubernetes and other dependencies.

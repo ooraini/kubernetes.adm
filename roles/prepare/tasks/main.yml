@@ -5,7 +5,7 @@
 
 - include_tasks: "{{ cni_tasks }}"
 
-- include_tasks: "{{ yum_repositories_tasks }}"
+- include_tasks: "{{ repositories_tasks }}"
 
 - include_tasks: "{{ cri_tasks }}"
 
