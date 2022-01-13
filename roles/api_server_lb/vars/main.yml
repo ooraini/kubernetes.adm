@@ -1,2 +1,3 @@
 keepalived_check_script_template: _check_apiserver.sh
 keepalived_peers: "{{ dict( groups[control_plane_hostgroup] | zip(groups[control_plane_hostgroup] | map('extract', hostvars, 'ansible_host')) ) }}"
+keepalived_master: "{{ groups[control_plane_hostgroup][0] }}"

@@ -11,7 +11,7 @@ argument_specs:
     options:
       keepalived_master:
         type: str
-        required: true
+        default: First node in C(control_plane_hostgroup)
         description: The server with the MASTER state in C(keepalived.conf). Must be an inventory host.
       
       keepalived_interface:
