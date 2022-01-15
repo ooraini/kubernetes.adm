@@ -9,7 +9,7 @@ See requirements in :ref:`ansible_collections.kubernetes.adm.docsite.requirement
 - Three control plane and three worker nodes
 - Using vagrant with libvirt provider
 - HAProxy distributed load balancer
-- Cilium as CNI plugin
+- Cilium CNI plugin
 
 
 Vagrantfile
@@ -24,6 +24,7 @@ Vagrantfile
 
       config.vm.provider :libvirt do |libvirt|
         libvirt.qemu_use_session = false
+        libvirt.management_network_mode = "none"
       end
 
       masters = {
@@ -158,21 +159,10 @@ Playbook
             state: stopped
             enabled: false
 
-        # To avoid any problem with the CNI disable the mgmt interface. Optional
-        - shell:
-            creates: /tmp/mgmt.done
-            cmd: |
-              nmcli connection modify '{{ MGMT_CON }}' autoconnect false
-              nmcli device disconnect '{{ MGMT_IF }}'
-              nmcli connection modify '{{ MAIN_CON }}' ipv4.route-metric 99
-              nmcli connection modify '{{ MAIN_CON }}' ipv4.gateway '{{ GW }}'
-              nmcli connection modify '{{ MAIN_CON }}' ipv4.dns '{{ DNS }}'
-              nmcli connection up '{{ MAIN_CON }}'
-              touch /tmp/mgmt.done
-          become: true
+        - shell: |
+            nmcli connection modify '{{ MAIN_CON }}' ipv4.gateway '{{ GW }}' ipv4.dns '{{ DNS }}' ipv4.route-metric 99
+            nmcli connection up '{{ MAIN_CON }}'
           vars:
-            MGMT_CON: 'Wired connection 1'
-            MGMT_IF: 'eth0'
             MAIN_CON: 'System eth1'
             GW: '192.168.33.1'
             DNS: '192.168.33.1'
