@@ -1,0 +1,8 @@
+github_project: operator-framework/operator-sdk
+release_version: "{{ operator_sdk_version | default('latest') }}"
+release_file:  operator-sdk_linux_{{ arch }}
+checksum_file: "{{ download_url | dirname }}/checksums.txt"
+checksum_algo: sha256
+binary_name: operator-sdk
+download_mode: download_gh
+arch_lang: go
