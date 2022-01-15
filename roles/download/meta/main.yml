@@ -49,6 +49,12 @@ argument_specs:
       checksum_algo:
         type: str
         description: The checksum algorithm.
+      direct_checksum:
+        type: bool
+        default: false
+        description: 
+        - Set to true when checksum file contains only the digest.
+        - Work around for https://github.com/ansible/ansible/issues/54390.
       disable_checksum:
         type: bool
         default: false
