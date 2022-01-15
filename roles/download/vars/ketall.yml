@@ -5,4 +5,4 @@ download_file_in_archive: ketall-amd64-linux
 binary_name: ketall
 completion_command: completion {{  ansible_user_shell | basename }}
 download_mode: download_gh
-arch_map: "{{ go_arch_map }}"
+arch_lang: go

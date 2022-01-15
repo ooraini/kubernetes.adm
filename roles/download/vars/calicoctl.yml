@@ -3,4 +3,4 @@ release_version: "{{ calicoctl_version | default('latest') }}"
 release_file: calicoctl-linux-{{ arch }}
 binary_name: calicoctl
 download_mode: download_gh
-arch_map: "{{ go_arch_map }}"
+arch_lang: go

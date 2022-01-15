@@ -7,4 +7,4 @@ checksum_file_suffix: '.sha256sum'
 checksum_algo: 'sha256'
 completion_command: completion {{  ansible_user_shell | basename }}
 download_mode: download_gh
-arch_map: "{{ go_arch_map }}"
+arch_lang: go

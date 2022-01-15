@@ -5,4 +5,4 @@ download_file_in_archive: cmctl
 binary_name: cmctl
 completion_command: completion {{  ansible_user_shell | basename }}
 download_mode: download_gh
-arch_map: "{{ go_arch_map }}"
+arch_lang: go

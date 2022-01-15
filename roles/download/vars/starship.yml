@@ -4,4 +4,4 @@ release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz
 download_file_in_archive: starship
 binary_name: starship
 download_mode: download_gh
-arch_map: "{{ rust_arch_map }}"
+arch_lang: rust

@@ -3,4 +3,4 @@ release_version: "{{ jp_version | default('latest') }}"
 release_file: "jp-linux-{{ arch }}"
 binary_name: jp
 download_mode: download_gh
-arch_map: "{{ go_arch_map }}"
+arch_lang: go
