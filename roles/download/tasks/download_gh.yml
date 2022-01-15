@@ -38,3 +38,9 @@
         create: true
         block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
       when: completion_command is defined and not download_only
+
+    - name: Ensure completion line in shell rc
+      lineinfile:
+        path: "{{ ansible_user_dir }}/.bashrc"
+        line: "{{ completion_line }}"
+      when: completion_line is defined
