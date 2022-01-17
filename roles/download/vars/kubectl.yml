@@ -2,7 +2,7 @@ download_url: "{{ download_base_url | default('https://dl.k8s.io/release') }}/{{
 binary_name: kubectl
 checksum_file_suffix: .sha256
 checksum_algo: sha256
-completion_line: "source <(kubectl completion {{  ansible_user_shell | basename }})"
+completion_command: completion {{  ansible_user_shell | basename }}
 download_mode: download_binary
 direct_checksum: true
 arch_lang: go
