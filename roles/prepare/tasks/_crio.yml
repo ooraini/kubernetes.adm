@@ -1,3 +1,13 @@
+- name: YUM info cri-o
+  yum: list=cri-o
+  register: yum_crio_out
+  become: true
+
+- vars:
+    _crio_info: "{{ yum_crio_out.results | selectattr('yumstate', 'eq', 'installed') }}"
+  set_fact:
+    current_crio_version: "{{ _crio_info[0].version if (_crio_info | length > 0) else '' }}"
+
 - assert:
     that: current_crio_version.startswith(crio_version)
     quiet: true
@@ -8,6 +18,29 @@
       Such action is dangerous and should only by used when initializing a new cluster.
   when: not prepare_upgrade
 
+- name: Ensure Kubic libcontainers repository
+  yum_repository:
+    name: devel_kubic_libcontainers_stable
+    description: devel_kubic_libcontainers_stable
+    baseurl: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/'
+    gpgcheck: true
+    gpgkey: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/repodata/repomd.xml.key'
+    enabled: true
+    
+  become: true
+
+- name: Ensure Kubic libcontainers repository
+  yum_repository:
+    name: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
+    description: devel_kubic_libcontainers_stable_cri-o_{{ crio_version }}
+    baseurl: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ crio_os }}/'
+    gpgcheck: true
+    gpgkey: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ crio_os }}/repodata/repomd.xml.key'
+    enabled: true
+    exclude: cri-o
+
+  become: true
+  
 - name: Ensure required CRI-O kernel module are loaded
   copy:
     dest: /etc/modules-load.d/crio.conf

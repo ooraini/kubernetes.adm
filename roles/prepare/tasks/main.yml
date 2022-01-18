@@ -1,11 +1,7 @@
 ---
-- include_tasks: "{{ info_tasks }}"
-
 - include_tasks: "{{ swap_tasks }}"
 
 - include_tasks: "{{ cni_tasks }}"
-
-- include_tasks: "{{ repositories_tasks }}"
 
 - include_tasks: "{{ cri_tasks }}"
 
@@ -30,11 +26,6 @@
 
   become: true
 
-# Ansible kubernetes.core requirments
-- when: is_control_plane
-  block:
-    - name: Ensure control plane packages
-      include_tasks: "{{ cp_packages_tasks }}"
-
-    - name: Ensure bash completion
-      include_tasks: "{{ completion_tasks }}"
+- name: Ensure bash completion
+  include_tasks: "{{ completion_tasks }}"
+  when: is_control_plane

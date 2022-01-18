@@ -1,5 +1,17 @@
-# Contract: Install kubeadm, kubelet, kubectl and tc. The packages MUST NOT be upgraded or 
-# modified in any way if there is an existing installtion. (Hint: Use kubelet_version == '')
+# Contract: Install kubeadm, kubelet, kubectl and tc on all nodes. The packages MUST NOT be upgraded or 
+# modified in any way if there is an existing installation. (Hint: use current_kubelet_version == '')
+# in addition, The following should be installed on all control plane nodes: (Hint: use is_control_plane)
+# python3, openssl and the kubernetes.core dependencies: PyYAML, jsonpatch and kubernetes (PyPi)
+
+- name: YUM info kubelet
+  yum: list=kubelet
+  register: yum_kubelet_out
+  become: true
+
+- vars:
+    _kubelet_info: "{{ yum_kubelet_out.results | selectattr('yumstate', 'eq', 'installed') }}"
+  set_fact:
+    current_kubelet_version: "{{ _kubelet_info[0].version if (_kubelet_info | length > 0) else '' }}"
 
 - assert:
     that: current_kubelet_version == kubernetes_version
@@ -10,7 +22,19 @@
       You can set prepare_upgrade to upgrade/downgrade to {{ kubernetes_version }}.
       Such action is dangerous and should only by used when initializing a new cluster.
   when: not prepare_upgrade
-    
+
+
+- name: Ensure Kubernetes repository
+  yum_repository:
+    name: kubernetes
+    description: kubernetes
+    baseurl: 'https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch'
+    gpgcheck: true
+    gpgkey: 'https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg'
+    exclude: kubelet kubeadm kubectl
+    enabled: true
+
+  become: true
 
 - name: Enusre 'tc' command is presnet
   yum: name=iproute-tc state=present
@@ -29,3 +53,21 @@
 
   become: true
   when: current_kubelet_version == '' or prepare_upgrade
+
+- name: Ensure python36 and openssl are present
+  yum:
+    name:
+      - python36
+      - openssl
+      - python3-pyyaml
+      - python3-jsonpatch
+    state: present
+  become: true
+  when: is_control_plane
+
+- name: Ensure kubernetes, PyYAML and jsonpath pip packages are present
+  pip:
+    name: kubernetes
+    state: present
+    extra_args: --user
+  when: is_control_plane

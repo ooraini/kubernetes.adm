@@ -1,21 +1,16 @@
 ---
 # defaults file for prepare
-info_tasks: _info.yml
-
 swap_tasks: _swap.yml
 
 cni_tasks: _cni.yml
 
-install_kube_tasks: _install_kube.yml
-
-repositories_tasks: _yum.yml
-
 cri_tasks: _crio.yml
 
-cp_packages_tasks: _cp_packages.yml
+install_kube_tasks: _install_kube.yml
 
 completion_tasks: _completion.yml
 
+swap_state: disabled
 prepare_upgrade: false
 aliask: true
 kubens_alias: true

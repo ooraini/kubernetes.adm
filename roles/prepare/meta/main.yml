@@ -30,20 +30,10 @@ argument_specs:
         default: _cni.yml
         description: Tasks file for preparing the OS for CNI.
 
-      repositories_tasks:
-        type: str
-        default: _yum.yml
-        description: Tasks file for setting up the required repositories for the container runtime, Kubernetes and other dependencies.
-
       cri_tasks:
         type: str
         default: _crio.yml
         description: Tasks file for preparing and installing the container runtime.
-
-      cp_packages_tasks:
-        type: str
-        default: _cp_packages.yml
-        description: Tasks file for installing additional control plane packages.
 
       completion_tasks:
         type: str
