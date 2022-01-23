@@ -7,7 +7,7 @@ See requirements in :ref:`ansible_collections.kubernetes.adm.docsite.requirement
 
 - Six node cluster
 - Three control plane and three worker nodes
-- Using vagrant with libvirt provider
+- Using Vagrant with libvirt provider
 - HAProxy distributed load balancer
 - Cilium CNI plugin
 
@@ -18,31 +18,27 @@ Vagrantfile
 .. code-block:: ruby
 
     Vagrant.configure("2") do |config|
-
       config.vm.synced_folder ".", "/vagrant", disabled: true
       config.ssh.insert_key = false
-
+      
       config.vm.provider :libvirt do |libvirt|
         libvirt.qemu_use_session = false
         libvirt.management_network_mode = "none"
       end
 
-      masters = {
+      machines = {
         'node1': "192.168.33.10",
         'node2': "192.168.33.20",
         'node3': "192.168.33.30",
-      }
-
-      workers = {
         'node4': "192.168.33.40",
         'node5': "192.168.33.50",
         'node6': "192.168.33.60"
       }
 
-      masters.each do |name, ip|
+      machines.each do |name, ip|
         config.vm.define "#{name}" do |node|
-          node.vm.box = "rocky8/kubeadm_1.22.4"
-          node.vm.network "private_network", ip: ip
+          node.vm.box = "rocky8/kubeadm_1.22.5"
+          node.vm.network :private_network, :ip => ip
           node.vm.provider :libvirt do |libvirt|
             libvirt.cpus = 2
             libvirt.memory = 4096
@@ -50,22 +46,12 @@ Vagrantfile
         end
       end
 
-      workers.each do |name, ip|
-        config.vm.define "#{name}" do |node|
-          node.vm.box = "rocky8/kubeadm_1.22.4"
-          node.vm.network "private_network", ip: ip
-          node.vm.provider :libvirt do |libvirt|
-            libvirt.cpus = 4
-            libvirt.memory = 8192
-            libvirt.storage :file, :size => '20G'
-          end
-        end
-      end
-
       config.vm.provision "shell" do |s|
-        ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+        ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_ed25519.pub").first.strip
         s.inline = <<-SHELL
           echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+          nmcli connection modify 'System eth1' ipv4.gateway '192.168.33.1' ipv4.dns '192.168.33.1' ipv4.route-metric 99
+          nmcli connection up 'System eth1'
         SHELL
       end
     end
@@ -104,20 +90,21 @@ Inventory
             node4:
             node5:
             node6:
-
+            
         k8s_cluster:
           vars:
-            kubernetes_version: "1.22.4"
-
+            domain_name: home.arpa
+            
+            kubernetes_version: "1.22.5"
             kubeadm_apiversion: v1beta3
             kubeadm_skip_phases: ["addon/kube-proxy"]
-
             cluster_pod_cidr: 172.16.0.0/16
             cluster_service_cidr: 172.17.0.0/16
-            control_plane_endpoint: cluster:8443
+            control_plane_endpoint: k8s.{{ domain_name }}:8443
             control_plane_hostgroup: k8s_control_plane
             swap_state: disabled
-
+            node_hostname: "{{ inventory_hostname }}.{{ domain_name }}"
+            cluster_vip: '127.0.0.1'
             helm_version: '3.7.2'
             cilium_version: '1.11.0'
 
@@ -135,9 +122,9 @@ Playbook
 
 .. code-block:: yaml+jinja
 
-    - name: Ensure hostname and /etc/hosts for nodes
+    - name: Enusre hostname and /etc/hosts for nodes
       gather_facts: false
-      hosts: k8s_cluster
+      hosts: all
       become: true
       tasks:
         - name: /etc/hosts
@@ -145,13 +132,13 @@ Playbook
             path: /etc/hosts
             block: |
               {% for host in groups['k8s_cluster'] %}
-              {{hostvars[host].ansible_host }} {{ host }}
+              {{hostvars[host].ansible_host }} {{ host }}.{{ domain_name }}
               {% endfor %}
               # CLUSTER ENDPOINT
-              127.0.0.1 cluster
+              {{ cluster_vip }} {{ control_plane_endpoint.split(':')[0] }}
 
         - name: Set hostname
-          hostname: name="{{ inventory_hostname }}"
+          hostname: name="{{ node_hostname }}"
 
         - name: Ensure firewalld is stopped and disabled
           systemd:
@@ -159,16 +146,10 @@ Playbook
             state: stopped
             enabled: false
 
-        - shell: |
-            nmcli connection modify '{{ MAIN_CON }}' ipv4.gateway '{{ GW }}' ipv4.dns '{{ DNS }}' ipv4.route-metric 99
-            nmcli connection up '{{ MAIN_CON }}'
-          vars:
-            MAIN_CON: 'System eth1'
-            GW: '192.168.33.1'
-            DNS: '192.168.33.1'
 
     - hosts: k8s_cluster
       roles: [ kubernetes.adm.distributed_lb ]
+
 
     - import_playbook: kubernetes.adm.cluster
       vars:
