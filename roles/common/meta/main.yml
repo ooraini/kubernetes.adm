@@ -23,6 +23,12 @@ argument_specs:
         default: /etc/kubernetes/patches
         description: Control plane patches path.
 
+      kubeadm_certSANs:
+        type: list
+        default: []
+        elements: str
+        description: Add additional Subject Alternative Names (SANs) for the API server certificate.
+        
       cluster_name:
         type: str
         description: The cluster name.

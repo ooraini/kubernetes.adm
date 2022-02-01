@@ -1,7 +1,8 @@
 ---
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: InitConfiguration
-# We don't need bootstrap-token, but if we skip we get into https://github.com/kubernetes-sigs/kubespray/issues/4117
+# We don't need bootstrap-token, but if we skip it we get into an issue:
+# https://github.com/kubernetes-sigs/kubespray/issues/4117
 skipPhases: {{ ['upload-certs'] + kubeadm_skip_phases }}
 nodeRegistration:
   taints: null
@@ -20,6 +21,7 @@ networking:
   serviceSubnet: {{ cluster_service_cidr }}
   dnsDomain: {{ cluster_dns_domain }}
 
-apiServer: {}
+apiServer:
+  certSANs: {{ kubeadm_certSANs }}
 controllerManager: {}
 scheduler: {}

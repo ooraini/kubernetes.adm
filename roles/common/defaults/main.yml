@@ -4,7 +4,7 @@
 # kubeadm_apiversion: v1beta3
 kubeadm_config_path: /etc/kubernetes
 kubeadm_patches_directory: /etc/kubernetes/patches
-
+kubeadm_certSANs: []
 
 cluster_name: kubernetes
 # cluster_pod_cidr: 172.16.0.0/16
