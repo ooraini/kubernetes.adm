@@ -5,6 +5,9 @@
     download_url: "{{ github_base_url ~ '/' ~ github_path ~ '/' ~ release_file }}"
     download_unarchive: false
   block:
+    - assert:
+        that: release_version is defined
+        
     - name: Enusre path when download_only  
       file: 
         path: "{{ download_only_path }}/{{ github_path }}"
