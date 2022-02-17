@@ -1,0 +1,9 @@
+github_project: smallstep/cli
+release_version: "{{ step_version }}"
+release_file: step_linux_{{ step_version[1:] }}_{{ arch }}.tar.gz
+download_file_in_archive: step_{{ step_version[1:] }}/bin/step
+binary_name: step
+checksum_file: "{{ download_url | dirname }}/checksums.txt"
+checksum_algo: 'sha256'
+download_mode: gh_binary
+arch_lang: go
