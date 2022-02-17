@@ -20,6 +20,7 @@
         checksum: "{{ omit if not (checksum_available or disable_checksum) else checksum_algo ~ ':' ~ (lookup('url', _checksum_url) if direct_checksum else _checksum_url) }}"
         dest: "{{ ansible_user_dir ~ '/.cache/download_archives/' if download_unarchive else download_dest }}"
         mode: "{{ file_mode }}"
+      become: "{{ privileged_dest | bool }}"
 
 - name: Unarchive file
   unarchive:
@@ -35,4 +36,5 @@
     dest: "{{ download_dest }}"
     mode: "{{ file_mode }}"
     remote_src: true
+  become: "{{ privileged_dest | bool }}"
   when: download_unarchive
