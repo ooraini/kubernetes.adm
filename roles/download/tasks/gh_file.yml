@@ -1,0 +1,24 @@
+- vars:
+    github_path: >-
+      {{ github_project ~ '/releases/latest/download' if release_version == 'latest'
+          else github_project ~ '/releases/download/' ~ release_version ~ '/' }}
+    download_url: "{{ github_base_url ~ '/' ~ github_path ~ '/' ~ release_file }}"
+    download_unarchive: false
+  block:
+    - name: Enusre path when download_only  
+      file: 
+        path: "{{ download_only_path }}/{{ github_path }}"
+        state: directory
+      when: download_only and not download_only_flat
+     
+
+    - name: Download {{ release_file }} [{{ release_version }}] from {{ github_project }}
+      include_tasks: download_file.yml
+      vars:
+        download_dest: "{{ download_only_path }}/{{ github_path }}"
+      when: download_only and not download_only_flat
+
+
+    - name: Download {{ release_file }} [{{ release_version }}] from {{ github_project }}
+      include_tasks: download_file.yml
+      when: not download_only or download_only_flat

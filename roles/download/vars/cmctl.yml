@@ -4,5 +4,5 @@ release_file: cmctl-linux-amd64.tar.gz
 download_file_in_archive: cmctl
 binary_name: cmctl
 completion_command: completion {{  ansible_user_shell | basename }}
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

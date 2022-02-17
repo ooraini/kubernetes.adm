@@ -2,5 +2,5 @@ github_project: jmespath/jp
 release_version: "{{ jp_version | default('latest') }}"
 release_file: "jp-linux-{{ arch }}"
 binary_name: jp
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

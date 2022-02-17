@@ -4,5 +4,5 @@ release_file: kubectl-directpv_{{ directpv_version[1:] }}_linux_{{ arch }}
 binary_name: directpv
 checksum_file: "{{ download_url | dirname }}/directpv_{{ directpv_version[1:] }}_checksums.txt"
 checksum_algo: 'sha256'
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

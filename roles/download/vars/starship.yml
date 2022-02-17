@@ -3,5 +3,5 @@ release_version: "{{ starship_version | default('latest') }}"
 release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz
 download_file_in_archive: starship
 binary_name: starship
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: rust

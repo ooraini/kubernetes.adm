@@ -5,5 +5,5 @@ checksum_file: "{{ download_url | dirname }}/checksums.txt"
 checksum_algo: sha256
 binary_name: operator-sdk
 completion_command: completion {{  ansible_user_shell | basename }}
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

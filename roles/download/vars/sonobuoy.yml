@@ -5,5 +5,5 @@ binary_name: sonobuoy
 # checksum_algo: 'sha256'
 # checksum_file: sonobuoy_{{ sonobuoy_version[1:] }}_checksums.txt
 # completion_command: completion {{  ansible_user_shell | basename }}
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

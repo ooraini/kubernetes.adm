@@ -2,5 +2,5 @@ github_project: projectcalico/calicoctl
 release_version: "{{ calicoctl_version | default('latest') }}"
 release_file: calicoctl-linux-{{ arch }}
 binary_name: calicoctl
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go

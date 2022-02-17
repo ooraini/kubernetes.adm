@@ -91,8 +91,8 @@ argument_specs:
           - The expression {{ ansible_user_shell | basename }} can be used to determine the user's shell.
 
 
-  download_gh:
-    short_description: Download a binary file from Github
+  gh_binary:
+    short_description: Download and install a binary file from Github
     description:
       - Download a file from the release page in a Github project.
       - Using the same URL structure used by Github, the C(github_base_url) can point to a private location.

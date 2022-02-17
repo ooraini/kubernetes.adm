@@ -6,5 +6,5 @@ binary_name: hubble
 checksum_file_suffix: '.sha256sum'
 checksum_algo: 'sha256'
 completion_command: completion {{  ansible_user_shell | basename }}
-download_mode: download_gh
+download_mode: gh_binary
 arch_lang: go
