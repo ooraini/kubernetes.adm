@@ -15,7 +15,7 @@ download_checksum_file: false
 disable_checksum: false
 # download_only_path: ''
 
-arch_map:
+arch_lang_map:
   go:
     x86_64: amd64
     arm64: arm64
@@ -23,6 +23,8 @@ arch_map:
     x86_64: x86_64
     arm64: aarch64
 
-arch: "{{ arch_map[arch_lang][ansible_architecture] }}"
+arch_map: "{{ arch_lang_map[arch_lang] }}"
 
-arch_lang: go
+arch: "{{ arch_map[ansible_architecture] }}"
+
+# arch_lang: go
