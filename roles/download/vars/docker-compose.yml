@@ -1,0 +1,12 @@
+github_project: docker/compose
+release_version: "{{ docker_compose_version | default('latest') }}"
+release_file: docker-compose-linux-{{ arch }}
+checksum_file_suffix: .sha256
+checksum_algo: sha256
+download_mode: gh_file
+privileged_dest: true
+download_dest: /usr/local/lib/docker/cli-plugins/docker-compose
+
+arch_map:
+  x86_64: x86_64
+  arm64: aarch64
