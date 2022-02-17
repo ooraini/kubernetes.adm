@@ -63,9 +63,13 @@ argument_specs:
         type: bool
         default: false
         description: When true, the checksum file will be downloaded along side the downloaded file.
+      privileged_dest:
+        type: bool
+        default: false
+        description: Use become when copying the file to C(download_dest).
 
   download_binary:
-    short_description: Download Binary File
+    short_description: Download and install a binary file
     description: []
     options:
       binary_path:
