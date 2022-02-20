@@ -1,6 +1,6 @@
 github_project: docker/compose-switch
 release_version: "{{ compose_switch_version | default('latest') }}"
 release_file: docker-compose-linux-{{ arch }}
-binary_name: docker-compose
+binary_name: compose-switch
 download_mode: gh_binary
 arch_lang: go
