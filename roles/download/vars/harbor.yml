@@ -1,0 +1,7 @@
+github_project: goharbor/harbor
+release_version: "{{ harbor_version }}"
+harbor_installer_type: 'online' # Either online or offile
+release_file: harbor-{{ harbor_installer_type }}-installer-{{ harbor_version }}.tgz
+checksum_file: "{{ download_url | dirname }}/md5sum"
+checksum_algo: md5
+download_mode: gh_file
