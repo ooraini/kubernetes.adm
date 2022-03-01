@@ -1,3 +1,10 @@
+- name: Ensure .local/bin directory
+  file:
+    path: "~/.local/bin"
+    state: directory
+    mode: '0700'
+    recurse: true
+
 - vars:
     github_path: >-
       {{ github_project ~ '/releases/latest/download' if release_version == 'latest'
