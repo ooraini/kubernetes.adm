@@ -11,6 +11,7 @@ install_kube_tasks: _install_kube.yml
 completion_tasks: _completion.yml
 
 swap_state: disabled
+no_yum_repo: false
 prepare_upgrade: false
 aliask: true
 kubens_alias: true

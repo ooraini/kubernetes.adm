@@ -35,6 +35,11 @@ argument_specs:
         default: _crio.yml
         description: Tasks file for preparing and installing the container runtime.
 
+      no_yum_repo:
+        type: bool
+        default: false
+        description: When true, no YUM reposioiry will be added.
+        
       completion_tasks:
         type: str
         default: _completion.yml

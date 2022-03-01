@@ -28,6 +28,7 @@
     enabled: true
     
   become: true
+  when: not no_yum_repo
 
 - name: Ensure Kubic libcontainers repository
   yum_repository:
@@ -40,6 +41,7 @@
     exclude: cri-o
 
   become: true
+  when: not no_yum_repo
   
 - name: Ensure required CRI-O kernel module are loaded
   copy:
