@@ -44,7 +44,7 @@
 
 - name: Ensure .kube/config is absent
   file:
-    path: "{{ ansible_user_dir }}/.kube/config"
+    path: "~/.kube/config"
     state: absent
 
 - include_tasks: "{{ remove_packages_tasks }}"

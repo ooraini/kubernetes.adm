@@ -18,7 +18,7 @@
 
 - name: Ensure completion script in ~/.bash_completion
   blockinfile:
-    path: "{{ ansible_user_dir }}/.bash_completion"
+    path: "~/.bash_completion"
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_name }}"
     create: true
     block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"

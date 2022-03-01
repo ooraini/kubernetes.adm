@@ -1,8 +1,12 @@
 - name: Ensure .cache/download
-  file: path={{ ansible_user_dir }}/.cache/download/ state=directory
+  file: 
+    path: "~/.cache/download/"
+    state: directory
 
 - name: Ensure .cache/download_archives
-  file: path={{ ansible_user_dir }}/.cache/download_archives state=directory
+  file: 
+    path: "~/.cache/download_archives"
+    state: directory
 
 - vars:
     _checksum_url: "{{ download_url ~ checksum_file_suffix if checksum_file_suffix is defined else (checksum_file|default(None)) }}"
@@ -18,20 +22,20 @@
       get_url:
         url: "{{ download_url }}"
         checksum: "{{ omit if not (checksum_available or disable_checksum) else checksum_algo ~ ':' ~ (lookup('url', _checksum_url) if direct_checksum else _checksum_url) }}"
-        dest: "{{ ansible_user_dir ~ '/.cache/download_archives/' if download_unarchive else download_dest }}"
+        dest: "{{ '~/.cache/download_archives/' if download_unarchive else download_dest }}"
         mode: "{{ file_mode }}"
 
 - name: Unarchive file
   unarchive:
-    src: "{{ ansible_user_dir }}/.cache/download_archives/{{ download_url | basename }}"
-    dest: "{{ ansible_user_dir }}/.cache/download/"
+    src: "~/.cache/download_archives/{{ download_url | basename }}"
+    dest: "~/.cache/download/"
     mode: '0700'
     remote_src: true
   when: download_unarchive
 
 - name: Ensure file in archive at dest
   copy:
-    src: "{{ ansible_user_dir }}/.cache/download/{{ download_file_in_archive }}"
+    src: "~/.cache/download/{{ download_file_in_archive }}"
     dest: "{{ download_dest }}"
     mode: "{{ file_mode }}"
     remote_src: true

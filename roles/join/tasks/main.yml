@@ -7,12 +7,14 @@
 - when: is_control_plane
   block:
     - name: Ensure .kube directory
-      file: path={{ ansible_user_dir }}/.kube state=directory
+      file: 
+        path: ~/.kube 
+        state: directory
       
     - name: Ensure admin.conf is in the user's home directory
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: "{{ ansible_user_dir }}/.kube/config"
+        dest: "~/.kube/config"
         remote_src: true
         owner: "{{ ansible_user_id }}"
         group: "{{ ansible_user_id }}"

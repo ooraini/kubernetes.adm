@@ -71,7 +71,7 @@ argument_specs:
     options:
       binary_path:
         type: str
-        default: "{{ ansible_user_dir }}/.local/bin"
+        default: "~/.local/bin"
         description: The directory to store binary files.
       binary_name:
         type: str

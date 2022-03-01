@@ -6,7 +6,7 @@ direct_checksum: false
 
 github_base_url: https://github.com
 
-binary_path: "{{ ansible_user_dir }}/.local/bin"
+binary_path: "~/.local/bin"
 
 download_only: false
 download_only_flat: false
