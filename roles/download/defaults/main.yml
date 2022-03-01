@@ -6,7 +6,12 @@ direct_checksum: false
 
 github_base_url: https://github.com
 
-binary_path: "~/.local/bin"
+system_wide: false
+
+binary_path: "{{ system_binary_path if system_wide else user_binary_path }}"
+
+user_binary_path: "~/.local/bin"
+system_binary_path: "/usr/local/bin"
 
 download_only: false
 download_only_flat: false

@@ -10,16 +10,23 @@
     download_dest: "{{ binary_path }}/{{ binary_name }}"
   when: not download_only
 
-- name: Load completion script
-  command: "{{ binary_path }}/{{ binary_name }} {{ completion_command }}"
-  changed_when: false
-  register: completion_cmd_out
-  when: completion_command is defined and not download_only
+- when: completion_command is defined and not download_only
+  block:
+    - name: Load completion script
+      command: "{{ binary_path }}/{{ binary_name }} {{ completion_command }}"
+      changed_when: false
+      register: completion_cmd_out
 
-- name: Ensure completion script in ~/.bash_completion
-  blockinfile:
-    path: "~/.bash_completion"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_name }}"
-    create: true
-    block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
-  when: completion_command is defined and not download_only
+    - name: Ensure completion script in ~/.bash_completion
+      blockinfile:
+        path: "~/.bash_completion"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ binary_name }}"
+        create: true
+        block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
+      when: not system_wide
+    
+    - name: Ensure completion script in /etc/bash_completion.d/
+      copy:
+        content: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
+        dest: /etc/bash_completion.d/{{ binary_name }}
+      when: system_wide
