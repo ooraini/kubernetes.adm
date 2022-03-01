@@ -1,5 +1,5 @@
 download_unarchive: "{{ download_file_in_archive is defined and download_file_in_archive is not none }}"
-file_mode: '0700'
+file_mode: "{{ '0755' if system_wide else '0700' }}"
 
 # https://github.com/ansible/ansible/issues/54390
 direct_checksum: false
