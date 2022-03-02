@@ -1,4 +1,4 @@
-download_url: "{{ download_base_url | default('https://get.helm.sh') }}/helm-v{{ helm_version }}-linux-{{ arch }}.tar.gz"
+download_url: "{{ helm_base_url | default('https://get.helm.sh') }}/helm-v{{ helm_version }}-linux-{{ arch }}.tar.gz"
 download_file_in_archive: linux-{{ arch }}/helm
 binary_name: helm
 checksum_file_suffix: '.sha256sum'

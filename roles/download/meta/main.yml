@@ -5,18 +5,11 @@ argument_specs:
       - Download file from the URL C(download_url).
       - When C(download_unarchive) is true, the downloaded file will be unarchived.
     options:
-      download_base_url:
-        type: str
-        description: 
-          - The base download URL.
-          - Useful when syncing files to an offline destination.
       download_url:
         type: str
         required: true
         description: 
           - The file URL.
-          - Should always be defined with C(download_base_url) in mind.
-          - For example {{ download_base_url | default('https://abc.com/my/folder') }}/file.tar.gz
       download_unarchive:
         type: bool
         description: 
