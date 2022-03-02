@@ -5,9 +5,11 @@
 
 - name: Get cluster nodes
   kubernetes.core.k8s_info:
+    kubeconfig: /etc/kubernetes/admin.conf
     api_version: v1
     kind: node
   register: _nodes
+  become: true
   delegate_to: "{{ joined_control_plane_node }}"
 
 - vars:
