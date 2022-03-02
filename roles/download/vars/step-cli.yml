@@ -3,6 +3,7 @@ release_version: "{{ step_version }}"
 release_file: step_linux_{{ step_version[1:] }}_{{ arch }}.tar.gz
 download_file_in_archive: step_{{ step_version[1:] }}/bin/step
 binary_name: step
+completion_command: completion {{  ansible_user_shell | basename }}
 checksum_file: "{{ download_url | dirname }}/checksums.txt"
 checksum_algo: 'sha256'
 download_mode: gh_binary
