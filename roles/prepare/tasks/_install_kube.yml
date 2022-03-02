@@ -62,6 +62,7 @@
       - openssl
       - python3-pyyaml
       - python3-jsonpatch
+      - python3-cryptography
     state: present
   become: true
   when: is_control_plane

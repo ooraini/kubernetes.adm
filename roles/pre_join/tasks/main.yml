@@ -27,15 +27,15 @@
   register: certkey_out
   changed_when: false
 
-- name: Get CA cert hash
-  shell: set -o pipefail ; openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
-  register: certhash_out
-  changed_when: false
+- name: Get root ca info
+  community.crypto.x509_certificate_info:
+    path: /etc/kubernetes/pki/ca.crt
+  register: root_ca_info
 
 - set_fact:
     join_token: "{{ token_out.stdout_lines[0] }}"
     join_cert_key: "{{ certkey_out.stdout_lines[0] }}"
-    join_ca_cart_hash: "{{ certhash_out.stdout_lines[0] }}"
+    join_ca_cart_hash: "{{ root_ca_info['public_key_fingerprints']['sha256'] | replace(':', '') }}"
 
   delegate_to: localhost
   delegate_facts: true
