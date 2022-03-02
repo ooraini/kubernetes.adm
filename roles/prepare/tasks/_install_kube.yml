@@ -55,11 +55,10 @@
   become: true
   when: current_kubelet_version == '' or prepare_upgrade
 
-- name: Ensure python36 and openssl are present
+- name: Ensure python36 and dependencies
   yum:
     name:
       - python36
-      - openssl
       - python3-pyyaml
       - python3-jsonpatch
       - python3-cryptography
@@ -67,7 +66,7 @@
   become: true
   when: is_control_plane
 
-- name: Ensure kubernetes, PyYAML and jsonpath pip packages are present
+- name: Ensure python kubernetes
   pip:
     name: kubernetes
     state: present
