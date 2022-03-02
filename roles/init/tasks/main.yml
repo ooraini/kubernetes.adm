@@ -18,13 +18,13 @@
 
 - name: Ensure .kube directory
   file: 
-    path: ~/.kube 
+    path: "{{ ansible_user_dir }}/.kube" 
     state: directory
   
 - name: Ensure admin.conf is in the user's home directory
   copy:
     src: /etc/kubernetes/admin.conf
-    dest: "~/.kube/config"
+    dest: "{{ ansible_user_dir }}/.kube/config"
     remote_src: true
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
