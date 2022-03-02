@@ -15,18 +15,3 @@
 
 - include_tasks: init.yml
   when: etc_kubernetes_out.matched == 0
-
-- name: Ensure .kube directory
-  file: 
-    path: ~/.kube 
-    state: directory
-  
-- name: Ensure admin.conf is in the user's home directory
-  copy:
-    src: /etc/kubernetes/admin.conf
-    dest: "~/.kube/config"
-    remote_src: true
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
-    mode: '0600'
-  become: true
