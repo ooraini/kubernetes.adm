@@ -2,17 +2,17 @@
   command: swapoff -a
   become: true
   changed_when: true
-  when: 
+  when:
     - ansible_swaptotal_mb > 0
     - swap_state == 'disabled'
 
-- name: Ensure no swap in /etc/fstab
+- name: Ensure no swap entries in /etc/fstab
   replace:
     path: /etc/fstab
-    regexp: '([^#\n].*\sswap\s.*)'
-    replace: '\1'
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
     backup: true
-    
+
   become: true
   notify: /etc/fstab
   when: swap_state == 'disabled'
