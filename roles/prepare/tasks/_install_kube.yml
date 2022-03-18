@@ -55,9 +55,10 @@
   become: true
   when: current_kubelet_version == '' or prepare_upgrade
 
-- name: Ensure python36 and dependencies
+- name: Ensure control_plane dependencies
   yum:
     name:
+      - git
       - python36
       - python3-pyyaml
       - python3-jsonpatch
