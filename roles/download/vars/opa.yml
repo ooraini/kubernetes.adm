@@ -1,0 +1,9 @@
+github_project: open-policy-agent/opa
+release_version: "{{ opa_version | default('latest') }}"
+release_file:  opa_linux_{{ arch }}_static
+checksum_file_suffix: .sha256
+checksum_algo: sha256
+binary_name: opa
+completion_command: completion {{  ansible_user_shell | basename }}
+download_mode: gh_binary
+arch_lang: go
