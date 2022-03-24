@@ -8,18 +8,18 @@
 - vars:
     github_path: >-
       {{ github_project ~ '/releases/latest/download' if release_version == 'latest'
-          else github_project ~ '/releases/download/' ~ release_version ~ '/' }}
+          else github_project ~ '/releases/download/' ~ release_version }}
     download_url: "{{ github_base_url ~ '/' ~ github_path ~ '/' ~ release_file }}"
   block:
     - assert:
         that: release_version is defined
-        
-    - name: Enusre path when download_only  
-      file: 
+
+    - name: Enusre path when download_only
+      file:
         path: "{{ download_only_path }}/{{ github_path }}"
         state: directory
       when: download_only and not download_only_flat
-     
+
 
     - name: Download {{ release_file }} [{{ release_version }}] from {{ github_project }}
       include_tasks: download_file.yml
@@ -49,7 +49,7 @@
         create: true
         block: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
       when: not system_wide
-    
+
     - name: Ensure completion script in /etc/bash_completion.d/
       copy:
         content: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
