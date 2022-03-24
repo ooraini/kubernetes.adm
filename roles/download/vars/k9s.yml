@@ -1,0 +1,12 @@
+github_project: derailed/k9s
+release_version: "{{ k9s_version | default('latest') }}"
+release_file:  k9s_Linux_{{ arch }}.tar.gz
+download_file_in_archive: k9s
+binary_name: k9s
+checksum_file: "{{ download_url | dirname }}/checksums.txt"
+checksum_algo: sha256
+completion_command: completion {{  ansible_user_shell | basename }}
+download_mode: gh_binary
+arch_map:
+  x86_64: x86_64
+  arm64: arm64
