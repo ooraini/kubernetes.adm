@@ -53,5 +53,6 @@
     - name: Ensure completion script in /etc/bash_completion.d/
       copy:
         content: "{{ completion_cmd_out.stdout_lines | join('\n') }}"
+        mode: '0644'
         dest: /etc/bash_completion.d/{{ binary_name }}
       when: system_wide
