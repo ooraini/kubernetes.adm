@@ -11,6 +11,7 @@
   copy:
     content: "{{ kubectl_completion.stdout_lines | join('\n') }}"
     dest: /etc/bash_completion.d/kubectl
+    mode: '0644'
   
   become: true
 
@@ -20,6 +21,7 @@
       alias k=kubectl && complete -F __start_kubectl k
       
     dest: /etc/profile.d/k_alias.sh
+    mode: '0644'
     
   become: true
 
@@ -29,6 +31,7 @@
       alias kubens='kubectl config set-context --current --namespace '
       
     dest: /etc/profile.d/kubens_alias.sh
+    mode: '0644'
     
   become: true
 
@@ -36,13 +39,7 @@
 - name: Ensure completion for kubens
   copy:
     src: kubens.sh
+    mode: '0644'
     dest: /etc/bash_completion.d/kubens
   
-  become: true
-
-- name: Ensure correct mode on kubectl completions
-  file:
-    path: /etc/bash_completion.d/kubectl
-    mode: '0644'
-
   become: true
