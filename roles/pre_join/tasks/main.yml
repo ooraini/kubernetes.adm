@@ -30,6 +30,7 @@
 - name: Get root ca info
   community.crypto.x509_certificate_info:
     path: /etc/kubernetes/pki/ca.crt
+  become: true
   register: root_ca_info
 
 - set_fact:
