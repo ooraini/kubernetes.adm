@@ -39,3 +39,10 @@
     dest: /etc/bash_completion.d/kubens
   
   become: true
+
+- name: Ensure correct mode on kubectl completions
+  file:
+    path: /etc/bash_completion.d/kubectl
+    mode: '0644'
+
+  become: true
