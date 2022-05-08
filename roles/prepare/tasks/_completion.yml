@@ -3,7 +3,7 @@
   become: true
 
 - name: Load kubectl completion script
-  command: kubectl completion bash 
+  command: kubectl completion bash
   changed_when: false
   register: kubectl_completion
 
@@ -12,34 +12,39 @@
     content: "{{ kubectl_completion.stdout_lines | join('\n') }}"
     dest: /etc/bash_completion.d/kubectl
     mode: '0644'
-  
+
   become: true
 
-- name: Ensure k alias
+- name: Ensure kubectl aliases
   copy:
-    content: |
-      alias k=kubectl && complete -F __start_kubectl k
-      
-    dest: /etc/profile.d/k_alias.sh
+    src: kubectl_aliases
+    dest: /etc/profile.d/kubectl_aliases.sh
     mode: '0644'
-    
-  become: true
 
-- name: Ensure kubens alias
+  become: true
+  when: kubectl_aliases
+
+- name: Ensure complete_alias
   copy:
-    content: |
-      alias kubens='kubectl config set-context --current --namespace '
-      
-    dest: /etc/profile.d/kubens_alias.sh
+    src: complete_alias
+    dest: /etc/bash_completion.d/complete_alias
     mode: '0644'
-    
-  become: true
 
-
-- name: Ensure completion for kubens
-  copy:
-    src: kubens.sh
-    mode: '0644'
-    dest: /etc/bash_completion.d/kubens
-  
   become: true
+  when: complete_alias
+
+- when: kubens_alias
+  become: true
+  block:
+    - name: Ensure kubens alias
+      copy:
+        content: |
+          alias kubens='kubectl config set-context --current --namespace '
+        dest: /etc/profile.d/kubens_alias.sh
+        mode: '0644'
+
+    - name: Ensure completion for kubens
+      copy:
+        src: kubens.sh
+        mode: '0644'
+        dest: /etc/bash_completion.d/kubens

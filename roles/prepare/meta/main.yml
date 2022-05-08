@@ -4,7 +4,7 @@ dependencies:
 argument_specs:
   main:
     short_description: Prepare node for Kubernetes installtion
-    description: 
+    description:
       - Ensure that the node has the desired swap state, kernel modules and kernel parameters.
       - Configure the required repositories for the container runtime and Kubernetes.
       - Install the container runtime.
@@ -16,8 +16,8 @@ argument_specs:
         type: str
         default: disabled
         choices: [enabled, disabled]
-        description: 
-          - Whether to disable or enable swap. 
+        description:
+          - Whether to disable or enable swap.
           - Attempts to undo a previous execution of I(swap_state=disabled) will not create a new swap partition or file.
 
       swap_tasks:
@@ -39,22 +39,27 @@ argument_specs:
         type: bool
         default: false
         description: When true, no YUM reposioiry will be added.
-        
+
       completion_tasks:
         type: str
         default: _completion.yml
         description: Tasks file for installing shell completion.
-      
-      aliask:
+
+      kubectl_aliases:
         type: bool
         default: true
-        description: Alias k to kubectl with completion in C(~/.bashrc).
-      
+        description: Add kubectl aliases from github.com/ahmetb/kubectl-aliases
+
+      complete_alias:
+        type: bool
+        default: true
+        description: Add complete_alias from github.com/cykerway/complete-alias
+
       kubens_alias:
         type: bool
         default: true
         description: Add kubens alias to switch between namespaces.
-      
+
       prepare_upgrade:
         type: bool
         default: false

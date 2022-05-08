@@ -1,4 +1,4 @@
-SPHINXOPTS    ?= 
+SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = temp-rst/collections
 BUILDDIR      = build
@@ -22,10 +22,14 @@ html_complete: build_modules html
 open:
 	xdg-open build/html/index.html
 
+download_scripts:
+	cd roles/prepare/files && curl -o kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases
+	cd roles/prepare/files && curl -O https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias
+
 github:
 	@make html_complete
 	@cp -a build/html/. ./docs
-	
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new

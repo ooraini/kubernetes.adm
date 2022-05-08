@@ -13,5 +13,6 @@ completion_tasks: _completion.yml
 swap_state: disabled
 no_yum_repo: false
 prepare_upgrade: false
-aliask: true
+kubectl_aliases: true
+complete_alias: true
 kubens_alias: true
