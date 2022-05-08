@@ -9,7 +9,7 @@
     current_crio_version: "{{ _crio_info[0].version if (_crio_info | length > 0) else '' }}"
 
 - assert:
-    that: current_crio_version.startswith(crio_version)
+    that: current_crio_version.startswith(crio_version) or current_crio_version == ''
     quiet: true
     fail_msg: >-
       A different version of CRI-O is installed {{ current_crio_version }}.
@@ -26,7 +26,7 @@
     gpgcheck: true
     gpgkey: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/repodata/repomd.xml.key'
     enabled: true
-    
+
   become: true
   when: not no_yum_repo
 
@@ -42,7 +42,7 @@
 
   become: true
   when: not no_yum_repo
-  
+
 - name: Ensure required CRI-O kernel module are loaded
   copy:
     dest: /etc/modules-load.d/crio.conf
@@ -71,7 +71,7 @@
     net.bridge.bridge-nf-call-iptables: 1
     net.bridge.bridge-nf-call-ip6tables: 1
     net.ipv4.ip_forward: 1
-  
+
 - name: Reset container-tools
   command: yum module reset container-tools -y
   become: yes
@@ -117,5 +117,5 @@
     state: started
     enabled: true
     daemon_reload: true
-    
+
   become: true

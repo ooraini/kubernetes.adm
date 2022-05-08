@@ -1,4 +1,4 @@
-# Contract: Install kubeadm, kubelet, kubectl and tc on all nodes. The packages MUST NOT be upgraded or 
+# Contract: Install kubeadm, kubelet, kubectl and tc on all nodes. The packages MUST NOT be upgraded or
 # modified in any way if there is an existing installation. (Hint: use current_kubelet_version == '')
 # in addition, The following should be installed on all control plane nodes: (Hint: use is_control_plane)
 # python3, openssl and the kubernetes.core dependencies: PyYAML, jsonpatch and kubernetes (PyPi)
@@ -14,7 +14,7 @@
     current_kubelet_version: "{{ _kubelet_info[0].version if (_kubelet_info | length > 0) else '' }}"
 
 - assert:
-    that: current_kubelet_version == kubernetes_version
+    that: current_kubelet_version == kubernetes_version or current_kubelet_version == ''
     quiet: true
     fail_msg: >-
       A different version of the kubelet is installed {{ current_kubelet_version }}.
