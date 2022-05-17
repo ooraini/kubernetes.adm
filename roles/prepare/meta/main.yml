@@ -55,10 +55,10 @@ argument_specs:
         default: true
         description: Add complete_alias from github.com/cykerway/complete-alias
 
-      kubens_alias:
+      kubens_command:
         type: bool
         default: true
-        description: Add kubens alias to switch between namespaces.
+        description: Add kubens shell script to switch between namespaces.
 
       prepare_upgrade:
         type: bool

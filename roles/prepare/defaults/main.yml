@@ -15,4 +15,4 @@ no_yum_repo: false
 prepare_upgrade: false
 kubectl_aliases: true
 complete_alias: true
-kubens_alias: true
+kubens_command: true
