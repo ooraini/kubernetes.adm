@@ -40,24 +40,13 @@
       copy:
         content: |
           #!/bin/bash
-          kubectl config set-context --current --namespace "$@"
+          exec kubectl config set-context --current --namespace "$@"
 
         dest: /usr/local/bin/kubens
         mode: '0755'
 
     - name: Ensure completion for kubens
       copy:
-        content: |
-          # bash completion for 'kubens'
-          _kubens_completions()
-          {
-          if [ "${#COMP_WORDS[@]}" != "2" ]; then
-              return
-          fi
-          COMPREPLY=($(compgen -W "$(kubectl get ns -o custom-columns='NAME:.metadata.name' --no-headers)" -- "${COMP_WORDS[1]}"))
-          }
-
-          complete -F _kubens_completions kubens
-
+        src: kubens
         mode: '0644'
         dest: /etc/bash_completion.d/kubens
