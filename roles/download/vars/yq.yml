@@ -1,0 +1,7 @@
+github_project: mikefarah/yq
+release_version: "{{ yq_version | default('latest') }}"
+release_file: yq_linux_{{ arch }}
+binary_name: yq
+completion_command: shell-completion {{  ansible_user_shell | basename }}
+download_mode: gh_binary
+arch_lang: go
