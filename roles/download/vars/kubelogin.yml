@@ -1,0 +1,10 @@
+github_project: int128/kubelogin
+release_version: "{{ kubelogin_version | default('latest') }}"
+release_file: kubelogin_linux_{{ arch }}.zip
+download_file_in_archive: kubelogin
+binary_name: kubectl-oidc_login
+checksum_file_suffix: '.sha256'
+checksum_algo: 'sha256'
+completion_command: completion {{  ansible_user_shell | basename }}
+download_mode: gh_binary
+arch_lang: go
