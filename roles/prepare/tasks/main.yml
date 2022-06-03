@@ -14,6 +14,22 @@
 
   become: true
 
+- name: Patch control plane SELinux type label
+  copy:
+    dest: "{{ kubeadm_patches_directory }}/{{ item }}SELinux.yaml"
+    content: |
+      spec:
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+  become: true
+  when: is_control_plane
+  loop:
+    - kube-apiserver
+    - kube-controller-manager
+    - kube-scheduler
+    - etcd
+
 - name: Ensure kernel parameters are relaoded
   command: sysctl -p
   become: true
