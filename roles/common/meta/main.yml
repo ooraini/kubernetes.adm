@@ -28,7 +28,7 @@ argument_specs:
         default: []
         elements: str
         description: Add additional Subject Alternative Names (SANs) for the API server certificate.
-        
+
       cluster_name:
         type: str
         description: The cluster name.
@@ -92,3 +92,39 @@ argument_specs:
         type: str
         default: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"
         description: Used in setting up the CRI-O YUM repository. On CentOS 8 it would be 'CentOS_8'.
+
+      kubeadm_init_configuration:
+        type: str
+        description:
+          - The kubeadm InitConfiguration object.
+          - To override use C(kubeadm_init_configuration_override)
+
+      kubeadm_init_configuration_override:
+        type: str
+        description:
+         - Can be used to override part of the C(kubeadm_init_configuration) object.
+         - A simple merge using the I(combine) filter.
+
+      kubeadm_join_configuration:
+        type: str
+        description:
+          - The kubeadm JoinConfiguration object.
+          - To override use C(kubeadm_join_configuration_override)
+
+      kubeadm_join_configuration_override:
+        type: str
+        description:
+         - Can be used to override part of the C(kubeadm_join_configuration) object.
+         - A simple merge using the I(combine) filter.
+
+      kubeadm_cluster_configuration:
+        type: str
+        description:
+          - The kubeadm ClusterConfiguration object.
+          - To override use C(kubeadm_cluster_configuration_override)
+
+      kubeadm_cluster_configuration_override:
+        type: str
+        description:
+         - Can be used to override part of the C(kubeadm_cluster_configuration) object.
+         - A simple merge using the I(combine) filter.

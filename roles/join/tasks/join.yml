@@ -6,12 +6,17 @@
       - join_ca_cart_hash is defined
     fail_msg: No token or cert key. Did you run the pre_join role?
 
-- name: Ensure kubeadm.conf using {{ kubeadm_config_template }} template
-  template:
-    src: "{{ kubeadm_config_template }}"
+- name: Ensure kubeadm.conf
+  copy:
+    content: "{{ [yaml1, yaml2] | join('---\n') }}"
     dest: "{{ kubeadm_config_path }}/kubeadm.conf"
-    backup: true
-
+  vars:
+    _join: "{{ kubeadm_join_configuration | combine(kubeadm_join_configuration_override, recursive=True) }}"
+    _cp_patch:
+      controlPlane:
+        certificateKey: "{{ join_cert_key }}"
+    yaml1: "{{ ((_join | combine(_cp_patch)) if is_control_plane else _join) | to_nice_yaml }}"
+    yaml2: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) | to_nice_yaml }}"
   become: true
 
 - name: kubeadm join

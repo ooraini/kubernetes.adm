@@ -6,6 +6,56 @@ kubeadm_config_path: /etc/kubernetes
 kubeadm_patches_directory: /etc/kubernetes/patches
 kubeadm_certSANs: []
 
+kubeadm_init_configuration:
+  apiVersion: kubeadm.k8s.io/v1beta3
+  kind: InitConfiguration
+  # We don't need bootstrap-token, but if we skip it we get into an issue:
+  # https://github.com/kubernetes-sigs/kubespray/issues/4117
+  skipPhases: "{{ ['upload-certs'] + kubeadm_skip_phases }}"
+  nodeRegistration:
+    taints: null
+  patches:
+    directory: "{{ kubeadm_patches_directory }}"
+
+kubeadm_cluster_configuration:
+  apiVersion: kubeadm.k8s.io/v1beta3
+  kind: ClusterConfiguration
+
+  controlPlaneEndpoint: "{{ control_plane_endpoint }}"
+  clusterName: "{{ cluster_name }}"
+  kubernetesVersion: "{{ kubernetes_version }}"
+
+  networking:
+    podSubnet: "{{ cluster_pod_cidr }}"
+    serviceSubnet: "{{ cluster_service_cidr }}"
+    dnsDomain: "{{ cluster_dns_domain }}"
+
+  apiServer:
+    certSANs: "{{ kubeadm_certSANs }}"
+    extraArgs:
+      authorization-mode: Node,RBAC
+    timeoutForControlPlane: 4m0s
+  controllerManager: {}
+  scheduler: {}
+
+kubeadm_join_configuration:
+  apiVersion: kubeadm.k8s.io/v1beta3
+  kind: JoinConfiguration
+  discovery:
+    bootstrapToken:
+      apiServerEndpoint: "{{ control_plane_endpoint }}"
+      token: "{{ join_token | default('') }}"
+      caCertHashes:
+        - "sha256:{{ join_ca_cart_hash | default('') }}"
+  nodeRegistration:
+    taints: []
+  patches:
+    directory: "{{ kubeadm_patches_directory }}"
+
+kubeadm_init_configuration_override: {}
+kubeadm_cluster_configuration_override: {}
+kubeadm_join_configuration_override: {}
+
 cluster_name: kubernetes
 # cluster_pod_cidr: 172.16.0.0/16
 # cluster_service_cidr: 172.17.0.0/16

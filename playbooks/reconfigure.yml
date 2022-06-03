@@ -1,0 +1,88 @@
+- hosts: "{{ init_node_hostgroup }}"
+  tasks:
+    - import_role:
+        name: kubernetes.adm.common
+
+    - name: Get kubeadm cm
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: ConfigMap
+        name: kubeadm-config
+        namespace: kube-system
+      register: result
+
+    - set_fact:
+        kubeadm_current_config: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml }}"
+        kubeadm_target_config: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
+      delegate_to: localhost
+      delegate_facts: true
+
+
+- hosts: "{{ control_plane_hostgroup }}"
+  serial: 1
+  any_errors_fatal: true
+  vars:
+    current: "{{ hostvars['localhost']['kubeadm_current_config'] }}"
+    target: "{{ hostvars['localhost']['kubeadm_target_config'] }}"
+  tasks:
+    - import_role:
+        name: kubernetes.adm.common
+
+    - name: Enusre target kubeadm.conf
+      copy:
+        content: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+        dest: "{{ kubeadm_config_path }}/kubeadm.conf"
+      become: true
+
+    - name: Update api server certificates
+      command: kubeadm init phase certs apiserver --config {{ kubeadm_config_path }}/kubeadm.conf
+      become: true
+      when: (current.apiServer.certSANs | sort) != (target.apiServer.certSANs | sort)
+      register: cert_result
+
+    - name: Update manifests
+      command: kubeadm init phase control-plane all --config {{ kubeadm_config_path }}/kubeadm.conf
+      become: true
+      changed_when: false
+
+    - name: Sleep for 2 seconds for the kubelet to react
+      wait_for:
+        timeout: 2
+
+    - name: Wait for the apiserver
+      wait_for:
+        host: localhost
+        port: 6443
+        timeout: 60
+
+    - name: Wait till the control plane Pods are ready
+      kubernetes.core.k8s_info:
+        kind: Pod
+        wait: true
+        name: kube-{{ item }}-{{ node_hostname }}
+        namespace: kube-system
+        wait_condition:
+          type: Ready
+      loop:
+        - apiserver
+        - controller-manager
+        - scheduler
+      retries: 2
+      delay: 5
+      register: result
+      until: result.api_found is defined
+
+
+- hosts: "{{ init_node_hostgroup }}"
+  tasks:
+    - name: Update kubeadm cm
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: kubeadm-config
+            namespace: kube-system
+          data:
+            ClusterConfiguration: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+
