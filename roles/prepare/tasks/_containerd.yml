@@ -1,0 +1,64 @@
+- name: Ensure Docker repository
+  yum_repository:
+    name: docker-ce-stable
+    description: docker-ce-stable
+    baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+    gpgcheck: true
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    enabled: true
+    exclude: containerd.io
+
+  become: true
+  when: not no_yum_repo
+
+- name: Ensure required CRI kernel module are loaded
+  copy:
+    dest: /etc/modules-load.d/containerd.conf
+    content: |
+      # Ansible managed
+      overlay
+      br_netfilter
+
+  become: yes
+  register: modules_load_d
+
+- name: Restart systemd-modules-load.service to reload kernel modules
+  systemd: name=systemd-modules-load.service state=restarted
+  become: true
+  when: modules_load_d.changed
+
+- name: Ensure CRI kernel sysctls
+  ansible.posix.sysctl:
+    sysctl_file: /etc/sysctl.d/99-kubernetes-cri.conf
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+
+  become: true
+  with_dict:
+    net.bridge.bridge-nf-call-iptables: 1
+    net.bridge.bridge-nf-call-ip6tables: 1
+    net.ipv4.ip_forward: 1
+
+- name: Ensure containerd.io
+  dnf:
+    name: "{{ 'containerd.io-{{ containerd_version }}' if containerd_version is defined else 'containerd.io' }}"
+    allowerasing: true
+    disable_excludes: docker-ce-stable
+  become: true
+
+- name: Ensure config.toml
+  template:
+    src: _config.toml
+    dest: /etc/containerd/config.toml
+    mode: '0600'
+  become:  true
+
+- name: Ensure containerd is started and enabled
+  systemd:
+    name: containerd.service
+    state: started
+    enabled: true
+    daemon_reload: true
+
+  become: true

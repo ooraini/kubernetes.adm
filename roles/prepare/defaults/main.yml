@@ -1,10 +1,12 @@
 ---
 # defaults file for prepare
+cri: containerd
+
 swap_tasks: _swap.yml
 
 cni_tasks: _cni.yml
 
-cri_tasks: _crio.yml
+cri_tasks: "{{ '_containerd.yml' if cri == 'containerd' else '_crio.yml' }}"
 
 install_kube_tasks: _install_kube.yml
 

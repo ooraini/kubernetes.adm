@@ -12,6 +12,13 @@ argument_specs:
       - Install C(kubernetes.core) and its requirements on control plane nodes.
 
     options:
+      cri:
+        type: str
+        default: containerd
+        choices: [containerd, cri-o]
+        description:
+          - The container runtime.
+
       swap_state:
         type: str
         default: disabled
@@ -32,7 +39,6 @@ argument_specs:
 
       cri_tasks:
         type: str
-        default: _crio.yml
         description: Tasks file for preparing and installing the container runtime.
 
       no_yum_repo:
@@ -67,3 +73,8 @@ argument_specs:
           - Only relevent if there is an existing installtion of the CR or Kubernetes packages.
           - When true, the CR and Kubernetes will upgraded/downgraded to C({{ kubernetes_version }}).
           - Should only by used when initializing a new cluster.
+
+      containerd_version:
+        type: str
+        description:
+          - The containerd package version.
