@@ -61,6 +61,11 @@ argument_specs:
         - The control plane endpoint in the format 'LOAD_BALANCER_DNS:LOAD_BALANCER_PORT'.
         - See kubeadm documentation for more information.
 
+      kubeadm_skip_phases:
+        type: list
+        default: []
+        description: List of kubeadm init phases that will be skipped.
+
       control_plane_hostgroup:
         type: str
         required: true

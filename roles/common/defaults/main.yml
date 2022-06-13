@@ -5,6 +5,7 @@
 kubeadm_config_path: /etc/kubernetes
 kubeadm_patches_directory: /etc/kubernetes/patches
 kubeadm_certSANs: []
+kubeadm_skip_phases: []
 
 kubeadm_init_configuration:
   apiVersion: kubeadm.k8s.io/v1beta3
