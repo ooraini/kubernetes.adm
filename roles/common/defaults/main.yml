@@ -49,7 +49,7 @@ kubeadm_join_configuration:
       caCertHashes:
         - "sha256:{{ join_ca_cart_hash | default('') }}"
   nodeRegistration:
-    taints: []
+    taints: "{{ None if is_control_plane else [] }}"
   patches:
     directory: "{{ kubeadm_patches_directory }}"
 
