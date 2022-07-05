@@ -17,6 +17,20 @@
       delegate_to: localhost
       delegate_facts: true
 
+    - name: Get kubelet ConfigMap
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: ConfigMap
+        name: "{{ 'kubelet-config' if kubernetes_version is version('1.25', '>=') else 'kubelet-config-' ~ kubernetes_version[:4] }}"
+        namespace: kube-system
+      register: result
+
+    - set_fact:
+        current_kubelet_configuration: "{{ result.resources[0]['data']['kubelet'] | from_yaml }}"
+        target_kubelet_configuration: "{{ result.resources[0]['data']['kubelet'] | from_yaml | combine(kubelet_configuration_override, recursive=True) }}"
+      delegate_to: localhost
+      delegate_facts: true
+
 
 - hosts: "{{ control_plane_hostgroup }}"
   serial: 1
@@ -96,3 +110,37 @@
           data:
             ClusterConfiguration: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
 
+
+- hosts: "{{ init_node_hostgroup }}"
+  gather_facts: false
+  tasks:
+  - name: Update kubelet ConfigMap
+    kubernetes.core.k8s:
+      definition:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: "{{ 'kubelet-config' if kubernetes_version is version('1.25', '>=') else 'kubelet-config-' ~ kubernetes_version[:4] }}"
+          namespace: kube-system
+        data:
+          kubelet: "{{ hostvars['localhost']['target_kubelet_configuration'] | to_nice_yaml }}"
+
+
+- hosts: "{{ cluster_hostgroup }}"
+  serial: 1
+  any_errors_fatal: true
+  become: true
+  gather_facts: false
+  vars:
+    current: "{{ hostvars['localhost']['current_kubelet_configuration'] }}"
+    target: "{{ hostvars['localhost']['target_kubelet_configuration'] }}"
+  tasks:
+  - when: current != target
+    block:
+    - name: Apply latest config
+      command: kubeadm upgrade node phase kubelet-config
+
+    - name: Restart kubelet
+      systemd:
+        name: kubelet
+        state: restarted
