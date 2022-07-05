@@ -14,7 +14,7 @@
 
     - set_fact:
         current_cluster_configuration: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml }}"
-        target_cluster_configuration: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
+        target_cluster_configuration: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
       delegate_to: localhost
       delegate_facts: true
 
