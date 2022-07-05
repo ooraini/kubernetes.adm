@@ -30,9 +30,19 @@
 
     - name: Enusre target kubeadm.conf
       copy:
-        content: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+        content: "{{ [yaml1, yaml2] | join('---\n') }}"
         dest: "{{ kubeadm_config_path }}/kubeadm.conf"
+        backup: true
+        mode:
       become: true
+      vars:
+        yaml1: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+        yaml2: |
+          apiVersion: kubeadm.k8s.io/v1beta3
+          kind: InitConfiguration
+          patches:
+            directory: "{{ kubeadm_patches_directory }}"
+
 
     - name: Update api server certificates
       command: kubeadm init phase certs apiserver --config {{ kubeadm_config_path }}/kubeadm.conf
