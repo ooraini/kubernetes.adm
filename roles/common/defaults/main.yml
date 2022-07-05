@@ -53,9 +53,58 @@ kubeadm_join_configuration:
   patches:
     directory: "{{ kubeadm_patches_directory }}"
 
+kubeadm_kubelet_configuration:
+  apiVersion: kubelet.config.k8s.io/v1beta1
+  authentication:
+    anonymous:
+      enabled: false
+    webhook:
+      cacheTTL: 0s
+      enabled: true
+    x509:
+      clientCAFile: /etc/kubernetes/pki/ca.crt
+  authorization:
+    mode: Webhook
+    webhook:
+      cacheAuthorizedTTL: 0s
+      cacheUnauthorizedTTL: 0s
+  cgroupDriver: systemd
+  clusterDNS:
+  - "{{ ((cluster_service_cidr | split('.'))[:3] + ['10']) | join('.') }}"
+  clusterDomain: "{{ cluster_dns_domain }}"
+  cpuManagerReconcilePeriod: 0s
+  evictionPressureTransitionPeriod: 0s
+  fileCheckFrequency: 0s
+  healthzBindAddress: 127.0.0.1
+  healthzPort: 10248
+  httpCheckFrequency: 0s
+  imageMinimumGCAge: 0s
+  kind: KubeletConfiguration
+  logging:
+    flushFrequency: 0
+    options:
+      json:
+        infoBufferSize: "0"
+    verbosity: 0
+  memorySwap: {}
+  nodeStatusReportFrequency: 0s
+  nodeStatusUpdateFrequency: 0s
+  rotateCertificates: true
+  runtimeRequestTimeout: 0s
+  shutdownGracePeriod: 0s
+  shutdownGracePeriodCriticalPods: 0s
+  staticPodPath: /etc/kubernetes/manifests
+  streamingConnectionIdleTimeout: 0s
+  syncFrequency: 0s
+  tlsCertFile: /etc/pki/tls/certs/kubelet.crt
+  tlsPrivateKeyFile: /etc/pki/tls/private/kubelet.key
+  volumeStatsAggPeriod: 0s
+
+
 kubeadm_init_configuration_override: {}
 kubeadm_cluster_configuration_override: {}
 kubeadm_join_configuration_override: {}
+kubeadm_kubelet_configuration_override: {}
 
 cluster_name: kubernetes
 # cluster_pod_cidr: 172.16.0.0/16
