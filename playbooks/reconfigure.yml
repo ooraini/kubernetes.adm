@@ -1,9 +1,10 @@
 - hosts: "{{ init_node_hostgroup }}"
+  gather_facts: false
   tasks:
     - import_role:
         name: kubernetes.adm.common
 
-    - name: Get kubeadm cm
+    - name: Get kubeadm ConfigMap
       kubernetes.core.k8s_info:
         api_version: v1
         kind: ConfigMap
@@ -12,8 +13,8 @@
       register: result
 
     - set_fact:
-        kubeadm_current_config: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml }}"
-        kubeadm_target_config: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
+        current_cluster_configuration: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml }}"
+        target_cluster_configuration: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
       delegate_to: localhost
       delegate_facts: true
 
@@ -36,8 +37,8 @@
   serial: 1
   any_errors_fatal: true
   vars:
-    current: "{{ hostvars['localhost']['kubeadm_current_config'] }}"
-    target: "{{ hostvars['localhost']['kubeadm_target_config'] }}"
+    current: "{{ hostvars['localhost']['current_cluster_configuration'] }}"
+    target: "{{ hostvars['localhost']['target_cluster_configuration'] }}"
   tasks:
     - import_role:
         name: kubernetes.adm.common
@@ -50,7 +51,7 @@
         mode:
       become: true
       vars:
-        yaml1: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+        yaml1: "{{ hostvars['localhost']['target_cluster_configuration'] | to_nice_yaml }}"
         yaml2: |
           apiVersion: kubeadm.k8s.io/v1beta3
           kind: InitConfiguration
@@ -99,7 +100,7 @@
 
 - hosts: "{{ init_node_hostgroup }}"
   tasks:
-    - name: Update kubeadm cm
+    - name: Update kubeadm ConfigMap
       kubernetes.core.k8s:
         definition:
           apiVersion: v1
@@ -108,7 +109,7 @@
             name: kubeadm-config
             namespace: kube-system
           data:
-            ClusterConfiguration: "{{ hostvars['localhost']['kubeadm_target_config'] | to_nice_yaml }}"
+            ClusterConfiguration: "{{ hostvars['localhost']['target_cluster_configuration'] | to_nice_yaml }}"
 
 
 - hosts: "{{ init_node_hostgroup }}"
