@@ -72,5 +72,3 @@ joined_control_plane_node: "{{ groups[control_plane_hostgroup] | first }}"
 # -- Derived -- #
 
 is_control_plane: "{{ inventory_hostname in groups[control_plane_hostgroup] }}"
-crio_version: "{{ kubernetes_version.split('.')[0:2] | join('.') }}"
-crio_os: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"

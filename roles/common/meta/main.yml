@@ -88,16 +88,6 @@ argument_specs:
           - For example, joining a second control plane node, an existing control plane is needed to perform the join.
           - In such case, we use 'joined_control_plane_node' as the existing node.
 
-      crio_version:
-        type: str
-        default: Kubernetes MAJOR.MINOR from kubernetes_version
-        description: The CRI-O version to install/upgrade.
-
-      crio_os:
-        type: str
-        default: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"
-        description: Used in setting up the CRI-O YUM repository. On CentOS 8 it would be 'CentOS_8'.
-
       kubeadm_init_configuration:
         type: str
         description:

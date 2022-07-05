@@ -78,3 +78,12 @@ argument_specs:
         type: str
         description:
           - The containerd package version.
+
+      crio_version:
+        type: str
+        default: Kubernetes MAJOR.MINOR from kubernetes_version
+        description: The CRI-O version to install/upgrade.
+
+      crio_os:
+        type: str
+        description: Used in setting up the CRI-O YUM repository. On CentOS 8 it would be 'CentOS_8'.
