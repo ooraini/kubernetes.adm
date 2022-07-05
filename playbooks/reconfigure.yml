@@ -14,7 +14,7 @@
 
     - set_fact:
         current_cluster_configuration: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml }}"
-        target_cluster_configuration: "{{ result.resources[0]['data']['ClusterConfiguration'] | from_yaml | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
+        target_cluster_configuration: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) }}"
       delegate_to: localhost
       delegate_facts: true
 
@@ -28,7 +28,7 @@
 
     - set_fact:
         current_kubelet_configuration: "{{ result.resources[0]['data']['kubelet'] | from_yaml }}"
-        target_kubelet_configuration: "{{ result.resources[0]['data']['kubelet'] | from_yaml | combine(kubelet_configuration_override, recursive=True) }}"
+        target_kubelet_configuration: "{{ kubeadm_kubelet_configuration | combine(kubelet_configuration_override, recursive=True) }}"
       delegate_to: localhost
       delegate_facts: true
 
@@ -36,10 +36,13 @@
 - hosts: "{{ control_plane_hostgroup }}"
   serial: 1
   any_errors_fatal: true
+  gather_facts: false
   vars:
     current: "{{ hostvars['localhost']['current_cluster_configuration'] }}"
     target: "{{ hostvars['localhost']['target_cluster_configuration'] }}"
   tasks:
+  - when: current != target
+    block:
     - import_role:
         name: kubernetes.adm.common
 
@@ -99,6 +102,7 @@
 
 
 - hosts: "{{ init_node_hostgroup }}"
+  gather_facts: false
   tasks:
     - name: Update kubeadm ConfigMap
       kubernetes.core.k8s:
@@ -138,7 +142,7 @@
   tasks:
   - when: current != target
     block:
-    - name: Apply latest config
+    - name: Apply latest kubelet-config
       command: kubeadm upgrade node phase kubelet-config
 
     - name: Restart kubelet
