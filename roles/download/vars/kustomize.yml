@@ -1,0 +1,10 @@
+github_project: kubernetes-sigs/kustomize
+release_version: "kustomize/{{ kustomize_version }}"
+release_file:  kustomize_{{ kustomize_version }}_linux_amd64.tar.gz
+download_file_in_archive: kustomize
+binary_name: kustomize
+checksum_file: "{{ download_url | dirname }}/checksums.txt"
+checksum_algo: sha256
+completion_command: completion {{  ansible_user_shell | basename }}
+download_mode: gh_binary
+arch_lang: go
