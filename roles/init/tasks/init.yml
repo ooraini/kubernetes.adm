@@ -1,10 +1,11 @@
 - name: Ensure kubeadm.conf
   copy:
-    content: "{{ [yaml1, yaml2] | join('---\n') }}"
+    content: "{{ [yaml1, yaml2, yaml3] | join('---\n') }}"
     dest: "{{ kubeadm_config_path }}/kubeadm.conf"
   vars:
     yaml1: "{{ kubeadm_init_configuration | combine(kubeadm_init_configuration_override, recursive=True) | to_nice_yaml }}"
     yaml2: "{{ kubeadm_cluster_configuration | combine(kubeadm_cluster_configuration_override, recursive=True) | to_nice_yaml }}"
+    yaml3: "{{ kubeadm_kubelet_configuration | combine(kubeadm_kubelet_configuration_override, recursive=True) | to_nice_yaml }}"
   become: true
 
 - name: kubeadm init
