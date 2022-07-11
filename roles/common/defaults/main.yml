@@ -96,8 +96,6 @@ kubeadm_kubelet_configuration:
   staticPodPath: /etc/kubernetes/manifests
   streamingConnectionIdleTimeout: 0s
   syncFrequency: 0s
-  tlsCertFile: /etc/pki/tls/certs/kubelet.crt
-  tlsPrivateKeyFile: /etc/pki/tls/private/kubelet.key
   volumeStatsAggPeriod: 0s
 
 
