@@ -28,7 +28,7 @@
 
     - set_fact:
         current_kubelet_configuration: "{{ result.resources[0]['data']['kubelet'] | from_yaml }}"
-        target_kubelet_configuration: "{{ kubeadm_kubelet_configuration | combine(kubelet_configuration_override, recursive=True) }}"
+        target_kubelet_configuration: "{{ kubeadm_kubelet_configuration | combine(kubeadm_kubelet_configuration_override, recursive=True) }}"
       delegate_to: localhost
       delegate_facts: true
 
