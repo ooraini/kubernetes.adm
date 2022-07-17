@@ -7,7 +7,9 @@ set -x
 
 sudo apt-get update
 sudo apt-get -y install git rsync python3-pip
-pip3 install -r requirements.txt --user
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
 
 pwd ls -lah
 export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
