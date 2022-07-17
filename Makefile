@@ -10,8 +10,8 @@ help:
 	@echo -e 'Additional targets: \x1B[97mbuild_modules\x1B[0m, \x1B[97mhtml_complete\x1B[0m'
 
 build_modules:
-	ansible-galaxy collection build --force .
-	ansible-galaxy collection install --force kubernetes-adm-*.tar.gz
+	# ansible-galaxy collection build --force .
+	# ansible-galaxy collection install --force kubernetes-adm-*.tar.gz
 	rm -rf temp-rst
 	mkdir -m 700 temp-rst
 	antsibull-docs collection --use-current --dest-dir temp-rst $(COLLECTION)
