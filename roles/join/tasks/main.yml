@@ -4,20 +4,31 @@
 - include_tasks: join.yml
   when: k8s_nodes[node_hostname] is undefined
 
-- when: is_control_plane
-  block:
-    - name: Ensure .kube directory
-      file: 
-        path: "{{ ansible_user_dir }}/.kube" 
-        state: directory
-      
-    - name: Ensure admin.conf is in the user's home directory
-      copy:
-        src: /etc/kubernetes/admin.conf
-        dest: "{{ ansible_user_dir }}/.kube/config"
-        remote_src: true
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
-        mode: '0600'
-      become: true
+- set_fact:
+    _username: "{{ ansible_env['SUDO_USER'] | default(ansible_env['USER']) }}"
 
+- name: Get user info
+  getent:
+    database: passwd
+    key: "{{ _username }}"
+
+- when: is_control_plane
+  vars:
+    uid: "{{ ansible_facts.getent_passwd[_username][1] }}"
+    gid: "{{ ansible_facts.getent_passwd[_username][2] }}"
+    homedir: "{{ ansible_facts.getent_passwd[_username][4] }}"
+  block:
+  - name: Ensure .kube directory
+    file:
+      path: "{{ homedir }}/.kube"
+      state: directory
+
+  - name: Ensure admin.conf is in the user's home directory
+    copy:
+      src: /etc/kubernetes/admin.conf
+      dest: "{{ homedir }}/.kube/config"
+      remote_src: true
+      owner: "{{ uid }}"
+      group: "{{ gid }}"
+      mode: '0600'
+    become: true
