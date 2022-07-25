@@ -21,3 +21,5 @@ kubens_command: true
 
 crio_version: "{{ kubernetes_version.split('.')[0:2] | join('.') }}"
 crio_os: "CentOS_{{ ansible_distribution_major_version }}{{ '_Stream' if ansible_distribution_release == 'Stream' }}"
+
+python_package: "{{ 'python36' if ansible_distribution_major_version == '8' else 'python3' }}"

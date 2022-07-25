@@ -59,7 +59,9 @@
   yum:
     name:
       - git
-      - python36
+      - "{{ python_package }}"
+      - python3-pip
+      - python3-requests-oauthlib
       - python3-pyyaml
       - python3-jsonpatch
       - python3-cryptography
