@@ -33,3 +33,8 @@ argument_specs:
         description:
           - A tasks file to execute before upgrading the kubelet.
           - For example, you could upgrade the CR or the OS.
+
+      kubeadm_patches_directory:
+        type: str
+        default: /etc/kubernetes/patches
+        description: kubeadm components patches  directory.

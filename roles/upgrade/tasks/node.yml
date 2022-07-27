@@ -1,7 +1,7 @@
 - include_tasks: "{{ update_kubeadm_tasks }}"
-  
+
 - name: kubeadm upgrade node
-  command: kubeadm upgrade node
+  command: kubeadm upgrade node --patches {{ kubeadm_patches_directory }}
   become: true
   register: kubeadm_out
 

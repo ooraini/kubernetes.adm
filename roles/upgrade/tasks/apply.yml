@@ -5,13 +5,13 @@
 
 - assert:
     that: ansible_play_hosts | length == 1 and is_control_plane
-    fail_msg: Apply phase can only be run against a single control plane host 
+    fail_msg: Apply phase can only be run against a single control plane host
     quiet: true
 
 - include_tasks: "{{ update_kubeadm_tasks }}"
 
-- name: kubeadm upgrade apply 
-  command: kubeadm upgrade apply v{{ kubernetes_version }} --yes
+- name: kubeadm upgrade apply
+  command: kubeadm upgrade apply v{{ kubernetes_version }} --yes --patches {{ kubeadm_patches_directory }}
   become: true
   register: kubeadm_out
 

@@ -1,3 +1,4 @@
+kubeadm_patches_directory: /etc/kubernetes/patches
 update_kubeadm_tasks: _update_kubeadm.yml
 update_kube_tasks: _update_kube.yml
 # pre_kubelet_upgrade_hook:
