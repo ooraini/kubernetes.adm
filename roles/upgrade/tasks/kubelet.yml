@@ -11,6 +11,7 @@
         state: drain
         delete_options:
           ignore_daemonsets: true
+          delete_emptydir_data: true
       delegate_to: "{{ joined_control_plane_node }}"
 
     - include_tasks: "{{ pre_kubelet_upgrade_hook }}"
