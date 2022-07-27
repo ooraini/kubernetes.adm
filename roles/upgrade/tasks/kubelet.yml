@@ -13,6 +13,10 @@
           ignore_daemonsets: true
           delete_emptydir_data: true
       delegate_to: "{{ joined_control_plane_node }}"
+      retries: 2
+      delay: 5
+      register: result
+      until: result is succeeded
 
     - include_tasks: "{{ pre_kubelet_upgrade_hook }}"
       when: pre_kubelet_upgrade_hook is defined and pre_kubelet_upgrade_hook is not none
