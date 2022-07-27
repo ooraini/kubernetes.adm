@@ -8,7 +8,7 @@ argument_specs:
 
   main:
     short_description: Upgrade Kubernetes
-    description: 
+    description:
       - Upgrade Kubernets control plane and worker nodes
       - "The phases are run in the sequence: 'facts', 'apply', 'node' and then 'kubelet'"
     options:
@@ -21,7 +21,7 @@ argument_specs:
           - node
           - kubelet
         description:
-          - Determines the kubeadm command/phase to run. 
+          - Determines the kubeadm command/phase to run.
           - "1) C(facts): Collect facts about the cluster. Must be run first."
           - "2) C(apply): Run 'kubeadm uprade apply'."
           - "3) C(node): Run 'kubeadm uprade node'."
@@ -30,7 +30,6 @@ argument_specs:
 
       pre_kubelet_upgrade_hook:
         type: str
-        default: _upgrade_crio.yml
-        description: 
+        description:
           - A tasks file to execute before upgrading the kubelet.
-          - The default tasks file will upgrade CRI-O.
+          - For example, you could upgrade the CR or the OS.
