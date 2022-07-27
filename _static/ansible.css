@@ -1,0 +1,6 @@
+/* Copyright (c) Ansible and contributors */
+
+/* Make sure the main area has full width - might not be necessary, depending on theme */
+.wy-nav-content {
+    max-width: 100%;
+  }
