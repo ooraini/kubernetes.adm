@@ -21,7 +21,7 @@ argument_specs:
       kubeadm_patches_directory:
         type: str
         default: /etc/kubernetes/patches
-        description: Control plane patches path.
+        description: kubeadm components patches directory.
 
       kubeadm_certSANs:
         type: list
