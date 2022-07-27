@@ -7,7 +7,7 @@
   block:
     - name: Ensure node is drained
       kubernetes.core.k8s_drain:
-        name: "{{ inventory_hostname }}"
+        name: "{{ node_hostname }}"
         state: drain
         delete_options:
           ignore_daemonsets: true
@@ -21,6 +21,6 @@
 
 - name: Ensure node is schedulable
   kubernetes.core.k8s_drain:
-    name: "{{ inventory_hostname }}"
+    name: "{{ node_hostname }}"
     state: uncordon
   delegate_to: "{{ joined_control_plane_node }}"

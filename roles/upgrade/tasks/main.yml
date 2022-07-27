@@ -2,14 +2,14 @@
   include_tasks: facts.yml
   when: phase == 'facts'
 
-- assert: 
+- assert:
     that: hostvars['localhost'].k8s_nodes[node_hostname] is defined
     fail_msg: Host {{ node_hostname }} is not part of the cluster.
     quiet: true
 
 - name: Apply {{ kubernetes_version }}
   include_tasks: apply.yml
-  when: phase == 'apply' and ('v' + kubernetes_version) is version(control_plane_versions[node_hostname], '>')
+  when: phase == 'apply' and ('v' + kubernetes_version) is version(control_plane_versions[inventory_hostname], '>')
 
 - name: Node {{ kubernetes_version }}
   include_tasks: node.yml
