@@ -1,9 +1,13 @@
-- name: Ensure .local/bin directory
+- name: Ensure local user directories
   file:
-    path: "~/.local/bin"
+    path: "{{ item }}"
     state: directory
     mode: '0700'
-    recurse: true
+  loop:
+  - ~/.local/bin
+  - ~/.local/share/bash-completion/completions
+  - ~/.local/etc/alternatives
+  - ~/.local/var/lib/alternatives
 
 - vars:
     github_path: >-
@@ -48,3 +52,10 @@
         dest: "{{ completion_path }}/{{ binary_name }}{{ '@' ~ binary_version if suffix_binary_with_version else '' }}"
 
 - name: Set update-alternatives
+  command: >-
+    /usr/sbin/update-alternatives --install {{ binary_path }}/{{ binary_name }} {{ binary_name }} {{ binary_path }}/{{ binary_name }}{{ '@' ~ binary_version }} 50
+    --slave {{ completion_path }}/{{ binary_name }} {{ completion_name }} {{ completion_path }}/{{ binary_name }}{{ '@' ~ binary_version }}
+    {{ '' if system_wide else '--altdir ~/.local/etc/alternatives --admindir ~/.local/var/lib/alternatives' }}
+  vars:
+    completion_name: "{{ binary_name }}.{{  ansible_user_shell | basename }}"
+  when: update_alternatives and not download_only

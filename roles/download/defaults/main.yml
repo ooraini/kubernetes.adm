@@ -39,3 +39,5 @@ arch_map: "{{ arch_lang_map[arch_lang] }}"
 arch: "{{ arch_map[ansible_architecture] }}"
 
 # arch_lang: go
+
+update_alternatives: false
