@@ -13,13 +13,13 @@
 
 - include_tasks: download_file.yml
   vars:
-    download_dest: "{{ binary_path }}/{{ binary_name }}"
+    download_dest: "{{ binary_path }}/{{ binary_name }}{{ '@' ~ binary_version if suffix_binary_with_version else '' }}"
   when: not download_only
 
 - when: completion_command is defined and not download_only
   block:
     - name: Load completion script
-      command: "{{ binary_path }}/{{ binary_name }} {{ completion_command }}"
+      command: "{{ binary_path }}/{{ binary_name }}{{ '@' ~ binary_version if suffix_binary_with_version else '' }} {{ completion_command }}"
       changed_when: false
       register: completion_cmd_out
 
