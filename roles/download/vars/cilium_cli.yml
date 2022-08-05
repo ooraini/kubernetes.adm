@@ -1,5 +1,6 @@
-github_project: cilium/cilium-cli 
-release_version: "{{ cilium_cli_version | default('latest') }}"
+github_project: cilium/cilium-cli
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ cilium_cli_version | default(None) }}"
 release_file: cilium-linux-{{ arch }}.tar.gz
 download_file_in_archive: cilium
 binary_name: cilium

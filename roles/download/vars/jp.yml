@@ -1,5 +1,6 @@
 github_project: jmespath/jp
-release_version: "{{ jp_version | default('latest') }}"
+release_version: "{{ binary_version or 'latest' }}"
+binary_version: "{{ jp_version | default(None) }}"
 release_file: "jp-linux-{{ arch }}"
 binary_name: jp
 download_mode: gh_binary

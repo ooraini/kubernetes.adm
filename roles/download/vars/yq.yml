@@ -1,5 +1,6 @@
 github_project: mikefarah/yq
-release_version: "{{ yq_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ yq_version | default(None) }}"
 release_file: yq_linux_{{ arch }}
 binary_name: yq
 completion_command: shell-completion {{  ansible_user_shell | basename }}

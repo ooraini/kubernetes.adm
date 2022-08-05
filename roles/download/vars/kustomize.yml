@@ -1,6 +1,7 @@
 github_project: kubernetes-sigs/kustomize
-release_version: "kustomize/{{ kustomize_version }}"
-release_file:  kustomize_{{ kustomize_version }}_linux_amd64.tar.gz
+release_version: "kustomize/v{{ binary_version }}"
+binary_version: "{{ kustomize_version }}"
+release_file:  kustomize_v{{ binary_version }}_linux_amd64.tar.gz
 download_file_in_archive: kustomize
 binary_name: kustomize
 checksum_file: "{{ download_url | dirname }}/checksums.txt"

@@ -1,5 +1,6 @@
 github_project: kubernetes-sigs/kubebuilder
-release_version: "{{ kubebuilder_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ kubebuilder_version | default(None) }}"
 release_file:  kubebuilder_linux_{{ arch }}
 binary_name: kubebuilder
 checksum_file: "{{ download_url | dirname }}/checksums.txt"

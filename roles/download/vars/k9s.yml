@@ -1,5 +1,6 @@
 github_project: derailed/k9s
-release_version: "{{ k9s_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ k9s_version | default(None) }}"
 release_file:  k9s_Linux_{{ arch }}.tar.gz
 download_file_in_archive: k9s
 binary_name: k9s

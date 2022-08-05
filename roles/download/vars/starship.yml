@@ -1,5 +1,6 @@
 github_project: starship/starship
-release_version: "{{ starship_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ starship_version | default(None) }}"
 release_file:  starship-{{ arch }}-unknown-linux-gnu.tar.gz
 download_file_in_archive: starship
 binary_name: starship

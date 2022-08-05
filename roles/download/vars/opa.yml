@@ -1,5 +1,6 @@
 github_project: open-policy-agent/opa
-release_version: "{{ opa_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ opa_version | default(None) }}"
 release_file:  opa_linux_{{ arch }}_static
 checksum_file_suffix: .sha256
 checksum_algo: sha256

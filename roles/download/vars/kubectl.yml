@@ -1,4 +1,5 @@
-download_url: "{{ kubectl_base_url | default('https://dl.k8s.io/release', true) }}/{{ kubectl_version }}/bin/linux/{{ arch }}/kubectl"
+download_url: "{{ kubectl_base_url | default('https://dl.k8s.io/release', true) }}/v{{ binary_version }}/bin/linux/{{ arch }}/kubectl"
+binary_version: "{{ kubectl_version }}"
 binary_name: kubectl
 checksum_file_suffix: .sha256
 checksum_algo: sha256

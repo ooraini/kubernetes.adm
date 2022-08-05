@@ -1,5 +1,6 @@
 github_project: cilium/hubble
-release_version: "{{ hubble_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ hubble_version | default(None) }}"
 release_file: hubble-linux-{{ arch }}.tar.gz
 download_file_in_archive: hubble
 binary_name: hubble

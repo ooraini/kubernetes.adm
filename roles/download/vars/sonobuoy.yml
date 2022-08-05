@@ -1,9 +1,10 @@
 github_project: vmware-tanzu/sonobuoy
-release_version: "{{ sonobuoy_version }}"
-release_file: sonobuoy_{{ sonobuoy_version[1:] }}_linux_{{ arch }}.tar.gz
+release_version: "v{{ binary_version }}"
+binary_version: "{{ sonobuoy_version }}"
+release_file: sonobuoy_{{ binary_version }}_linux_{{ arch }}.tar.gz
 binary_name: sonobuoy
 download_file_in_archive: sonobuoy
 checksum_algo: 'sha256'
-checksum_file: "{{ download_url | dirname }}/sonobuoy_{{ sonobuoy_version[1:] }}_checksums.txt"
+checksum_file: "{{ download_url | dirname }}/sonobuoy_{{ binary_version }}_checksums.txt"
 download_mode: gh_binary
 arch_lang: go

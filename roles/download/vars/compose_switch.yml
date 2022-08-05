@@ -1,5 +1,6 @@
 github_project: docker/compose-switch
-release_version: "{{ compose_switch_version | default('latest') }}"
+release_version: "{{ 'v' ~ compose_switch_version if compose_switch_version else 'latest' }}"
+binary_version: "{{ compose_switch_version | default(None) }}"
 release_file: docker-compose-linux-{{ arch }}
 binary_name: compose-switch
 download_mode: gh_binary

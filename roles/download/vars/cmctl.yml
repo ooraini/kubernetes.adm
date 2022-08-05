@@ -1,5 +1,6 @@
 github_project: jetstack/cert-manager
-release_version: "{{ cmctl_version | default('latest') }}"
+release_version: "{{ 'v' ~ cmctl_version if cmctl_version else 'latest' }}"
+release_version: "{{ cmctl_version | default(None) }}"
 release_file: cmctl-linux-amd64.tar.gz
 download_file_in_archive: cmctl
 binary_name: cmctl

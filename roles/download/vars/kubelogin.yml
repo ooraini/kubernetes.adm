@@ -1,5 +1,6 @@
 github_project: int128/kubelogin
-release_version: "{{ kubelogin_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ kubelogin_version | default(None) }}"
 release_file: kubelogin_linux_{{ arch }}.zip
 download_file_in_archive: kubelogin
 binary_name: kubectl-oidc_login

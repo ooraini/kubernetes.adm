@@ -1,7 +1,8 @@
 github_project: istio/istio
-release_version: "{{ istio_version }}"
-release_file: istio-{{ istio_version }}-linux-{{ arch }}.tar.gz
-download_file_in_archive: istio-{{ istio_version }}/bin/istioctl
+release_version: "{{ binary_version }}"
+release_file: istio-{{ binary_version }}-linux-{{ arch }}.tar.gz
+binary_version: "{{ istio_version }}"
+download_file_in_archive: istio-{{ binary_version }}/bin/istioctl
 binary_name: istioctl
 checksum_file_suffix: '.sha256'
 checksum_algo: 'sha256'

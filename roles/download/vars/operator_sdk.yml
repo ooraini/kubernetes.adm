@@ -1,5 +1,6 @@
 github_project: operator-framework/operator-sdk
-release_version: "{{ operator_sdk_version | default('latest') }}"
+release_version: "{{ 'v' ~ binary_version if binary_version else 'latest' }}"
+binary_version: "{{ operator_sdk_version | default(None) }}"
 release_file:  operator-sdk_linux_{{ arch }}
 checksum_file: "{{ download_url | dirname }}/checksums.txt"
 checksum_algo: sha256
