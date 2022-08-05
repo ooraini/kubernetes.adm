@@ -13,6 +13,11 @@ binary_path: "{{ system_binary_path if system_wide else user_binary_path }}"
 user_binary_path: "~/.local/bin"
 system_binary_path: "/usr/local/bin"
 
+completion_path: "{{ system_completion_path if system_wide else user_completion_path }}"
+
+user_completion_path: "~/.local/share/bash-completion/completions"
+system_completion_path: "/etc/bash_completion.d"
+
 download_only: false
 download_only_flat: false
 download_checksum_file: false

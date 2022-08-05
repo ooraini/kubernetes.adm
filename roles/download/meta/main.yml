@@ -8,11 +8,11 @@ argument_specs:
       download_url:
         type: str
         required: true
-        description: 
+        description:
           - The file URL.
       download_unarchive:
         type: bool
-        description: 
+        description:
           - Whether the downloaded file will be unarchived.
           - True when C(download_file_in_archive) is defined
       download_file_in_archive:
@@ -30,13 +30,13 @@ argument_specs:
         description: The file mode.
       checksum_file:
         type: str
-        description: 
+        description:
           - The URL to a file containg the digest.
           - Mutually exclusive with C(checksum_file_suffix).
           - See C(get_url) module for more info.
       checksum_file_suffix:
         type: str
-        description: 
+        description:
           - The suffix that will be appended to C(download_url) to construct the checksum URL.
           - Mutually exclusive with C(checksum_file).
       checksum_algo:
@@ -45,7 +45,7 @@ argument_specs:
       direct_checksum:
         type: bool
         default: false
-        description: 
+        description:
         - Set to true when checksum file contains only the digest.
         - Work around for https://github.com/ansible/ansible/issues/54390.
       disable_checksum:
@@ -56,7 +56,7 @@ argument_specs:
         type: bool
         default: false
         description: When true, the checksum file will be downloaded along side the downloaded file.
-        
+
 
   download_binary:
     short_description: Download and install a binary file
@@ -80,9 +80,13 @@ argument_specs:
         description: The path to store files when C(download_only) is true
       completion_command:
         type: str
-        description: 
+        description:
           - The shell completion command.
           - The expression {{ ansible_user_shell | basename }} can be used to determine the user's shell.
+      binary_version:
+        type: str
+        description:
+          - The binary version.
 
 
   gh_binary:
@@ -103,7 +107,7 @@ argument_specs:
       release_version:
         type: str
         required: true
-        description: The release version.   
+        description: The release version.
       release_file:
         type: str
         required: true
@@ -119,12 +123,17 @@ argument_specs:
       download_only_flat:
         type: bool
         default: false
-        description: 
+        description:
           - When false, store files under {{ download_only_path ~ '/' ~ github_project ~ '/releases/download/' ~ release_version }}
           - Mimics the Github URL for the file.
           - When true, store files under C(download_only_path)
       completion_command:
         type: str
-        description: 
+        description:
           - The shell completion command.
           - The expression {{ ansible_user_shell | basename }} can be used to determine the user shell.
+      binary_version:
+        type: str
+        description:
+          - The binary version.
+          - Unlike the C(release_version) which reference's a Github release.
