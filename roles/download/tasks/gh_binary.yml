@@ -1,8 +1,10 @@
 - name: Ensure local user directories
   file:
-    path: "{{ item }}"
+    path: "{{ _dir }}"
     state: directory
     mode: '0700'
+  loop_control:
+    loop_var: _dir
   loop:
   - ~/.local/bin
   - ~/.local/share/bash-completion/completions
