@@ -1,0 +1,10 @@
+github_project: helmfile/helmfile
+release_version: "v{{ binary_version }}"
+binary_version: "{{ helmfile_version }}"
+release_file: helmfile_{{ binary_version }}_linux_{{ arch }}.tar.gz
+download_file_in_archive: helmfile
+binary_name: helmfile
+checksum_file: "{{ download_url | dirname }}/helmfile_{{ binary_version }}_checksums.txt"
+checksum_algo: sha256
+download_mode: gh_binary
+arch_lang: go
