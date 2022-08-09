@@ -1,0 +1,8 @@
+github_project: FiloSottile/age
+release_version: "v{{ binary_version }}"
+binary_version: "{{ age_version }}"
+release_file: age-v{{ binary_version }}-linux-{{ arch }}.tar.gz
+download_file_in_archive: age/age
+binary_name: age
+download_mode: gh_binary
+arch_lang: go
