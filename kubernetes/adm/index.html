@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kubernetes.Adm &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/antsibull-minimal.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/ansible.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Introduction" href="docsite/introduction.html" />
+    <link rel="prev" title="Collections in the Kubernetes Namespace" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Ansible collections
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Collections in the Kubernetes Namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Kubernetes.Adm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docsite/introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docsite/requirments.html">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docsite/collection_usage.html">Using The Collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docsite/example.html">Full Example with Vagrant</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-index">Plugin Index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#role-index">Role Index</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_server_lb_role.html">kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="common_role.html">kubernetes.adm.common role – Common Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributed_lb_role.html">kubernetes.adm.distributed_lb role – Setup a Distributed Load Balancer For The API Server using HAProxy.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="download_role.html">kubernetes.adm.download role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="init_role.html">kubernetes.adm.init role – Initializes a Kubernetes cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="join_role.html">kubernetes.adm.join role – Joins a Kubernetes cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="keepalived_role.html">kubernetes.adm.keepalived role – Setup HA Floating IP Using Keepalived</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pre_join_role.html">kubernetes.adm.pre_join role – Generate token and certificate key for joining nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prepare_role.html">kubernetes.adm.prepare role – Prepare node for Kubernetes installtion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reset_role.html">kubernetes.adm.reset role – Remove node from cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="upgrade_role.html">kubernetes.adm.upgrade role – Upgrade Kubernetes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Collections in the Kubernetes Namespace</a> &raquo;</li>
+      <li>Kubernetes.Adm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kubernetes-adm">
+<span id="plugins-in-kubernetes-adm"></span><h1>Kubernetes.Adm<a class="headerlink" href="#kubernetes-adm" title="Permalink to this heading"></a></h1>
+<p>Collection version 1.0.0</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#general" id="id2">General</a></p></li>
+<li><p><a class="reference internal" href="#plugin-index" id="id3">Plugin Index</a></p></li>
+<li><p><a class="reference internal" href="#role-index" id="id4">Role Index</a></p></li>
+</ul>
+</nav>
+<section id="description">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Description</a><a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>your collection description</p>
+<p><strong>Author:</strong></p>
+<ul class="simple">
+<li><p>Omar Aloraini (github.com/ooraini)</p></li>
+</ul>
+<p class="ansible-links">
+  <a href="https://github.com/ooraini/kubernetes.adm/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+  <a href="https://github.com/ooraini/kubernetes.adm" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+</p><div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="general">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">General</a><a class="headerlink" href="#general" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docsite/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docsite/requirments.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docsite/collection_usage.html">Using The Collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docsite/example.html">Full Example with Vagrant</a></li>
+</ul>
+</div>
+</section>
+<section id="plugin-index">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Plugin Index</a><a class="headerlink" href="#plugin-index" title="Permalink to this heading"></a></h2>
+<p>There are no plugins in the kubernetes.adm collection with automatically generated documentation.</p>
+</section>
+<section id="role-index">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Role Index</a><a class="headerlink" href="#role-index" title="Permalink to this heading"></a></h2>
+<p>These are the roles in the kubernetes.adm collection:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api_server_lb_role.html#ansible-collections-kubernetes-adm-api-server-lb-role"><span class="std std-ref">api_server_lb role</span></a> – Setup a load balancer for the API server using keepalived and haproxy.</p></li>
+<li><p><a class="reference internal" href="common_role.html#ansible-collections-kubernetes-adm-common-role"><span class="std std-ref">common role</span></a> – Common Variables</p></li>
+<li><p><a class="reference internal" href="distributed_lb_role.html#ansible-collections-kubernetes-adm-distributed-lb-role"><span class="std std-ref">distributed_lb role</span></a> – Setup a Distributed Load Balancer For The API Server using HAProxy.</p></li>
+<li><p><a class="reference internal" href="download_role.html#ansible-collections-kubernetes-adm-download-role"><span class="std std-ref">download role</span></a> –</p></li>
+<li><p><a class="reference internal" href="init_role.html#ansible-collections-kubernetes-adm-init-role"><span class="std std-ref">init role</span></a> – Initializes a Kubernetes cluster</p></li>
+<li><p><a class="reference internal" href="join_role.html#ansible-collections-kubernetes-adm-join-role"><span class="std std-ref">join role</span></a> – Joins a Kubernetes cluster</p></li>
+<li><p><a class="reference internal" href="keepalived_role.html#ansible-collections-kubernetes-adm-keepalived-role"><span class="std std-ref">keepalived role</span></a> – Setup HA Floating IP Using Keepalived</p></li>
+<li><p><a class="reference internal" href="pre_join_role.html#ansible-collections-kubernetes-adm-pre-join-role"><span class="std std-ref">pre_join role</span></a> – Generate token and certificate key for joining nodes</p></li>
+<li><p><a class="reference internal" href="prepare_role.html#ansible-collections-kubernetes-adm-prepare-role"><span class="std std-ref">prepare role</span></a> – Prepare node for Kubernetes installtion</p></li>
+<li><p><a class="reference internal" href="reset_role.html#ansible-collections-kubernetes-adm-reset-role"><span class="std std-ref">reset role</span></a> – Remove node from cluster</p></li>
+<li><p><a class="reference internal" href="upgrade_role.html#ansible-collections-kubernetes-adm-upgrade-role"><span class="std std-ref">upgrade role</span></a> – Upgrade Kubernetes</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>List of <a class="reference internal" href="../../index.html#list-of-collections"><span class="std std-ref">collections</span></a> with docs hosted here.</p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Collections in the Kubernetes Namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docsite/introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

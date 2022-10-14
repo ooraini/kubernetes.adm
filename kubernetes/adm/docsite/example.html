@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Example with Vagrant &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/ansible.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy." href="../api_server_lb_role.html" />
+    <link rel="prev" title="Using The Collection" href="collection_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Ansible collections
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collections in the Kubernetes Namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kubernetes.Adm</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#description">Description</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#general">General</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="requirments.html">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collection_usage.html">Using The Collection</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Full Example with Vagrant</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#plugin-index">Plugin Index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#role-index">Role Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Collections in the Kubernetes Namespace</a> &raquo;</li>
+          <li><a href="../index.html">Kubernetes.Adm</a> &raquo;</li>
+      <li>Full Example with Vagrant</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="full-example-with-vagrant">
+<span id="ansible-collections-kubernetes-adm-docsite-example"></span><h1>Full Example with Vagrant<a class="headerlink" href="#full-example-with-vagrant" title="Permalink to this heading"></a></h1>
+<p>See requirements in <a class="reference internal" href="requirments.html#ansible-collections-kubernetes-adm-docsite-requirements"><span class="std std-ref">Requirements</span></a>.</p>
+<ul class="simple">
+<li><p>Six node cluster</p></li>
+<li><p>Three control plane and three worker nodes</p></li>
+<li><p>Using Vagrant with libvirt provider</p></li>
+<li><p>HAProxy distributed load balancer</p></li>
+<li><p>Cilium CNI plugin</p></li>
+</ul>
+<section id="vagrantfile">
+<h2>Vagrantfile<a class="headerlink" href="#vagrantfile" title="Permalink to this heading"></a></h2>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">synced_folder</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;/vagrant&quot;</span><span class="p">,</span> <span class="ss">disabled</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">insert_key</span> <span class="o">=</span> <span class="kp">false</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="ss">:libvirt</span> <span class="k">do</span> <span class="o">|</span><span class="n">libvirt</span><span class="o">|</span>
+    <span class="n">libvirt</span><span class="o">.</span><span class="n">qemu_use_session</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">libvirt</span><span class="o">.</span><span class="n">management_network_mode</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;node1&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.10&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;node2&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.20&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;node3&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.30&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;node4&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.40&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;node5&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.50&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;node6&#39;</span><span class="p">:</span> <span class="s2">&quot;192.168.33.60&quot;</span>
+  <span class="p">}</span>
+
+  <span class="n">machines</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">ip</span><span class="o">|</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+      <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;rocky8/kubeadm_1.22.5&quot;</span>
+      <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="ss">:private_network</span><span class="p">,</span> <span class="ss">:ip</span> <span class="o">=&gt;</span> <span class="n">ip</span>
+      <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="ss">:libvirt</span> <span class="k">do</span> <span class="o">|</span><span class="n">libvirt</span><span class="o">|</span>
+        <span class="n">libvirt</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">libvirt</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">4096</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+    <span class="n">ssh_pub_key</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">readlines</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Dir</span><span class="o">.</span><span class="n">home</span><span class="si">}</span><span class="s2">/.ssh/id_ed25519.pub&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">strip</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">inline</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="dl">SHELL</span>
+<span class="sh">      echo #{ssh_pub_key} &gt;&gt; /home/vagrant/.ssh/authorized_keys</span>
+<span class="sh">      nmcli connection modify &#39;System eth1&#39; ipv4.gateway &#39;192.168.33.1&#39; ipv4.dns &#39;192.168.33.1&#39; ipv4.route-metric 99</span>
+<span class="sh">      nmcli connection up &#39;System eth1&#39;</span>
+<span class="dl">    SHELL</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</section>
+<section id="inventory">
+<h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="nt">all</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vagrant</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node1</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.10&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node2</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.20&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node3</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.30&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node4</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.40&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node5</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.50&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">node6</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;192.168.33.60&#39;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">children</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">k8s_control_plane</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node1</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node2</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node3</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">k8s_workers</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node4</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node5</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node6</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">k8s_cluster</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">domain_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">home.arpa</span><span class="w"></span>
+
+<span class="w">        </span><span class="nt">kubernetes_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.22.5&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">kubeadm_apiversion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1beta3</span><span class="w"></span>
+<span class="w">        </span><span class="nt">kubeadm_skip_phases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;addon/kube-proxy&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cluster_pod_cidr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.0.0/16</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cluster_service_cidr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.17.0.0/16</span><span class="w"></span>
+<span class="w">        </span><span class="nt">control_plane_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s.</span><span class="cp">{{</span> <span class="nv">domain_name</span> <span class="cp">}}</span><span class="l l-Scalar l-Scalar-Plain">:8443</span><span class="w"></span>
+<span class="w">        </span><span class="nt">control_plane_hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_control_plane</span><span class="w"></span>
+<span class="w">        </span><span class="nt">swap_state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disabled</span><span class="w"></span>
+<span class="w">        </span><span class="nt">node_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">inventory_hostname</span> <span class="cp">}}</span><span class="s">.</span><span class="cp">{{</span> <span class="nv">domain_name</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cluster_vip</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;127.0.0.1&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">helm_version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.7.2&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cilium_version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1.11.0&#39;</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">children</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">k8s_control_plane</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">k8s_workers</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">k8s_init_node</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">node1</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="playbook">
+<h2>Playbook<a class="headerlink" href="#playbook" title="Permalink to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enusre hostname and /etc/hosts for nodes</span><span class="w"></span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"></span>
+<span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/hosts</span><span class="w"></span>
+<span class="w">      </span><span class="nt">blockinfile</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/hosts</span><span class="w"></span>
+<span class="w">        </span><span class="nt">block</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">host</span> <span class="k">in</span> <span class="nv">groups</span><span class="o">[</span><span class="s1">&#39;k8s_cluster&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="w"></span>
+<span class="w">          </span><span class="cp">{{</span><span class="nv">hostvars</span><span class="o">[</span><span class="nv">host</span><span class="o">]</span><span class="nv">.ansible_host</span> <span class="cp">}}</span><span class="w"> </span><span class="cp">{{</span> <span class="nv">host</span> <span class="cp">}}</span><span class="no">.</span><span class="cp">{{</span> <span class="nv">domain_name</span> <span class="cp">}}</span><span class="w"></span>
+<span class="w">          </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># CLUSTER ENDPOINT</span><span class="w"></span>
+<span class="w">          </span><span class="cp">{{</span> <span class="nv">cluster_vip</span> <span class="cp">}}</span><span class="w"> </span><span class="cp">{{</span> <span class="nv">control_plane_endpoint.split</span><span class="o">(</span><span class="s1">&#39;:&#39;</span><span class="o">)[</span><span class="m">0</span><span class="o">]</span> <span class="cp">}}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set hostname</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name=&quot;</span><span class="cp">{{</span> <span class="nv">node_hostname</span> <span class="cp">}}</span><span class="l l-Scalar l-Scalar-Plain">&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure firewalld is stopped and disabled</span><span class="w"></span>
+<span class="w">      </span><span class="nt">systemd</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">firewalld</span><span class="w"></span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stopped</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_cluster</span><span class="w"></span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">kubernetes.adm.distributed_lb</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">import_playbook</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.adm.cluster</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">control_plane_hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_control_plane</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workers_hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_workers</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cluster_hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_cluster</span><span class="w"></span>
+<span class="w">    </span><span class="nt">init_node_hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_init_node</span><span class="w"></span>
+
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure CNI</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_init_node</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">include_role</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.adm.download</span><span class="w"></span>
+<span class="w">        </span><span class="nt">vars_from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">helm</span><span class="w"></span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure Cilium repository</span><span class="w"></span>
+<span class="w">      </span><span class="nt">kubernetes.core.helm_repository</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cilium</span><span class="w"></span>
+<span class="w">        </span><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://helm.cilium.io/</span><span class="w"></span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy Cilium CNI</span><span class="w"></span>
+<span class="w">      </span><span class="nt">kubernetes.core.helm</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cilium</span><span class="w"></span>
+<span class="w">        </span><span class="nt">chart_ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cilium/cilium</span><span class="w"></span>
+<span class="w">        </span><span class="nt">release_namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span><span class="w"></span>
+<span class="w">        </span><span class="nt">chart_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">cilium_version</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">ipam</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">cgroup</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">autoMount</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">            </span><span class="nt">hostRoot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/sys/fs/cgroup</span><span class="w"></span>
+<span class="w">          </span><span class="nt">kubeProxyReplacement</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;strict&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">k8sServiceHost</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">control_plane_endpoint.split</span><span class="o">(</span><span class="s1">&#39;:&#39;</span><span class="o">)[</span><span class="m">0</span><span class="o">]</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">k8sServicePort</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">control_plane_endpoint.split</span><span class="o">(</span><span class="s1">&#39;:&#39;</span><span class="o">)[</span><span class="m">1</span><span class="o">]</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="w"></span>
+
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CRI-O CNI Fix https://github.com/cri-o/cri-o/issues/4276</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_cluster</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wait for CNI configuration https://github.com/cri-o/cri-o/issues/4276</span><span class="w"></span>
+<span class="w">      </span><span class="nt">wait_for</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cni/net.d/05-cilium.conf</span><span class="w"></span>
+<span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_new_joiner | default(false)</span><span class="w"></span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restart cri-o after changes in /etc/cni/net.d/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">systemd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name=cri-o state=restarted</span><span class="w"></span>
+<span class="w">      </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s_new_joiner | default(false)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="collection_usage.html" class="btn btn-neutral float-left" title="Using The Collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_server_lb_role.html" class="btn btn-neutral float-right" title="kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

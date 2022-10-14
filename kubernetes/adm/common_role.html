@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kubernetes.adm.common role – Common Variables &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/antsibull-minimal.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/ansible.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="kubernetes.adm.distributed_lb role – Setup a Distributed Load Balancer For The API Server using HAProxy." href="distributed_lb_role.html" />
+    <link rel="prev" title="kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy." href="api_server_lb_role.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Ansible collections
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Collections in the Kubernetes Namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Kubernetes.Adm</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#role-index">Role Index</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="api_server_lb_role.html">kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy.</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">kubernetes.adm.common role – Common Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributed_lb_role.html">kubernetes.adm.distributed_lb role – Setup a Distributed Load Balancer For The API Server using HAProxy.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="download_role.html">kubernetes.adm.download role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="init_role.html">kubernetes.adm.init role – Initializes a Kubernetes cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="join_role.html">kubernetes.adm.join role – Joins a Kubernetes cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="keepalived_role.html">kubernetes.adm.keepalived role – Setup HA Floating IP Using Keepalived</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pre_join_role.html">kubernetes.adm.pre_join role – Generate token and certificate key for joining nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prepare_role.html">kubernetes.adm.prepare role – Prepare node for Kubernetes installtion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reset_role.html">kubernetes.adm.reset role – Remove node from cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="upgrade_role.html">kubernetes.adm.upgrade role – Upgrade Kubernetes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Collections in the Kubernetes Namespace</a> &raquo;</li>
+          <li><a href="index.html">Kubernetes.Adm</a> &raquo;</li>
+      <li>kubernetes.adm.common role – Common Variables</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-kubernetes-adm-common-role"></span><section id="kubernetes-adm-common-role-common-variables">
+<h1>kubernetes.adm.common role – Common Variables<a class="headerlink" href="#kubernetes-adm-common-role-common-variables" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This role is part of the <a class="reference external" href="https://galaxy.ansible.com/kubernetes/adm">kubernetes.adm collection</a> (version 1.0.0).</p>
+<p>To install it use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">kubernetes.adm</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">kubernetes.adm.common</span></code>.</p>
+</div>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#entry-point-main-common-variables" id="id1">Entry point <code class="docutils literal notranslate"><span class="pre">main</span></code> – Common Variables</a></p>
+<ul>
+<li><p><a class="reference internal" href="#synopsis" id="id2">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="entry-point-main-common-variables">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Entry point <code class="docutils literal notranslate"><span class="pre">main</span></code> – Common Variables</a><a class="headerlink" href="#entry-point-main-common-variables" title="Permalink to this heading"></a></h2>
+<section id="synopsis">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h3>
+</section>
+<section id="parameters">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<table class="ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--cluster_apiserver_port"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-cluster-apiserver-port"><strong>cluster_apiserver_port</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--cluster_apiserver_port" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The API server port (non-load-balanced).</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;6443&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--cluster_dns_domain"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-cluster-dns-domain"><strong>cluster_dns_domain</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--cluster_dns_domain" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The cluster domain name.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;cluster.local&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--cluster_name"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-cluster-name"><strong>cluster_name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--cluster_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The cluster name.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;kubernetes&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--cluster_pod_cidr"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-cluster-pod-cidr"><strong>cluster_pod_cidr</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--cluster_pod_cidr" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The Pod network CIDR.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--cluster_service_cidr"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-cluster-service-cidr"><strong>cluster_service_cidr</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--cluster_service_cidr" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The service network CIDR.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--control_plane_endpoint"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-control-plane-endpoint"><strong>control_plane_endpoint</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--control_plane_endpoint" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The control plane endpoint in the format ‘LOAD_BALANCER_DNS:LOAD_BALANCER_PORT’.</p>
+<p>See kubeadm documentation for more information.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--control_plane_hostgroup"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-control-plane-hostgroup"><strong>control_plane_hostgroup</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--control_plane_hostgroup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Inventory group name with all the control plane nodes.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--joined_control_plane_node"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-joined-control-plane-node"><strong>joined_control_plane_node</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--joined_control_plane_node" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Some tasks require a control plane node to delegate to.</p>
+<p>For example, joining a second control plane node, an existing control plane is needed to perform the join.</p>
+<p>In such case, we use ‘joined_control_plane_node’ as the existing node.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;First</span> <span class="pre">node</span> <span class="pre">in</span> <span class="pre">control_plane_hostgroup&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_apiversion"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-apiversion"><strong>kubeadm_apiversion</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_apiversion" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The kubeadm configuration API version. For example ‘v1beta3’.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_certSANs"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-certsans"><strong>kubeadm_certSANs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_certSANs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Add additional Subject Alternative Names (SANs) for the API server certificate.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_cluster_configuration"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-cluster-configuration"><strong>kubeadm_cluster_configuration</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_cluster_configuration" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The kubeadm ClusterConfiguration object.</p>
+<p>To override use <code class="docutils literal notranslate"><span class="pre">kubeadm_cluster_configuration_override</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_cluster_configuration_override"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-cluster-configuration-override"><strong>kubeadm_cluster_configuration_override</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_cluster_configuration_override" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Can be used to override part of the <code class="docutils literal notranslate"><span class="pre">kubeadm_cluster_configuration</span></code> object.</p>
+<p>A simple merge using the <em>combine</em> filter.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_config_path"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-config-path"><strong>kubeadm_config_path</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_config_path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Where to store the kubeadm config file.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;/etc/kubernetes&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_init_configuration"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-init-configuration"><strong>kubeadm_init_configuration</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_init_configuration" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The kubeadm InitConfiguration object.</p>
+<p>To override use <code class="docutils literal notranslate"><span class="pre">kubeadm_init_configuration_override</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_init_configuration_override"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-init-configuration-override"><strong>kubeadm_init_configuration_override</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_init_configuration_override" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Can be used to override part of the <code class="docutils literal notranslate"><span class="pre">kubeadm_init_configuration</span></code> object.</p>
+<p>A simple merge using the <em>combine</em> filter.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_join_configuration"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-join-configuration"><strong>kubeadm_join_configuration</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_join_configuration" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The kubeadm JoinConfiguration object.</p>
+<p>To override use <code class="docutils literal notranslate"><span class="pre">kubeadm_join_configuration_override</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_join_configuration_override"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-join-configuration-override"><strong>kubeadm_join_configuration_override</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_join_configuration_override" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Can be used to override part of the <code class="docutils literal notranslate"><span class="pre">kubeadm_join_configuration</span></code> object.</p>
+<p>A simple merge using the <em>combine</em> filter.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_kubelet_configuration"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-kubelet-configuration"><strong>kubeadm_kubelet_configuration</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_kubelet_configuration" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The kubeadm KubeletConfiguration object.</p>
+<p>To override use <code class="docutils literal notranslate"><span class="pre">kubeadm_kubelet_configuration_override</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_kubelet_configuration_override"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-kubelet-configuration-override"><strong>kubeadm_kubelet_configuration_override</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_kubelet_configuration_override" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Can be used to override part of the <code class="docutils literal notranslate"><span class="pre">kubeadm_kubelet_configuration</span></code> object.</p>
+<p>A simple merge using the <em>combine</em> filter.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_patches_directory"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-patches-directory"><strong>kubeadm_patches_directory</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_patches_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>kubeadm components patches directory.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;/etc/kubernetes/patches&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubeadm_skip_phases"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubeadm-skip-phases"><strong>kubeadm_skip_phases</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubeadm_skip_phases" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of kubeadm init phases that will be skipped.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--kubernetes_version"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-kubernetes-version"><strong>kubernetes_version</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--kubernetes_version" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The Kubernetes version to install/upgrade.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-main--node_hostname"></div><p class="ansible-option-title" id="ansible-collections-kubernetes-adm-common-role-parameter-main-node-hostname"><strong>node_hostname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-main--node_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>To allow for a shorter inventory names, <code class="docutils literal notranslate"><span class="pre">node_hostname</span></code> can be used to transform the short inventory name to a FQDN.</p>
+<p>Typically, it will be defined in terms of <code class="docutils literal notranslate"><span class="pre">inventory_hostname</span></code>.</p>
+<p>For example, <em>{{ node_hostname }}.example.com</em>.</p>
+<p>It’s REQUIRED that the <code class="docutils literal notranslate"><span class="pre">hostname</span></code> command outputs the same value as <code class="docutils literal notranslate"><span class="pre">node_hostname</span></code> and that DNS resolves it to the host’s IP.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;inventory_hostname&quot;</span></code></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="collection-links">
+<h4>Collection links<a class="headerlink" href="#collection-links" title="Permalink to this heading"></a></h4>
+<p class="ansible-links">
+  <a href="https://github.com/ooraini/kubernetes.adm/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+  <a href="https://github.com/ooraini/kubernetes.adm" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+</p></section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api_server_lb_role.html" class="btn btn-neutral float-left" title="kubernetes.adm.api_server_lb role – Setup a load balancer for the API server using keepalived and haproxy." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="distributed_lb_role.html" class="btn btn-neutral float-right" title="kubernetes.adm.distributed_lb role – Setup a Distributed Load Balancer For The API Server using HAProxy." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
