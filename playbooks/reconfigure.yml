@@ -32,6 +32,20 @@
       delegate_to: localhost
       delegate_facts: true
 
+    - name: Get kube-proxy ConfigMap
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: ConfigMap
+        name: kube-proxy
+        namespace: kube-system
+      register: result
+
+    - set_fact:
+        current_kubeproxy_configuration: "{{ result.resources[0]['data']['config.conf'] | from_yaml }}"
+        target_kubeproxy_configuration: "{{ kubeadm_kubeproxy_configuration | combine(kubeadm_kubeproxy_configuration_override, recursive=True) }}"
+      delegate_to: localhost
+      delegate_facts: true
+
 
 - hosts: "{{ control_plane_hostgroup }}"
   serial: 1
@@ -68,8 +82,13 @@
       when: (current.apiServer.certSANs | sort) != (target.apiServer.certSANs | sort)
       register: cert_result
 
-    - name: Update manifests
+    - name: Update kube manifests
       command: kubeadm init phase control-plane all --config {{ kubeadm_config_path }}/kubeadm.conf
+      become: true
+      changed_when: false
+
+    - name: Update etcd manifests
+      command: kubeadm init phase etcd local --config {{ kubeadm_config_path }}/kubeadm.conf
       become: true
       changed_when: false
 
@@ -149,3 +168,29 @@
       systemd:
         name: kubelet
         state: restarted
+
+
+- hosts: "{{ init_node_hostgroup }}"
+  gather_facts: false
+  vars:
+    current: "{{ hostvars['localhost']['current_kubeproxy_configuration'] }}"
+    target: "{{ hostvars['localhost']['target_kubeproxy_configuration'] }}"
+  tasks:
+  - when: current != target
+    block:
+    - name: Update kube-proxy ConfigMap
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: kube-proxy
+            namespace: kube-system
+          data:
+            config.conf: "{{ target | to_nice_yaml }}"
+
+    - deubg:
+        msg: |
+          kube-proxy ConfigMap has been updated. To apply the changes
+          you need to restart the kube-proxy pods. You can do that using:
+          kubectl -n kube-system rollout restart daemonset kube-proxy
